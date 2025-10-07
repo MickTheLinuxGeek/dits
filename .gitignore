@@ -82,3 +82,10 @@ typings/
 
 # TernJS port file
 .tern-port
+
+/src/generated/prisma
+
+# Backups
+backups/
+*.sql
+*.sql.gz

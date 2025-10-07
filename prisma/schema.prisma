@@ -1,0 +1,331 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// User Model
+// ============================================
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  avatar    String?
+  
+  // User preferences stored as JSON
+  preferences Json @default("{}")
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  projects       Project[]
+  areas          Area[]
+  issues         Issue[]
+  labels         Label[]
+  workflows      Workflow[]
+  gitIntegrations GitIntegration[]
+  
+  @@index([email])
+  @@map("users")
+}
+
+// ============================================
+// Project Model
+// ============================================
+model Project {
+  id          String   @id @default(uuid())
+  userId      String
+  name        String
+  description String?
+  status      ProjectStatus @default(ACTIVE)
+  
+  // Project settings stored as JSON
+  settings    Json @default("{}")
+  
+  // Date fields
+  startDate   DateTime?
+  endDate     DateTime?
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  issues      Issue[]
+  workflows   Workflow[]
+  
+  @@index([userId])
+  @@index([status])
+  @@index([userId, createdAt])
+  @@map("projects")
+}
+
+enum ProjectStatus {
+  ACTIVE
+  ARCHIVED
+  COMPLETED
+  ON_HOLD
+}
+
+// ============================================
+// Area Model
+// ============================================
+model Area {
+  id          String   @id @default(uuid())
+  userId      String
+  name        String
+  description String?
+  color       String   @default("#6366f1")
+  
+  // Area settings stored as JSON
+  settings    Json @default("{}")
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  issues      Issue[]
+  
+  @@index([userId])
+  @@index([userId, createdAt])
+  @@map("areas")
+}
+
+// ============================================
+// Issue Model
+// ============================================
+model Issue {
+  id              String   @id @default(uuid())
+  userId          String
+  projectId       String?
+  areaId          String?
+  parentIssueId   String?
+  statusId        String
+  
+  // Core fields
+  title           String
+  description     String?  @db.Text
+  priority        Priority @default(NO_PRIORITY)
+  
+  // Dates
+  startDate       DateTime?
+  dueDate         DateTime?
+  completedAt     DateTime?
+  
+  // Metadata stored as JSON (for extensibility)
+  metadata        Json @default("{}")
+  
+  // Timestamps
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project         Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  area            Area?    @relation(fields: [areaId], references: [id], onDelete: SetNull)
+  status          Status   @relation(fields: [statusId], references: [id])
+  parentIssue     Issue?   @relation("IssueHierarchy", fields: [parentIssueId], references: [id], onDelete: SetNull)
+  
+  // Self-referential relations
+  subIssues       Issue[]  @relation("IssueHierarchy")
+  
+  // Many-to-many relations
+  labels          IssueLabel[]
+  relationsFrom   IssueRelation[] @relation("SourceIssue")
+  relationsTo     IssueRelation[] @relation("TargetIssue")
+  gitIntegrations GitIntegration[]
+  
+  @@index([userId])
+  @@index([projectId])
+  @@index([areaId])
+  @@index([statusId])
+  @@index([priority])
+  @@index([parentIssueId])
+  @@index([userId, createdAt])
+  @@index([userId, updatedAt])
+  @@index([dueDate])
+  @@index([startDate])
+  @@map("issues")
+}
+
+enum Priority {
+  NO_PRIORITY
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+// ============================================
+// Label Model
+// ============================================
+model Label {
+  id        String   @id @default(uuid())
+  userId    String
+  name      String
+  color     String   @default("#6366f1")
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  issues    IssueLabel[]
+  
+  @@unique([userId, name])
+  @@index([userId])
+  @@map("labels")
+}
+
+// ============================================
+// Issue-Label Junction Table
+// ============================================
+model IssueLabel {
+  issueId   String
+  labelId   String
+  
+  // Relations
+  issue     Issue    @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  label     Label    @relation(fields: [labelId], references: [id], onDelete: Cascade)
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  
+  @@id([issueId, labelId])
+  @@index([issueId])
+  @@index([labelId])
+  @@map("issue_labels")
+}
+
+// ============================================
+// Workflow Model
+// ============================================
+model Workflow {
+  id          String   @id @default(uuid())
+  userId      String
+  projectId   String?
+  name        String
+  
+  // Workflow transitions stored as JSON
+  transitions Json @default("[]")
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project     Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  statuses    Status[]
+  
+  @@index([userId])
+  @@index([projectId])
+  @@map("workflows")
+}
+
+// ============================================
+// Status Model
+// ============================================
+model Status {
+  id         String   @id @default(uuid())
+  workflowId String
+  name       String
+  color      String   @default("#6366f1")
+  position   Int      @default(0)
+  isClosed   Boolean  @default(false)
+  
+  // Timestamps
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  // Relations
+  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  issues     Issue[]
+  
+  @@unique([workflowId, name])
+  @@index([workflowId])
+  @@index([workflowId, position])
+  @@map("statuses")
+}
+
+// ============================================
+// Issue Relation Model (for dependencies)
+// ============================================
+model IssueRelation {
+  id           String       @id @default(uuid())
+  sourceId     String
+  targetId     String
+  relationType RelationType
+  
+  // Timestamps
+  createdAt    DateTime @default(now())
+  
+  // Relations
+  source       Issue    @relation("SourceIssue", fields: [sourceId], references: [id], onDelete: Cascade)
+  target       Issue    @relation("TargetIssue", fields: [targetId], references: [id], onDelete: Cascade)
+  
+  @@unique([sourceId, targetId, relationType])
+  @@index([sourceId])
+  @@index([targetId])
+  @@map("issue_relations")
+}
+
+enum RelationType {
+  BLOCKS
+  BLOCKED_BY
+  RELATES_TO
+  DUPLICATES
+  DUPLICATED_BY
+}
+
+// ============================================
+// Git Integration Model
+// ============================================
+model GitIntegration {
+  id         String   @id @default(uuid())
+  userId     String
+  issueId    String
+  
+  // Git provider details
+  provider   GitProvider
+  repository String
+  branchName String?
+  prUrl      String?
+  commitHash String?
+  
+  // Metadata stored as JSON
+  metadata   Json @default("{}")
+  
+  // Timestamps
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  // Relations
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  issue      Issue    @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([issueId])
+  @@index([provider])
+  @@map("git_integrations")
+}
+
+enum GitProvider {
+  GITHUB
+  GITLAB
+  BITBUCKET
+}
