@@ -1,4 +1,4 @@
-import { redisClient } from '../database/redis';
+import { redis as redisClient } from '../database/redis';
 import { config } from '../config/env';
 import {
   generateAccessToken,

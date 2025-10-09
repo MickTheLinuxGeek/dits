@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 import { config } from '../config/env';
 
 /**
@@ -31,9 +31,12 @@ export function generateAccessToken(userId: string, email: string): string {
     type: 'access',
   };
 
-  return jwt.sign(payload, config.jwt.secret, {
-    expiresIn: config.jwt.expiresIn,
-  });
+  const options: SignOptions = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expiresIn: config.jwt.expiresIn as any,
+  };
+
+  return jwt.sign(payload, config.jwt.secret, options);
 }
 
 /**
@@ -49,9 +52,12 @@ export function generateRefreshToken(userId: string, email: string): string {
     type: 'refresh',
   };
 
-  return jwt.sign(payload, config.jwt.refreshSecret, {
-    expiresIn: config.jwt.refreshExpiresIn,
-  });
+  const options: SignOptions = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expiresIn: config.jwt.refreshExpiresIn as any,
+  };
+
+  return jwt.sign(payload, config.jwt.refreshSecret, options);
 }
 
 /**

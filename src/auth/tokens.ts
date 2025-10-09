@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { redisClient } from '../database/redis';
+import { redis as redisClient } from '../database/redis';
 
 /**
  * Token type enumeration
