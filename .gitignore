@@ -89,3 +89,9 @@ typings/
 backups/
 *.sql
 *.sql.gz
+
+# API Keys
+config.env
+
+# Misc
+nanobanana-output/
