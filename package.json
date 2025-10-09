@@ -8,6 +8,12 @@
     "test:coverage": "jest --coverage",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json}\"",
+    "type-check": "tsc --noEmit",
+    "build": "tsc --build",
+    "build:clean": "tsc --build --clean",
+    "ci:check": "npm run type-check && npm run lint && npm run format:check && npm run build",
     "prepare": "husky",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
@@ -31,7 +37,8 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --write",
+      "bash -c 'tsc --noEmit'"
     ]
   },
   "devDependencies": {

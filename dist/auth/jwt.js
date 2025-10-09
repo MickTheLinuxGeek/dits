@@ -24,6 +24,7 @@ function generateAccessToken(userId, email) {
         type: 'access',
     };
     const options = {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         expiresIn: env_1.config.jwt.expiresIn,
     };
     return jsonwebtoken_1.default.sign(payload, env_1.config.jwt.secret, options);
@@ -41,6 +42,7 @@ function generateRefreshToken(userId, email) {
         type: 'refresh',
     };
     const options = {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         expiresIn: env_1.config.jwt.refreshExpiresIn,
     };
     return jsonwebtoken_1.default.sign(payload, env_1.config.jwt.refreshSecret, options);
