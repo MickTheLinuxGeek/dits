@@ -76,6 +76,13 @@ class RedisClient {
   }
 
   /**
+   * Connect to Redis (alias for getInstance)
+   */
+  static async connect(): Promise<Redis> {
+    return RedisClient.getInstance();
+  }
+
+  /**
    * Test Redis connection
    */
   static async testConnection(): Promise<boolean> {
@@ -221,6 +228,7 @@ class RedisClient {
 export const redis = RedisClient.getInstance();
 
 // Export utility functions
+export const connectRedis = RedisClient.connect;
 export const disconnectRedis = RedisClient.disconnect;
 export const testRedisConnection = RedisClient.testConnection;
 export const getRedisInfo = RedisClient.getInfo;

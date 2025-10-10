@@ -82,6 +82,7 @@ class DatabaseClient {
 export const prisma = DatabaseClient.getInstance();
 
 // Export utility functions
+export const connectDatabase = DatabaseClient.getInstance;
 export const disconnectDatabase = DatabaseClient.disconnect;
 export const testDatabaseConnection = DatabaseClient.testConnection;
 export const getDatabaseConnectionInfo = DatabaseClient.getConnectionInfo;
