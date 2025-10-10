@@ -45,14 +45,14 @@ This document provides a detailed, enumerated task list based on the implementat
 30. [X] Set up API documentation with Swagger/OpenAPI
 
 #### Core Data Models
-31. [ ] Implement User model with preferences
-32. [ ] Create Project model with settings
-33. [ ] Implement Area model for organization
-34. [ ] Create Issue model with full metadata
-35. [ ] Implement Label model with color coding
-36. [ ] Create Status and Workflow models
-37. [ ] Implement IssueRelation model for dependencies
-38. [ ] Add GitIntegration model for version control
+31. [X] Implement User model with preferences
+32. [X] Create Project model with settings
+33. [X] Implement Area model for organization
+34. [X] Create Issue model with full metadata
+35. [X] Implement Label model with color coding
+36. [X] Create Status and Workflow models
+37. [X] Implement IssueRelation model for dependencies
+38. [X] Add GitIntegration model for version control
 
 #### Basic CRUD Operations
 39. [ ] Implement Issue CRUD operations
