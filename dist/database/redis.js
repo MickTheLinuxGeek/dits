@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.refreshSessionExpiry = exports.deleteSession = exports.getSession = exports.setSession = exports.deleteCachePattern = exports.deleteCache = exports.getCache = exports.setCache = exports.getRedisInfo = exports.testRedisConnection = exports.disconnectRedis = exports.redis = void 0;
+exports.refreshSessionExpiry = exports.deleteSession = exports.getSession = exports.setSession = exports.deleteCachePattern = exports.deleteCache = exports.getCache = exports.setCache = exports.getRedisInfo = exports.testRedisConnection = exports.disconnectRedis = exports.connectRedis = exports.redis = void 0;
 const ioredis_1 = __importDefault(require("ioredis"));
 const env_1 = require("../config/env");
 /**
@@ -77,6 +77,14 @@ class RedisClient {
                 yield RedisClient.instance.quit();
                 RedisClient.instance = null;
             }
+        });
+    }
+    /**
+     * Connect to Redis (alias for getInstance)
+     */
+    static connect() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return RedisClient.getInstance();
         });
     }
     /**
@@ -215,6 +223,7 @@ RedisClient.instance = null;
 // Export singleton instance
 exports.redis = RedisClient.getInstance();
 // Export utility functions
+exports.connectRedis = RedisClient.connect;
 exports.disconnectRedis = RedisClient.disconnect;
 exports.testRedisConnection = RedisClient.testConnection;
 exports.getRedisInfo = RedisClient.getInfo;

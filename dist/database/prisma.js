@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDatabaseConnectionInfo = exports.testDatabaseConnection = exports.disconnectDatabase = exports.prisma = void 0;
+exports.getDatabaseConnectionInfo = exports.testDatabaseConnection = exports.disconnectDatabase = exports.connectDatabase = exports.prisma = void 0;
 const client_1 = require("@prisma/client");
 const env_1 = require("../config/env");
 /**
@@ -88,6 +88,7 @@ DatabaseClient.instance = null;
 // Export singleton instance
 exports.prisma = DatabaseClient.getInstance();
 // Export utility functions
+exports.connectDatabase = DatabaseClient.getInstance;
 exports.disconnectDatabase = DatabaseClient.disconnect;
 exports.testDatabaseConnection = DatabaseClient.testConnection;
 exports.getDatabaseConnectionInfo = DatabaseClient.getConnectionInfo;
