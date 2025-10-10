@@ -95,3 +95,9 @@ config.env
 
 # Misc
 nanobanana-output/
+
+# Production builds
+dist/
+build/
+*.tsbuildinfo
+

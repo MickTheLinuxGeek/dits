@@ -59,6 +59,7 @@ model Project {
   // Timestamps
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
   
   // Relations
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -68,6 +69,7 @@ model Project {
   @@index([userId])
   @@index([status])
   @@index([userId, createdAt])
+  @@index([deletedAt])
   @@map("projects")
 }
 
@@ -94,6 +96,7 @@ model Area {
   // Timestamps
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
   
   // Relations
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -101,6 +104,7 @@ model Area {
   
   @@index([userId])
   @@index([userId, createdAt])
+  @@index([deletedAt])
   @@map("areas")
 }
 
@@ -131,6 +135,7 @@ model Issue {
   // Timestamps
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  deletedAt       DateTime?
   
   // Relations
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -158,6 +163,7 @@ model Issue {
   @@index([userId, updatedAt])
   @@index([dueDate])
   @@index([startDate])
+  @@index([deletedAt])
   @@map("issues")
 }
 
@@ -181,6 +187,7 @@ model Label {
   // Timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
   
   // Relations
   user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -188,6 +195,7 @@ model Label {
   
   @@unique([userId, name])
   @@index([userId])
+  @@index([deletedAt])
   @@map("labels")
 }
 
@@ -328,4 +336,55 @@ enum GitProvider {
   GITHUB
   GITLAB
   BITBUCKET
+}
+
+// ============================================
+// Audit Log Model
+// ============================================
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String
+  
+  // Action details
+  action     AuditAction
+  entityType EntityType
+  entityId   String
+  
+  // Changed data (before and after states)
+  oldValues  Json?
+  newValues  Json?
+  
+  // Additional metadata
+  ipAddress  String?
+  userAgent  String?
+  metadata   Json @default("{}")
+  
+  // Timestamp
+  createdAt  DateTime @default(now())
+  
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@index([action])
+  @@index([createdAt])
+  @@index([userId, createdAt])
+  @@map("audit_logs")
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  RESTORE
+  ARCHIVE
+}
+
+enum EntityType {
+  USER
+  PROJECT
+  AREA
+  ISSUE
+  LABEL
+  WORKFLOW
+  STATUS
+  GIT_INTEGRATION
 }

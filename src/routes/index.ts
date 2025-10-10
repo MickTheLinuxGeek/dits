@@ -1,5 +1,12 @@
 import { Router } from 'express';
 import authRoutes from './auth';
+import issueRoutes from './issues';
+import projectRoutes from './projects';
+import areaRoutes from './areas';
+import labelRoutes from './labels';
+import workflowRoutes from './workflows';
+import bulkRoutes from './bulk';
+import auditLogRoutes from './auditLogs';
 
 /**
  * API Routes Index
@@ -48,6 +55,9 @@ v1Router.get('/', (_req, res) => {
       '/api/v1/projects',
       '/api/v1/areas',
       '/api/v1/labels',
+      '/api/v1/workflows',
+      '/api/v1/bulk',
+      '/api/v1/audit-logs',
     ],
     graphql: '/graphql',
     docs: '/api/docs',
@@ -57,11 +67,14 @@ v1Router.get('/', (_req, res) => {
 // Mount auth routes
 v1Router.use('/auth', authRoutes);
 
-// TODO: Add more route modules here as they are implemented
-// v1Router.use('/issues', issueRoutes);
-// v1Router.use('/projects', projectRoutes);
-// v1Router.use('/areas', areaRoutes);
-// v1Router.use('/labels', labelRoutes);
+// Mount CRUD routes
+v1Router.use('/issues', issueRoutes);
+v1Router.use('/projects', projectRoutes);
+v1Router.use('/areas', areaRoutes);
+v1Router.use('/labels', labelRoutes);
+v1Router.use('/workflows', workflowRoutes);
+v1Router.use('/bulk', bulkRoutes);
+v1Router.use('/audit-logs', auditLogRoutes);
 
 // Mount v1 routes
 router.use('/v1', v1Router);
