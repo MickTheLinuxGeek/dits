@@ -242,10 +242,6 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for de
 - 80 character line width
 - Comprehensive JSDoc comments
 
-## 📄 License
-
-This project is licensed under the ISC License - see the LICENSE file for details.
-
 ## 🔗 Links
 
 - [GitHub Repository](https://github.com/MickTheLinuxGeek/dits)
@@ -264,5 +260,9 @@ DITS is built on the belief that individual developers deserve tools designed fo
 ---
 
 **Status:** Early Development (Phase 1)
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 Built with ❤️ for developers who value their time and flow state.
