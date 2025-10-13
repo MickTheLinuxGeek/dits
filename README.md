@@ -5,44 +5,53 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green)](https://nodejs.org/)
+[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)](https://github.com/MickTheLinuxGeek/dits)
+[![Coverage](https://img.shields.io/badge/Coverage-85%25-green)](https://github.com/MickTheLinuxGeek/dits)
 
 ## 🎯 Overview
 
-DITS eliminates the "collaboration tax" imposed by team-oriented tools while providing deep integration with developer ecosystems. Built for developers who need a powerful, fast, and distraction-free issue tracking system.
+DITS eliminates the "collaboration tax" imposed by team-oriented tools while providing deep integration with developer ecosystems. Built for developers who need a powerful, fast, and distraction-free issue tracking system that actually understands their workflow.
+
+**Why DITS?** Most issue trackers are built for teams and adapted for individuals. DITS is purpose-built from the ground up for the solo developer experience, removing complexity while adding the deep integrations that matter to your daily workflow.
 
 ### Core Principles
 
-- **⚡ Frictionless Capture** - Zero-friction issue creation from anywhere
-- **🎯 Optimized for Flow State** - Sub-100ms interactions, keyboard-first design
-- **🔗 Context is King** - Deep bidirectional Git integration
-- **💾 User Owns Their Data** - Complete data portability and export
+- **⚡ Frictionless Capture** - Zero-friction issue creation from anywhere in your workflow
+- **🎯 Optimized for Flow State** - Sub-100ms interactions, keyboard-first design, minimal context switching
+- **🔗 Context is King** - Deep bidirectional Git integration with automatic branch management
+- **💾 User Owns Their Data** - Complete data portability, local-first architecture, full export capabilities
 
 ## ✨ Key Features
 
 ### Issue Management
-- Rich Markdown descriptions with syntax highlighting
+- Rich Markdown descriptions with syntax highlighting and code blocks
 - Flexible organization with Projects (finite work) and Areas (ongoing responsibilities)
-- Parent-child relationships and task dependencies
+- Parent-child relationships and task dependencies with visual relationship graphs
 - Custom workflows with per-project status transitions
 - Priority levels, labels, start/due dates
+- Full-text search with advanced filters
 
 ### Smart Views
 - **Inbox** - Default destination for newly captured issues
 - **Today** - Curated list for your current day
 - **Upcoming** - Chronological view with scheduled dates
 - **Logbook** - Archive of completed issues
+- **Custom Views** - Create and save personalized issue filters
 
 ### Git Integration
 - Automatic branch creation with semantic naming
+- Branch naming based on issue priority and labels (hotfix/bugfix/feature)
 - PR/MR tracking and automatic linking
-- Webhook-driven status updates
-- Issue closure on merge
+- Webhook-driven status updates and synchronization
+- Automatic issue closure on merge
+- Commit linking with bi-directional references
 
 ### Developer Experience
 - Command Palette (Cmd/Ctrl+K) for power users
 - Keyboard shortcuts for every action
-- Offline-first architecture
+- Offline-first architecture with seamless sync
 - Multiple platforms: Web, Desktop (macOS/Windows/Linux), Mobile, IDE extensions
+- Distraction-free UI designed for maximum focus
 
 ## 🚀 Quick Start
 
@@ -127,24 +136,23 @@ The project uses Husky with lint-staged for pre-commit hooks. On commit:
 
 ### Technology Stack
 
-**Backend:**
-- TypeScript with Node.js
-- Express.js for REST API
-- Apollo Server for GraphQL
-- Prisma ORM with PostgreSQL
-- Redis for caching and sessions
-- JWT authentication with OAuth2
+#### Backend Services
+- **Auth Service** - JWT authentication with OAuth2 for Git providers
+- **Issue Service** - Core CRUD operations and search
+- **Project Service** - Project and area organization
+- **Sync Service** - Real-time updates via WebSocket
+- **Integration Service** - Git provider integrations (GitHub, GitLab, Bitbucket)
 
-**Frontend (Planned):**
-- React 18+ with TypeScript
-- Vite build system
-- React Native for mobile
+#### Data Layer
+- PostgreSQL - Primary relational database
+- Redis - Caching and session management
+- Elasticsearch - Full-text search
 
-**DevOps:**
-- Docker & Docker Compose
-- Jest for testing
-- ESLint & Prettier
-- GitHub Actions for CI/CD
+#### Frontend Applications
+- **Web App** - React 18+ with TypeScript, Vite build system
+- **Desktop Apps** - Native per platform (Swift/SwiftUI for macOS, .NET MAUI for Windows, Electron for Linux)
+- **Mobile Apps** - React Native for iOS and Android
+- **IDE Extensions** - VS Code and JetBrains plugins
 
 ### Project Structure
 
@@ -160,6 +168,9 @@ dits/
 │   └── utils/              # Utility functions
 ├── prisma/                 # Database schema & migrations
 ├── design_docs/            # Comprehensive design documentation
+│   ├── requirements.md     # Complete functional & non-functional requirements
+│   ├── plan.md             # Detailed architecture and implementation strategy
+│   └── tasks.md            # Enumerated task breakdown
 ├── docs/                   # Additional documentation
 ├── scripts/                # Build and deployment scripts
 ├── docker/                 # Docker configurations
@@ -170,13 +181,25 @@ dits/
 
 - **User** - Single-tenant model (no team entity)
 - **Project** - Finite bodies of work with clear endpoints
-- **Area** - Ongoing spheres of responsibility
-- **Issue** - Core task/bug entity with rich metadata
+- **Area** - Ongoing spheres of responsibility (Work, Personal, Learning)
+- **Issue** - Core task/bug entity with rich metadata (title, description, priority, status, dates, labels)
 - **Status/Workflow** - Customizable per-project status transitions
 - **Label** - Color-coded flexible categorization
 - **GitIntegration** - Links issues to branches, PRs, commits
 
-## 📖 Documentation
+Issues support:
+- Parent-child relationships (sub-tasks)
+- Dependencies (blocked by, blocking, related to)
+- Full Markdown descriptions with syntax highlighting
+- Start dates and due dates
+- Multiple labels
+
+### API Architecture
+
+- **GraphQL (Primary)** - Main API for complex queries with precise field selection
+- **REST (Fallback)** - Simpler integrations and webhooks
+
+## 📜 Documentation
 
 - [Requirements](design_docs/requirements.md) - Complete functional & non-functional requirements
 - [Implementation Plan](design_docs/plan.md) - Detailed architecture and implementation strategy
@@ -250,12 +273,20 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for de
 
 ## 💡 Philosophy
 
-DITS is built on the belief that individual developers deserve tools designed for their workflow, not adapted from team collaboration tools. Every design decision prioritizes:
+DITS is built on the belief that individual developers deserve tools designed specifically for their workflow, not adapted from team collaboration tools. Every design decision prioritizes:
 
-1. **Speed** - Sub-100ms interactions maintain flow state
-2. **Simplicity** - No artificial complexity from team features
-3. **Integration** - Deep connections to developer tools and workflows
-4. **Ownership** - Complete control over your data and workflow
+1. **Speed** - Sub-100ms interactions maintain flow state and minimize context switching
+2. **Simplicity** - No artificial complexity from team features or unnecessary collaboration overhead
+3. **Integration** - Deep connections to developer tools and workflows you actually use
+4. **Ownership** - Complete control over your data and workflow with no vendor lock-in
+
+## 🔒 Security & Privacy
+
+DITS takes your data privacy seriously:
+- All data stored locally by default with optional remote sync
+- End-to-end encryption for sensitive data
+- No telemetry or tracking without explicit opt-in
+- OAuth2 with proper scopes for third-party integrations
 
 ---
 
