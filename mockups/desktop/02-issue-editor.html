@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DITS - Issue Editor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            height: 100vh;
+            display: flex;
+        }
+        
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* Modal Header */
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: between;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            flex: 1;
+        }
+        
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: none;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #64748b;
+            transition: all 0.15s ease;
+        }
+        
+        .modal-close:hover {
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+        
+        /* Modal Body */
+        .modal-body {
+            padding: 24px;
+            max-height: calc(90vh - 120px);
+            overflow-y: auto;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .form-group {
+            flex: 1;
+        }
+        
+        .form-group.full-width {
+            flex: none;
+            width: 100%;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+        
+        .form-label.required::after {
+            content: "*";
+            color: #ef4444;
+            margin-left: 4px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.15s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .form-textarea {
+            min-height: 200px;
+            resize: vertical;
+            font-family: ui-monospace, 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+        }
+        
+        /* Select Dropdowns */
+        .form-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Custom Select for Priority */
+        .priority-select {
+            position: relative;
+        }
+        
+        .priority-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .priority-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .priority-urgent .priority-dot { background-color: #ef4444; }
+        .priority-high .priority-dot { background-color: #f97316; }
+        .priority-medium .priority-dot { background-color: #eab308; }
+        .priority-low .priority-dot { background-color: #22c55e; }
+        .priority-none .priority-dot { background-color: #9ca3af; }
+        
+        /* Labels Input */
+        .labels-container {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+            min-height: 42px;
+            cursor: text;
+            transition: all 0.15s ease;
+        }
+        
+        .labels-container:focus-within {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .label-tag {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background-color: #dbeafe;
+            color: #2563eb;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .label-remove {
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            padding: 0;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+        
+        .label-remove:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        .label-input {
+            border: none;
+            outline: none;
+            background: transparent;
+            flex: 1;
+            min-width: 100px;
+            font-size: 14px;
+        }
+        
+        /* Date Inputs */
+        .date-input {
+            position: relative;
+        }
+        
+        .date-input input[type="date"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        /* Description with Markdown Preview */
+        .description-section {
+            margin-bottom: 24px;
+        }
+        
+        .description-tabs {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 12px;
+        }
+        
+        .description-tab {
+            padding: 8px 16px;
+            border: none;
+            background: none;
+            font-size: 14px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s ease;
+        }
+        
+        .description-tab.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+        
+        .description-content {
+            position: relative;
+        }
+        
+        .markdown-preview {
+            min-height: 200px;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background-color: #f9fafb;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .markdown-preview h1, .markdown-preview h2, .markdown-preview h3 {
+            margin-bottom: 12px;
+            color: #1e293b;
+        }
+        
+        .markdown-preview p {
+            margin-bottom: 12px;
+        }
+        
+        .markdown-preview code {
+            background-color: #f1f5f9;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: ui-monospace, monospace;
+        }
+        
+        .markdown-preview pre {
+            background-color: #f1f5f9;
+            padding: 12px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin-bottom: 12px;
+        }
+        
+        /* Relationships Section */
+        .relationships-section {
+            margin-bottom: 24px;
+        }
+        
+        .relationship-type {
+            margin-bottom: 16px;
+        }
+        
+        .relationship-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .relationship-item {
+            padding: 4px 8px;
+            background-color: #f1f5f9;
+            border-radius: 6px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .relationship-remove {
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            padding: 0;
+        }
+        
+        /* Action Buttons */
+        .modal-footer {
+            padding: 20px 24px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-left {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .footer-right {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f9fafb;
+        }
+        
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2563eb;
+            border-color: #2563eb;
+        }
+        
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+        
+        .btn-danger:hover {
+            background-color: #dc2626;
+            border-color: #dc2626;
+        }
+        
+        .kbd {
+            font-family: ui-monospace, monospace;
+            font-size: 11px;
+            padding: 2px 4px;
+            background-color: #f1f5f9;
+            border: 1px solid #d1d5db;
+            border-radius: 3px;
+            margin-left: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Edit Issue #001</h2>
+                <button class="modal-close">✕</button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Title -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label class="form-label required">Title</label>
+                        <input type="text" class="form-input" value="Implement user authentication system" placeholder="Enter issue title...">
+                    </div>
+                </div>
+                
+                <!-- Status, Priority, Project -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <select class="form-select">
+                            <option>Backlog</option>
+                            <option>To Do</option>
+                            <option selected>In Progress</option>
+                            <option>Review</option>
+                            <option>Done</option>
+                            <option>Canceled</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Priority</label>
+                        <select class="form-select priority-select">
+                            <option class="priority-option priority-none">
+                                <span class="priority-dot"></span>
+                                No Priority
+                            </option>
+                            <option class="priority-option priority-low">
+                                <span class="priority-dot"></span>
+                                Low
+                            </option>
+                            <option class="priority-option priority-medium">
+                                <span class="priority-dot"></span>
+                                Medium
+                            </option>
+                            <option class="priority-option priority-high" selected>
+                                <span class="priority-dot"></span>
+                                High
+                            </option>
+                            <option class="priority-option priority-urgent">
+                                <span class="priority-dot"></span>
+                                Urgent
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Project</label>
+                        <select class="form-select">
+                            <option>No Project</option>
+                            <option selected>DITS v1.0</option>
+                            <option>Portfolio Redesign</option>
+                            <option>Mobile App</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Start Date, Due Date -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Start Date</label>
+                        <div class="date-input">
+                            <input type="date" class="form-input" value="2024-01-15">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Due Date</label>
+                        <div class="date-input">
+                            <input type="date" class="form-input" value="2024-01-20">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Labels -->
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label class="form-label">Labels</label>
+                        <div class="labels-container">
+                            <div class="label-tag">
+                                feature
+                                <button class="label-remove">×</button>
+                            </div>
+                            <div class="label-tag">
+                                security
+                                <button class="label-remove">×</button>
+                            </div>
+                            <input type="text" class="label-input" placeholder="Add label...">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Description -->
+                <div class="description-section">
+                    <label class="form-label">Description</label>
+                    <div class="description-tabs">
+                        <button class="description-tab active">Write</button>
+                        <button class="description-tab">Preview</button>
+                    </div>
+                    <div class="description-content">
+                        <textarea class="form-input form-textarea" placeholder="Describe the issue in detail using Markdown...">## Overview
+Implement a robust user authentication system for DITS with support for:
+
+- JWT-based authentication
+- OAuth2 integration with Git providers (GitHub, GitLab, Bitbucket)
+- Multi-factor authentication
+- Session management
+
+## Acceptance Criteria
+
+- [ ] User registration and login
+- [ ] JWT token generation and validation
+- [ ] OAuth2 flow for Git providers
+- [ ] Password reset functionality
+- [ ] MFA support (TOTP)
+
+## Technical Notes
+
+```javascript
+// JWT token structure
+const token = {
+  userId: 'user-uuid',
+  email: 'user@example.com',
+  exp: timestamp,
+  iat: timestamp
+};
+```
+
+## Related Issues
+- Blocked by: Database schema design (#002)
+- Related to: Git integration (#015)</textarea>
+                    </div>
+                </div>
+                
+                <!-- Relationships -->
+                <div class="relationships-section">
+                    <label class="form-label">Relationships</label>
+                    
+                    <div class="relationship-type">
+                        <div class="form-label" style="font-size: 13px; margin-bottom: 8px;">Blocked By</div>
+                        <div class="relationship-items">
+                            <div class="relationship-item">
+                                #002 Database schema design
+                                <button class="relationship-remove">×</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relationship-type">
+                        <div class="form-label" style="font-size: 13px; margin-bottom: 8px;">Related To</div>
+                        <div class="relationship-items">
+                            <div class="relationship-item">
+                                #015 Git integration
+                                <button class="relationship-remove">×</button>
+                            </div>
+                            <div class="relationship-item">
+                                #007 User management
+                                <button class="relationship-remove">×</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <div class="footer-left">
+                    <button class="btn btn-danger">Delete Issue</button>
+                </div>
+                <div class="footer-right">
+                    <button class="btn btn-secondary">
+                        Cancel <span class="kbd">Esc</span>
+                    </button>
+                    <button class="btn btn-primary">
+                        Save Changes <span class="kbd">⌘S</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DITS Mobile - Inbox</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            max-width: 390px;
+            margin: 0 auto;
+            border: 1px solid #e2e8f0;
+        }
+        
+        /* Status Bar */
+        .status-bar {
+            height: 44px;
+            background: #000;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .status-left {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .status-right {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .menu-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+        
+        .menu-btn:active {
+            background-color: #f1f5f9;
+        }
+        
+        .view-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.15s ease;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .icon-btn:active {
+            background-color: #f1f5f9;
+        }
+        
+        /* Search Bar */
+        .search-section {
+            padding: 12px 16px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .search-container {
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 12px 10px 40px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #f9fafb;
+            transition: all 0.15s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            background-color: white;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 16px;
+        }
+        
+        /* Filter Pills */
+        .filter-pills {
+            padding: 8px 16px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .filter-pill {
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 16px;
+            font-size: 13px;
+            background: white;
+            color: #374151;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .filter-pill.active {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .filter-pill:active {
+            transform: scale(0.95);
+        }
+        
+        /* Issue List */
+        .issue-list {
+            flex: 1;
+            background: white;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .issue-item {
+            padding: 16px;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .issue-item:active {
+            background-color: #f8fafc;
+        }
+        
+        .issue-checkbox {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            cursor: pointer;
+        }
+        
+        .issue-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .issue-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #1e293b;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+        
+        .issue-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .issue-id {
+            font-family: ui-monospace, monospace;
+            background-color: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .priority {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .priority-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+        
+        .priority-urgent .priority-dot { background-color: #ef4444; }
+        .priority-high .priority-dot { background-color: #f97316; }
+        .priority-medium .priority-dot { background-color: #eab308; }
+        .priority-low .priority-dot { background-color: #22c55e; }
+        
+        .issue-labels {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        
+        .label {
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .label.bug { background-color: #fee2e2; color: #dc2626; }
+        .label.feature { background-color: #dbeafe; color: #2563eb; }
+        .label.enhancement { background-color: #ecfccb; color: #65a30d; }
+        
+        .issue-status {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            background-color: #f1f5f9;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 500;
+            white-space: nowrap;
+            margin-left: auto;
+            margin-top: 2px;
+        }
+        
+        .status-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: #64748b;
+        }
+        
+        .status-todo .status-dot { background-color: #64748b; }
+        .status-progress .status-dot { background-color: #3b82f6; }
+        .status-review .status-dot { background-color: #f59e0b; }
+        
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background-color: #3b82f6;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            z-index: 100;
+        }
+        
+        .fab:active {
+            transform: scale(0.95);
+        }
+        
+        .fab-icon {
+            color: white;
+            font-size: 24px;
+            font-weight: 300;
+        }
+        
+        /* Bottom Tab Bar */
+        .tab-bar {
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            padding: 8px 0 20px;
+        }
+        
+        .tab-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            color: #64748b;
+        }
+        
+        .tab-item.active {
+            color: #3b82f6;
+        }
+        
+        .tab-item:active {
+            background-color: #f8fafc;
+        }
+        
+        .tab-icon {
+            font-size: 20px;
+        }
+        
+        .tab-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+        
+        .tab-badge {
+            position: absolute;
+            top: 4px;
+            right: -4px;
+            width: 16px;
+            height: 16px;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 50%;
+            font-size: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .tab-item:first-child {
+            position: relative;
+        }
+        
+        /* Pull to refresh hint */
+        .pull-refresh {
+            padding: 12px 16px;
+            text-align: center;
+            color: #64748b;
+            font-size: 12px;
+            background: #f8fafc;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        /* Empty state (hidden by default) */
+        .empty-state {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        .empty-state h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+        
+        .empty-state p {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <div class="status-left">
+            <span>9:41</span>
+        </div>
+        <div class="status-right">
+            <span>📶</span>
+            <span>📶</span>
+            <span>🔋</span>
+        </div>
+    </div>
+    
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <button class="menu-btn">☰</button>
+            <h1 class="view-title">Inbox</h1>
+        </div>
+        <div class="header-actions">
+            <button class="icon-btn">🔍</button>
+            <button class="icon-btn">⚙️</button>
+        </div>
+    </div>
+    
+    <!-- Search -->
+    <div class="search-section">
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" placeholder="Search issues...">
+        </div>
+    </div>
+    
+    <!-- Filter Pills -->
+    <div class="filter-pills">
+        <div class="filter-pill active">All</div>
+        <div class="filter-pill">High Priority</div>
+        <div class="filter-pill">Due Today</div>
+        <div class="filter-pill">Bugs</div>
+        <div class="filter-pill">Features</div>
+        <div class="filter-pill">In Progress</div>
+    </div>
+    
+    <!-- Pull to Refresh Hint -->
+    <div class="pull-refresh">Pull down to refresh</div>
+    
+    <!-- Issue List -->
+    <div class="issue-list">
+        <div class="issue-item">
+            <input type="checkbox" class="issue-checkbox">
+            <div class="issue-content">
+                <div class="issue-title">Implement user authentication system</div>
+                <div class="issue-meta">
+                    <span class="issue-id">#001</span>
+                    <span class="priority priority-high">
+                        <span class="priority-dot"></span>
+                        High
+                    </span>
+                    <span>Due: Today</span>
+                </div>
+                <div class="issue-labels">
+                    <span class="label feature">feature</span>
+                    <span class="label bug">security</span>
+                </div>
+            </div>
+            <div class="issue-status status-progress">
+                <span class="status-dot"></span>
+                In Progress
+            </div>
+        </div>
+        
+        <div class="issue-item">
+            <input type="checkbox" class="issue-checkbox">
+            <div class="issue-content">
+                <div class="issue-title">Design database schema for issue tracking</div>
+                <div class="issue-meta">
+                    <span class="issue-id">#002</span>
+                    <span class="priority priority-medium">
+                        <span class="priority-dot"></span>
+                        Medium
+                    </span>
+                    <span>Due: Tomorrow</span>
+                </div>
+                <div class="issue-labels">
+                    <span class="label feature">database</span>
+                    <span class="label enhancement">design</span>
+                </div>
+            </div>
+            <div class="issue-status status-todo">
+                <span class="status-dot"></span>
+                To Do
+            </div>
+        </div>
+        
+        <div class="issue-item">
+            <input type="checkbox" class="issue-checkbox">
+            <div class="issue-content">
+                <div class="issue-title">Set up CI/CD pipeline with GitHub Actions</div>
+                <div class="issue-meta">
+                    <span class="issue-id">#003</span>
+                    <span class="priority priority-low">
+                        <span class="priority-dot"></span>
+                        Low
+                    </span>
+                    <span>Due: Next week</span>
+                </div>
+                <div class="issue-labels">
+                    <span class="label enhancement">devops</span>
+                </div>
+            </div>
+            <div class="issue-status status-review">
+                <span class="status-dot"></span>
+                Review
+            </div>
+        </div>
+        
+        <div class="issue-item">
+            <input type="checkbox" class="issue-checkbox">
+            <div class="issue-content">
+                <div class="issue-title">Create responsive mobile interface</div>
+                <div class="issue-meta">
+                    <span class="issue-id">#004</span>
+                    <span class="priority priority-high">
+                        <span class="priority-dot"></span>
+                        High
+                    </span>
+                    <span>Due: This week</span>
+                </div>
+                <div class="issue-labels">
+                    <span class="label feature">mobile</span>
+                    <span class="label enhancement">ui</span>
+                </div>
+            </div>
+            <div class="issue-status status-todo">
+                <span class="status-dot"></span>
+                To Do
+            </div>
+        </div>
+        
+        <div class="issue-item">
+            <input type="checkbox" class="issue-checkbox">
+            <div class="issue-content">
+                <div class="issue-title">Implement offline sync capability</div>
+                <div class="issue-meta">
+                    <span class="issue-id">#005</span>
+                    <span class="priority priority-medium">
+                        <span class="priority-dot"></span>
+                        Medium
+                    </span>
+                    <span>Due: Next month</span>
+                </div>
+                <div class="issue-labels">
+                    <span class="label feature">sync</span>
+                    <span class="label enhancement">offline</span>
+                </div>
+            </div>
+            <div class="issue-status status-todo">
+                <span class="status-dot"></span>
+                To Do
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating Action Button -->
+    <button class="fab">
+        <span class="fab-icon">+</span>
+    </button>
+    
+    <!-- Bottom Tab Bar -->
+    <div class="tab-bar">
+        <a href="#" class="tab-item active">
+            <span class="tab-icon">📥</span>
+            <span class="tab-label">Inbox</span>
+            <span class="tab-badge">3</span>
+        </a>
+        <a href="#" class="tab-item">
+            <span class="tab-icon">📅</span>
+            <span class="tab-label">Today</span>
+        </a>
+        <a href="#" class="tab-item">
+            <span class="tab-icon">🚀</span>
+            <span class="tab-label">Projects</span>
+        </a>
+        <a href="#" class="tab-item">
+            <span class="tab-icon">🔍</span>
+            <span class="tab-label">Search</span>
+        </a>
+        <a href="#" class="tab-item">
+            <span class="tab-icon">⚙️</span>
+            <span class="tab-label">Settings</span>
+        </a>
+    </div>
+</body>
+</html>
