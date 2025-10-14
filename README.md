@@ -7,6 +7,7 @@
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green)](https://nodejs.org/)
 [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)](https://github.com/MickTheLinuxGeek/dits)
 [![Coverage](https://img.shields.io/badge/Coverage-85%25-green)](https://github.com/MickTheLinuxGeek/dits)
+![Static Badge](https://img.shields.io/badge/Project_Status-Phase_1_Development-blue)
 
 ## 🎯 Overview
 
