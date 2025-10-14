@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DITS - Kanban Board</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+            height: 100vh;
+            display: flex;
+        }
+        
+        /* Sidebar (same as main dashboard) */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo {
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo::before {
+            content: "◉";
+            color: #3b82f6;
+            margin-right: 8px;
+            font-size: 20px;
+        }
+        
+        .nav-section {
+            padding: 20px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .nav-title {
+            padding: 0 20px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 20px;
+            color: #475569;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.15s ease;
+            position: relative;
+        }
+        
+        .nav-item:hover {
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        
+        .nav-item.active {
+            background-color: #eff6ff;
+            color: #2563eb;
+            font-weight: 500;
+        }
+        
+        .nav-item.active::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background-color: #3b82f6;
+        }
+        
+        .nav-item .icon {
+            margin-right: 10px;
+            width: 16px;
+            font-size: 16px;
+        }
+        
+        .nav-item .count {
+            margin-left: auto;
+            background-color: #e2e8f0;
+            color: #64748b;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+        
+        .nav-item.active .count {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .view-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-right: 20px;
+        }
+        
+        .search-bar {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 8px 12px 8px 36px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: #f9fafb;
+            transition: all 0.15s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            background-color: white;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .view-toggle {
+            display: flex;
+            background-color: #f1f5f9;
+            border-radius: 6px;
+            padding: 2px;
+        }
+        
+        .view-btn {
+            padding: 6px 12px;
+            border: none;
+            background: none;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .view-btn.active {
+            background-color: white;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            font-weight: 500;
+        }
+        
+        .create-btn {
+            padding: 8px 16px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .create-btn:hover {
+            background-color: #2563eb;
+        }
+        
+        .kbd {
+            font-family: ui-monospace, monospace;
+            font-size: 11px;
+            padding: 2px 4px;
+            background-color: #f1f5f9;
+            border: 1px solid #d1d5db;
+            border-radius: 3px;
+            margin-left: 6px;
+        }
+        
+        /* Kanban Board */
+        .kanban-board {
+            flex: 1;
+            padding: 24px;
+            overflow-x: auto;
+        }
+        
+        .board-container {
+            display: flex;
+            gap: 16px;
+            min-width: max-content;
+            height: 100%;
+        }
+        
+        .board-column {
+            width: 320px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            max-height: calc(100vh - 200px);
+        }
+        
+        .column-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .column-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .status-backlog .status-dot { background-color: #9ca3af; }
+        .status-todo .status-dot { background-color: #64748b; }
+        .status-progress .status-dot { background-color: #3b82f6; }
+        .status-review .status-dot { background-color: #f59e0b; }
+        .status-done .status-dot { background-color: #10b981; }
+        
+        .column-count {
+            background-color: #f1f5f9;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 2px 8px;
+            border-radius: 12px;
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        .column-body {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        /* Issue Cards */
+        .issue-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            cursor: grab;
+            transition: all 0.15s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .issue-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .issue-card:active {
+            cursor: grabbing;
+        }
+        
+        .issue-card.dragging {
+            opacity: 0.5;
+            transform: rotate(3deg);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .issue-id {
+            font-family: ui-monospace, monospace;
+            font-size: 11px;
+            color: #64748b;
+            background-color: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .priority-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 8px;
+        }
+        
+        .priority-urgent { background-color: #ef4444; }
+        .priority-high { background-color: #f97316; }
+        .priority-medium { background-color: #eab308; }
+        .priority-low { background-color: #22c55e; }
+        .priority-none { background-color: #d1d5db; }
+        
+        .card-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+        
+        .card-labels {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+        
+        .label {
+            padding: 1px 6px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .label.bug { background-color: #fee2e2; color: #dc2626; }
+        .label.feature { background-color: #dbeafe; color: #2563eb; }
+        .label.enhancement { background-color: #ecfccb; color: #65a30d; }
+        .label.security { background-color: #fef3c7; color: #d97706; }
+        .label.devops { background-color: #f3e8ff; color: #9333ea; }
+        .label.database { background-color: #e0e7ff; color: #4338ca; }
+        .label.design { background-color: #fce7f3; color: #be185d; }
+        
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #64748b;
+        }
+        
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .due-date {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .due-date.overdue {
+            color: #dc2626;
+        }
+        
+        .due-date.today {
+            color: #f59e0b;
+        }
+        
+        .assignee-avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #3b82f6;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        
+        /* Drop Zones */
+        .column-body.drag-over {
+            background-color: #eff6ff;
+            border: 2px dashed #3b82f6;
+            border-radius: 8px;
+        }
+        
+        .drop-indicator {
+            height: 2px;
+            background-color: #3b82f6;
+            border-radius: 1px;
+            margin: 6px 0;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+        
+        .drop-indicator.active {
+            opacity: 1;
+        }
+        
+        /* Add Card Button */
+        .add-card-btn {
+            width: 100%;
+            padding: 12px;
+            border: 1px dashed #cbd5e1;
+            background: none;
+            border-radius: 8px;
+            color: #64748b;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .add-card-btn:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            background-color: #f8fafc;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            DITS
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-title">Smart Views</div>
+            <a href="#" class="nav-item">
+                <span class="icon">📥</span>
+                Inbox
+                <span class="count">3</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📅</span>
+                Today
+                <span class="count">5</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">⏰</span>
+                Upcoming
+                <span class="count">12</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">✅</span>
+                Logbook
+            </a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-title">Projects</div>
+            <a href="#" class="nav-item active">
+                <span class="icon">🚀</span>
+                DITS v1.0
+                <span class="count">18</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">🎨</span>
+                Portfolio Redesign
+                <span class="count">7</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📱</span>
+                Mobile App
+                <span class="count">23</span>
+            </a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-title">Areas</div>
+            <a href="#" class="nav-item">
+                <span class="icon">💼</span>
+                Work
+                <span class="count">31</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">🏠</span>
+                Personal
+                <span class="count">8</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📚</span>
+                Learning
+                <span class="count">14</span>
+            </a>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="header">
+            <div class="header-left">
+                <h1 class="view-title">DITS v1.0</h1>
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Search issues... (⌘K for command palette)">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="view-toggle">
+                    <button class="view-btn">List</button>
+                    <button class="view-btn active">Board</button>
+                    <button class="view-btn">Calendar</button>
+                </div>
+                <button class="create-btn">
+                    New Issue <span class="kbd">C</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="kanban-board">
+            <div class="board-container">
+                <!-- Backlog Column -->
+                <div class="board-column">
+                    <div class="column-header">
+                        <div class="column-title status-backlog">
+                            <span class="status-dot"></span>
+                            Backlog
+                        </div>
+                        <span class="column-count">2</span>
+                    </div>
+                    <div class="column-body">
+                        <div class="issue-card">
+                            <div class="card-header">
+                                <span class="issue-id">#004</span>
+                                <span class="priority-indicator priority-medium"></span>
+                            </div>
+                            <div class="card-title">Design API documentation structure</div>
+                            <div class="card-labels">
+                                <span class="label design">design</span>
+                                <span class="label feature">api</span>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-meta">
+                                    <span class="due-date">📅 Jan 25</span>
+                                </div>
+                                <div class="assignee-avatar">MB</div>
+                            </div>
+                        </div>
+                        
+                        <div class="issue-card">
+                            <div class="card-header">
+                                <span class="issue-id">#005</span>
+                                <span class="priority-indicator priority-low"></span>
+                            </div>
+                            <div class="card-title">Set up code formatting with Prettier</div>
+                            <div class="card-labels">
+                                <span class="label devops">devops</span>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-meta">
+                                    <span class="due-date">📅 Feb 1</span>
+                                </div>
+                                <div class="assignee-avatar">MB</div>
+                            </div>
+                        </div>
+                        
+                        <button class="add-card-btn">+ Add Issue</button>
+                    </div>
+                </div>
+                
+                <!-- To Do Column -->
+                <div class="board-column">
+                    <div class="column-header">
+                        <div class="column-title status-todo">
+                            <span class="status-dot"></span>
+                            To Do
+                        </div>
+                        <span class="column-count">3</span>
+                    </div>
+                    <div class="column-body">
+                        <div class="issue-card">
+                            <div class="card-header">
+                                <span class="issue-id">#002</span>
+                                <span class="priority-indicator priority-high"></span>
+                            </div>
+                            <div class="card-title">Design database schema for issue tracking</div>
+                            <div class="card-labels">
+                                <span class="label database">database</span>
+                                <span class="label feature">design</span>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-meta">
+                                    <span class="due-date today">📅 Today</span>
+                                </div>
+                                <div class="assignee-avatar">MB</div>
+                            </div>
+                        </div>
+                        
+                        <div class="issue-card">
+                            <div class="card-header">
+                                <span class="issue-id">#006</span>
+                                <span class="priority-indicator priority-medium"></span>
+                            </div>
+                            <div class="card-title">Implement issue CRUD operations</div>
+                            <div class="card-labels">
+                                <span class="label feature">backend</span>
+                                <span class="label database">crud</span>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-meta">
+                                    <span class="due-date">📅 Jan 22</span>
+                                </div>
+                                <div class="assignee-avatar">MB</div>
+                            </div>
+                        </div>
+                        
+                        <div class="issue-card">
+                            <div class="card-header">
+                                <span class="issue-id">#007</span>
+                                <span class="priority-indicator priority-low"></span>
+                            </div>
+                            <div class="card-title">Create responsive navigation menu</div>
+                            <div class="card-labels">
+                                <span class="label feature">frontend</span>
+                                <span class="label design">ui</span>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-meta">
+                                    <span class="due-date">📅 Jan 28</span>
+                                </div>
+                                <div class="assignee-avatar">MB</div>
+                            </div>
+                        </div>
+                        
+                        <button class="add-card-btn">+ Add Issue</button>
+                    </div>
+                </div>
+                
+                <!-- In Progress Column -->
+                <div class="board-column">
+                    <div class="column-header">
+                        <div class="column-title status-progress">
+                            <span class="status-dot"></span>
+                            In Progress
+                        </div>
+                        <span class="column-count">2</span>
+                    </div>
+                    <div class="column-body">
+                        <div class="issue-card">
+                            <div class="card-header">
+                                <span class="issue-id">#001</span>
+                                <span class="priority-indicator priority-urgent"></span>
+                            </div>
+                            <div class="card-title">Implement user authentication system</div>
+                            <div class="card-labels">
+                                <span class="label feature">feature</span>
+                                <span class="label security">security</span>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-meta">
+                                    <span class="due-date overdue">📅 Yesterday</span>
+                                </div>
+                                <div class="assignee-avatar">MB</div>
+                            </div>
+                        </div>
+                        
+                        <div class="issue-card">
+                            <div class="card-header">
+                                <span class="issue-id">#008</span>
+                                <span class="priority-indicator priority-medium"></span>
+                            </div>
+                            <div class="card-title">Set up project build system</div>
+                            <div class="card-labels">
+                                <span class="label devops">build</span>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-meta">
+                                    <span class="due-date">📅 Jan 23</span>
+                                </div>
+                                <div class="assignee-avatar">MB</div>
+                            </div>
+                        </div>
+                        
+                        <button class="add-card-btn">+ Add Issue</button>
+                    </div>
+                </div>
+                
+                <!-- Review Column -->
+                <div class="board-column">
+                    <div class="column-header">
+                        <div class="column-title status-review">
+                            <span class="status-dot"></span>
+                            Review
+                        </div>
+                        <span class="column-count">1</span>
+                    </div>
+                    <div class="column-body">
+                        <div class="issue-card">
+                            <div class="card-header">
+                                <span class="issue-id">#003</span>
+                                <span class="priority-indicator priority-low"></span>
+                            </div>
+                            <div class="card-title">Set up CI/CD pipeline with GitHub Actions</div>
+                            <div class="card-labels">
+                                <span class="label devops">devops</span>
+                                <span class="label enhancement">ci-cd</span>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-meta">
+                                    <span class="due-date">📅 Jan 30</span>
+                                </div>
+                                <div class="assignee-avatar">MB</div>
+                            </div>
+                        </div>
+                        
+                        <button class="add-card-btn">+ Add Issue</button>
+                    </div>
+                </div>
+                
+                <!-- Done Column -->
+                <div class="board-column">
+                    <div class="column-header">
+                        <div class="column-title status-done">
+                            <span class="status-dot"></span>
+                            Done
+                        </div>
+                        <span class="column-count">3</span>
+                    </div>
+                    <div class="column-body">
+                        <div class="issue-card">
+                            <div class="card-header">
+                                <span class="issue-id">#009</span>
+                                <span class="priority-indicator priority-medium"></span>
+                            </div>
+                            <div class="card-title">Initialize project repository</div>
+                            <div class="card-labels">
+                                <span class="label devops">setup</span>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-meta">
+                                    <span>✅ Completed</span>
+                                </div>
+                                <div class="assignee-avatar">MB</div>
+                            </div>
+                        </div>
+                        
+                        <div class="issue-card">
+                            <div class="card-header">
+                                <span class="issue-id">#010</span>
+                                <span class="priority-indicator priority-low"></span>
+                            </div>
+                            <div class="card-title">Create basic folder structure</div>
+                            <div class="card-labels">
+                                <span class="label devops">setup</span>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-meta">
+                                    <span>✅ Completed</span>
+                                </div>
+                                <div class="assignee-avatar">MB</div>
+                            </div>
+                        </div>
+                        
+                        <div class="issue-card">
+                            <div class="card-header">
+                                <span class="issue-id">#011</span>
+                                <span class="priority-indicator priority-high"></span>
+                            </div>
+                            <div class="card-title">Define project requirements</div>
+                            <div class="card-labels">
+                                <span class="label design">planning</span>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-meta">
+                                    <span>✅ Completed</span>
+                                </div>
+                                <div class="assignee-avatar">MB</div>
+                            </div>
+                        </div>
+                        
+                        <button class="add-card-btn">+ Add Issue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

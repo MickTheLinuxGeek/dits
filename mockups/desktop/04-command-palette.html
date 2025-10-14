@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DITS - Command Palette</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            height: 100vh;
+            display: flex;
+        }
+        
+        /* Background App (same as main dashboard) */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            filter: blur(2px);
+            opacity: 0.5;
+        }
+        
+        .logo {
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo::before {
+            content: "◉";
+            color: #3b82f6;
+            margin-right: 8px;
+            font-size: 20px;
+        }
+        
+        .nav-section {
+            padding: 20px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .nav-title {
+            padding: 0 20px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 20px;
+            color: #475569;
+            text-decoration: none;
+            font-size: 14px;
+            position: relative;
+        }
+        
+        .nav-item.active {
+            background-color: #eff6ff;
+            color: #2563eb;
+            font-weight: 500;
+        }
+        
+        .nav-item.active::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background-color: #3b82f6;
+        }
+        
+        .nav-item .icon {
+            margin-right: 10px;
+            width: 16px;
+            font-size: 16px;
+        }
+        
+        .nav-item .count {
+            margin-left: auto;
+            background-color: #e2e8f0;
+            color: #64748b;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+        
+        .nav-item.active .count {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            filter: blur(2px);
+            opacity: 0.5;
+        }
+        
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .view-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-right: 20px;
+        }
+        
+        .search-bar {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 8px 12px 8px 36px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: #f9fafb;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .view-toggle {
+            display: flex;
+            background-color: #f1f5f9;
+            border-radius: 6px;
+            padding: 2px;
+        }
+        
+        .view-btn {
+            padding: 6px 12px;
+            border: none;
+            background: none;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        
+        .view-btn.active {
+            background-color: white;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            font-weight: 500;
+        }
+        
+        .create-btn {
+            padding: 8px 16px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .issue-list {
+            flex: 1;
+            background: white;
+            padding: 20px;
+        }
+        
+        /* Command Palette Overlay */
+        .command-palette-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 120px;
+            z-index: 1000;
+        }
+        
+        .command-palette {
+            width: 90%;
+            max-width: 640px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            animation: slideIn 0.15s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        /* Search Input */
+        .palette-search {
+            padding: 20px 20px 16px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .palette-input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            color: #1e293b;
+            background: transparent;
+            padding: 8px 0;
+        }
+        
+        .palette-input::placeholder {
+            color: #9ca3af;
+        }
+        
+        /* Results */
+        .palette-results {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .results-section {
+            padding: 12px 0;
+        }
+        
+        .section-title {
+            padding: 8px 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 0.5px;
+            background-color: #f8fafc;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .result-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+        
+        .result-item:hover,
+        .result-item.selected {
+            background-color: #eff6ff;
+            color: #2563eb;
+        }
+        
+        .result-item.selected {
+            position: relative;
+        }
+        
+        .result-item.selected::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background-color: #3b82f6;
+        }
+        
+        .result-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            background-color: #f1f5f9;
+            font-size: 14px;
+        }
+        
+        .result-item.selected .result-icon {
+            background-color: #dbeafe;
+        }
+        
+        .result-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .result-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+            margin-bottom: 2px;
+            line-height: 1.4;
+        }
+        
+        .result-item.selected .result-title {
+            color: #2563eb;
+        }
+        
+        .result-description {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.3;
+        }
+        
+        .result-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+        
+        .result-shortcut {
+            display: flex;
+            gap: 2px;
+        }
+        
+        .kbd {
+            font-family: ui-monospace, monospace;
+            font-size: 10px;
+            padding: 2px 4px;
+            background-color: #f1f5f9;
+            border: 1px solid #d1d5db;
+            border-radius: 3px;
+            color: #64748b;
+        }
+        
+        .result-item.selected .kbd {
+            background-color: #dbeafe;
+            border-color: #bfdbfe;
+            color: #2563eb;
+        }
+        
+        .recent-badge {
+            font-size: 10px;
+            padding: 2px 6px;
+            background-color: #f1f5f9;
+            color: #64748b;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+        
+        .result-item.selected .recent-badge {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+        
+        /* Issue-specific styling */
+        .issue-id {
+            font-family: ui-monospace, monospace;
+            font-size: 10px;
+            padding: 2px 6px;
+            background-color: #e2e8f0;
+            color: #64748b;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .result-item.selected .issue-id {
+            background-color: #bfdbfe;
+            color: #2563eb;
+        }
+        
+        .priority-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-right: 4px;
+        }
+        
+        .priority-urgent .priority-dot { background-color: #ef4444; }
+        .priority-high .priority-dot { background-color: #f97316; }
+        .priority-medium .priority-dot { background-color: #eab308; }
+        .priority-low .priority-dot { background-color: #22c55e; }
+        
+        /* Footer */
+        .palette-footer {
+            padding: 12px 20px;
+            background-color: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #64748b;
+        }
+        
+        .footer-hint {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background App (blurred) -->
+    <div class="sidebar">
+        <div class="logo">
+            DITS
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-title">Smart Views</div>
+            <a href="#" class="nav-item active">
+                <span class="icon">📥</span>
+                Inbox
+                <span class="count">3</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📅</span>
+                Today
+                <span class="count">5</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">⏰</span>
+                Upcoming
+                <span class="count">12</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">✅</span>
+                Logbook
+            </a>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="header">
+            <div class="header-left">
+                <h1 class="view-title">Inbox</h1>
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Search issues...">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="view-toggle">
+                    <button class="view-btn active">List</button>
+                    <button class="view-btn">Board</button>
+                    <button class="view-btn">Calendar</button>
+                </div>
+                <button class="create-btn">New Issue</button>
+            </div>
+        </div>
+        
+        <div class="issue-list">
+            <p>Issue list content would be here...</p>
+        </div>
+    </div>
+    
+    <!-- Command Palette Overlay -->
+    <div class="command-palette-overlay">
+        <div class="command-palette">
+            <div class="palette-search">
+                <input type="text" class="palette-input" placeholder="Type a command or search..." value="auth" autofocus>
+            </div>
+            
+            <div class="palette-results">
+                <!-- Actions Section -->
+                <div class="results-section">
+                    <div class="section-title">Actions</div>
+                    
+                    <button class="result-item">
+                        <div class="result-icon">➕</div>
+                        <div class="result-content">
+                            <div class="result-title">Create New Issue</div>
+                            <div class="result-description">Add a new issue to the current project</div>
+                        </div>
+                        <div class="result-meta">
+                            <div class="result-shortcut">
+                                <span class="kbd">C</span>
+                            </div>
+                        </div>
+                    </button>
+                    
+                    <button class="result-item">
+                        <div class="result-icon">🚀</div>
+                        <div class="result-content">
+                            <div class="result-title">Create New Project</div>
+                            <div class="result-description">Start a new project workspace</div>
+                        </div>
+                        <div class="result-meta">
+                            <div class="result-shortcut">
+                                <span class="kbd">⌘</span>
+                                <span class="kbd">N</span>
+                            </div>
+                        </div>
+                    </button>
+                    
+                    <button class="result-item">
+                        <div class="result-icon">⚙️</div>
+                        <div class="result-content">
+                            <div class="result-title">Open Settings</div>
+                            <div class="result-description">Configure application preferences</div>
+                        </div>
+                        <div class="result-meta">
+                            <div class="result-shortcut">
+                                <span class="kbd">⌘</span>
+                                <span class="kbd">,</span>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                
+                <!-- Issues Section -->
+                <div class="results-section">
+                    <div class="section-title">Issues</div>
+                    
+                    <button class="result-item selected">
+                        <div class="result-icon">🔐</div>
+                        <div class="result-content">
+                            <div class="result-title">Implement user authentication system</div>
+                            <div class="result-description">JWT-based auth with OAuth2 for Git providers</div>
+                        </div>
+                        <div class="result-meta">
+                            <span class="issue-id">#001</span>
+                            <div class="priority-high">
+                                <span class="priority-dot"></span>
+                            </div>
+                        </div>
+                    </button>
+                    
+                    <button class="result-item">
+                        <div class="result-icon">🔑</div>
+                        <div class="result-content">
+                            <div class="result-title">Add multi-factor authentication</div>
+                            <div class="result-description">TOTP support for enhanced security</div>
+                        </div>
+                        <div class="result-meta">
+                            <span class="issue-id">#015</span>
+                            <div class="priority-medium">
+                                <span class="priority-dot"></span>
+                            </div>
+                        </div>
+                    </button>
+                    
+                    <button class="result-item">
+                        <div class="result-icon">👤</div>
+                        <div class="result-content">
+                            <div class="result-title">User authorization and permissions</div>
+                            <div class="result-description">Role-based access control system</div>
+                        </div>
+                        <div class="result-meta">
+                            <span class="issue-id">#027</span>
+                            <div class="priority-low">
+                                <span class="priority-dot"></span>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                
+                <!-- Navigation Section -->
+                <div class="results-section">
+                    <div class="section-title">Navigation</div>
+                    
+                    <button class="result-item">
+                        <div class="result-icon">📥</div>
+                        <div class="result-content">
+                            <div class="result-title">Go to Inbox</div>
+                            <div class="result-description">View all unprocessed issues</div>
+                        </div>
+                        <div class="result-meta">
+                            <div class="result-shortcut">
+                                <span class="kbd">G</span>
+                                <span class="kbd">I</span>
+                            </div>
+                        </div>
+                    </button>
+                    
+                    <button class="result-item">
+                        <div class="result-icon">📅</div>
+                        <div class="result-content">
+                            <div class="result-title">Go to Today</div>
+                            <div class="result-description">View today's scheduled issues</div>
+                        </div>
+                        <div class="result-meta">
+                            <div class="result-shortcut">
+                                <span class="kbd">G</span>
+                                <span class="kbd">T</span>
+                            </div>
+                        </div>
+                    </button>
+                    
+                    <button class="result-item">
+                        <div class="result-icon">🚀</div>
+                        <div class="result-content">
+                            <div class="result-title">DITS v1.0</div>
+                            <div class="result-description">Switch to project view</div>
+                        </div>
+                        <div class="result-meta">
+                            <span class="recent-badge">Recent</span>
+                        </div>
+                    </button>
+                </div>
+                
+                <!-- Recent Section -->
+                <div class="results-section">
+                    <div class="section-title">Recent</div>
+                    
+                    <button class="result-item">
+                        <div class="result-icon">📊</div>
+                        <div class="result-content">
+                            <div class="result-title">Design database schema</div>
+                            <div class="result-description">Recently updated 2 hours ago</div>
+                        </div>
+                        <div class="result-meta">
+                            <span class="issue-id">#002</span>
+                        </div>
+                    </button>
+                    
+                    <button class="result-item">
+                        <div class="result-icon">🔧</div>
+                        <div class="result-content">
+                            <div class="result-title">Set up CI/CD pipeline</div>
+                            <div class="result-description">Recently viewed</div>
+                        </div>
+                        <div class="result-meta">
+                            <span class="issue-id">#003</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="palette-footer">
+                <div class="footer-hint">
+                    <span class="kbd">↑</span>
+                    <span class="kbd">↓</span>
+                    <span>to navigate</span>
+                </div>
+                <div class="footer-actions">
+                    <div class="footer-hint">
+                        <span class="kbd">↵</span>
+                        <span>to select</span>
+                    </div>
+                    <div class="footer-hint">
+                        <span class="kbd">Esc</span>
+                        <span>to close</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

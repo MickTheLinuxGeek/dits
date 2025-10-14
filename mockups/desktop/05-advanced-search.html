@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DITS - Advanced Search</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            height: 100vh;
+            display: flex;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo {
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo::before {
+            content: "◉";
+            color: #3b82f6;
+            margin-right: 8px;
+            font-size: 20px;
+        }
+        
+        .nav-section {
+            padding: 20px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .nav-title {
+            padding: 0 20px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 20px;
+            color: #475569;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.15s ease;
+            position: relative;
+        }
+        
+        .nav-item:hover {
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        
+        .nav-item .icon {
+            margin-right: 10px;
+            width: 16px;
+            font-size: 16px;
+        }
+        
+        .nav-item .count {
+            margin-left: auto;
+            background-color: #e2e8f0;
+            color: #64748b;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+        
+        /* Saved Filters Section */
+        .filters-section {
+            padding: 20px 0 0;
+        }
+        
+        .filter-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 20px;
+            color: #475569;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.15s ease;
+            position: relative;
+            justify-content: space-between;
+        }
+        
+        .filter-item:hover {
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        
+        .filter-item.active {
+            background-color: #eff6ff;
+            color: #2563eb;
+            font-weight: 500;
+        }
+        
+        .filter-item.active::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background-color: #3b82f6;
+        }
+        
+        .filter-name {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .filter-name .icon {
+            margin-right: 10px;
+            width: 16px;
+            font-size: 16px;
+        }
+        
+        .filter-actions {
+            display: none;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .filter-item:hover .filter-actions {
+            display: flex;
+        }
+        
+        .filter-action {
+            width: 20px;
+            height: 20px;
+            border: none;
+            background: none;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .filter-action:hover {
+            background-color: #f1f5f9;
+            color: #374151;
+        }
+        
+        .add-filter-btn {
+            width: 100%;
+            padding: 8px 20px;
+            border: none;
+            background: none;
+            text-align: left;
+            color: #64748b;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .add-filter-btn:hover {
+            background-color: #f8fafc;
+            color: #374151;
+        }
+        
+        .add-filter-btn .icon {
+            margin-right: 10px;
+            width: 16px;
+            font-size: 16px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Advanced Search Header */
+        .search-header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 20px 24px;
+        }
+        
+        .search-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .search-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            background: white;
+            color: #374151;
+        }
+        
+        .btn:hover {
+            background-color: #f9fafb;
+        }
+        
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2563eb;
+            border-color: #2563eb;
+        }
+        
+        /* Search Builder */
+        .search-builder {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .search-input-container {
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #f9fafb;
+            transition: all 0.15s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            background-color: white;
+        }
+        
+        .search-input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 16px;
+        }
+        
+        .search-syntax-hint {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .syntax-example {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .syntax-code {
+            font-family: ui-monospace, monospace;
+            background-color: #f1f5f9;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        /* Filter Builder */
+        .filter-builder {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+        }
+        
+        .builder-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #374151;
+        }
+        
+        .filter-groups {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-select {
+            min-width: 120px;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .filter-input {
+            min-width: 150px;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .filter-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .remove-filter {
+            padding: 4px;
+            border: none;
+            background: none;
+            color: #64748b;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.15s ease;
+        }
+        
+        .remove-filter:hover {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .add-filter-group {
+            padding: 8px 12px;
+            border: 1px dashed #cbd5e1;
+            border-radius: 6px;
+            background: none;
+            color: #64748b;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .add-filter-group:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            background-color: #f8fafc;
+        }
+        
+        /* Results */
+        .results-section {
+            flex: 1;
+            background: white;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .results-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .results-count {
+            font-size: 14px;
+            color: #64748b;
+        }
+        
+        .results-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .sort-dropdown {
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+            cursor: pointer;
+        }
+        
+        /* Issue List */
+        .issue-list {
+            flex: 1;
+            overflow: auto;
+        }
+        
+        .issue-item {
+            padding: 16px 24px;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .issue-item:hover {
+            background-color: #f8fafc;
+        }
+        
+        .issue-checkbox {
+            margin-top: 2px;
+            width: 16px;
+            height: 16px;
+        }
+        
+        .issue-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .issue-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+        
+        .issue-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: #64748b;
+            flex-wrap: wrap;
+        }
+        
+        .issue-id {
+            font-family: ui-monospace, monospace;
+        }
+        
+        .issue-labels {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .label {
+            padding: 1px 6px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .label.bug { background-color: #fee2e2; color: #dc2626; }
+        .label.feature { background-color: #dbeafe; color: #2563eb; }
+        .label.enhancement { background-color: #ecfccb; color: #65a30d; }
+        
+        .priority {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .priority-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .priority-urgent .priority-dot { background-color: #ef4444; }
+        .priority-high .priority-dot { background-color: #f97316; }
+        .priority-medium .priority-dot { background-color: #eab308; }
+        .priority-low .priority-dot { background-color: #22c55e; }
+        
+        .issue-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: auto;
+            padding: 4px 8px;
+            background-color: #f1f5f9;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #64748b;
+        }
+        
+        .status-todo .status-dot { background-color: #64748b; }
+        .status-progress .status-dot { background-color: #3b82f6; }
+        .status-review .status-dot { background-color: #f59e0b; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            DITS
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-title">Smart Views</div>
+            <a href="#" class="nav-item">
+                <span class="icon">📥</span>
+                Inbox
+                <span class="count">3</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📅</span>
+                Today
+                <span class="count">5</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">⏰</span>
+                Upcoming
+                <span class="count">12</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">✅</span>
+                Logbook
+            </a>
+        </div>
+        
+        <div class="filters-section">
+            <div class="nav-title">Saved Filters</div>
+            
+            <a href="#" class="filter-item active">
+                <div class="filter-name">
+                    <span class="icon">🔍</span>
+                    High Priority Issues
+                </div>
+                <div class="filter-actions">
+                    <button class="filter-action">✏️</button>
+                    <button class="filter-action">🗑️</button>
+                </div>
+            </a>
+            
+            <a href="#" class="filter-item">
+                <div class="filter-name">
+                    <span class="icon">🐛</span>
+                    Bug Reports
+                </div>
+                <div class="filter-actions">
+                    <button class="filter-action">✏️</button>
+                    <button class="filter-action">🗑️</button>
+                </div>
+            </a>
+            
+            <a href="#" class="filter-item">
+                <div class="filter-name">
+                    <span class="icon">📅</span>
+                    Overdue Tasks
+                </div>
+                <div class="filter-actions">
+                    <button class="filter-action">✏️</button>
+                    <button class="filter-action">🗑️</button>
+                </div>
+            </a>
+            
+            <a href="#" class="filter-item">
+                <div class="filter-name">
+                    <span class="icon">🚀</span>
+                    DITS v1.0 Features
+                </div>
+                <div class="filter-actions">
+                    <button class="filter-action">✏️</button>
+                    <button class="filter-action">🗑️</button>
+                </div>
+            </a>
+            
+            <button class="add-filter-btn">
+                <span class="icon">➕</span>
+                Save Current Filter
+            </button>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-title">Projects</div>
+            <a href="#" class="nav-item">
+                <span class="icon">🚀</span>
+                DITS v1.0
+                <span class="count">18</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">🎨</span>
+                Portfolio Redesign
+                <span class="count">7</span>
+            </a>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="search-header">
+            <div class="search-title">
+                Advanced Search
+                <div class="search-actions">
+                    <button class="btn">Clear All</button>
+                    <button class="btn-primary btn">Save Filter</button>
+                </div>
+            </div>
+            
+            <div class="search-builder">
+                <div class="search-input-container">
+                    <span class="search-input-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="Search issues..." value="priority:high label:bug status:open">
+                    <div class="search-syntax-hint">
+                        <div class="syntax-example">
+                            <span>Try:</span>
+                            <code class="syntax-code">label:bug</code>
+                        </div>
+                        <div class="syntax-example">
+                            <code class="syntax-code">priority:high</code>
+                        </div>
+                        <div class="syntax-example">
+                            <code class="syntax-code">status:open</code>
+                        </div>
+                        <div class="syntax-example">
+                            <code class="syntax-code">assignee:@me</code>
+                        </div>
+                        <div class="syntax-example">
+                            <code class="syntax-code">due:today</code>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filter-builder">
+                    <div class="builder-title">Visual Filter Builder</div>
+                    <div class="filter-groups">
+                        <div class="filter-group">
+                            <select class="filter-select">
+                                <option>Priority</option>
+                                <option>Status</option>
+                                <option>Label</option>
+                                <option>Assignee</option>
+                                <option>Due Date</option>
+                                <option>Project</option>
+                            </select>
+                            <select class="filter-select">
+                                <option>is</option>
+                                <option>is not</option>
+                                <option>contains</option>
+                                <option>starts with</option>
+                                <option>greater than</option>
+                                <option>less than</option>
+                            </select>
+                            <select class="filter-select">
+                                <option>High</option>
+                                <option>Medium</option>
+                                <option>Low</option>
+                                <option>Urgent</option>
+                                <option>No Priority</option>
+                            </select>
+                            <button class="remove-filter">🗑️</button>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <select class="filter-select">
+                                <option>Label</option>
+                                <option>Priority</option>
+                                <option>Status</option>
+                                <option>Assignee</option>
+                                <option>Due Date</option>
+                                <option>Project</option>
+                            </select>
+                            <select class="filter-select">
+                                <option>contains</option>
+                                <option>is</option>
+                                <option>is not</option>
+                                <option>starts with</option>
+                            </select>
+                            <input type="text" class="filter-input" placeholder="bug" value="bug">
+                            <button class="remove-filter">🗑️</button>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <select class="filter-select">
+                                <option>Status</option>
+                                <option>Priority</option>
+                                <option>Label</option>
+                                <option>Assignee</option>
+                                <option>Due Date</option>
+                                <option>Project</option>
+                            </select>
+                            <select class="filter-select">
+                                <option>is not</option>
+                                <option>is</option>
+                                <option>contains</option>
+                                <option>starts with</option>
+                            </select>
+                            <select class="filter-select">
+                                <option>Done</option>
+                                <option>Canceled</option>
+                                <option>To Do</option>
+                                <option>In Progress</option>
+                                <option>Review</option>
+                            </select>
+                            <button class="remove-filter">🗑️</button>
+                        </div>
+                        
+                        <button class="add-filter-group">+ Add Filter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="results-section">
+            <div class="results-header">
+                <div class="results-count">
+                    <strong>7 issues</strong> match your filters
+                </div>
+                <div class="results-actions">
+                    <select class="sort-dropdown">
+                        <option>Sort by Updated</option>
+                        <option>Sort by Created</option>
+                        <option>Sort by Priority</option>
+                        <option>Sort by Due Date</option>
+                        <option>Sort by Title</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="issue-list">
+                <div class="issue-item">
+                    <input type="checkbox" class="issue-checkbox">
+                    <div class="issue-content">
+                        <div class="issue-title">Authentication system security vulnerability</div>
+                        <div class="issue-meta">
+                            <span class="issue-id">#001</span>
+                            <div class="issue-labels">
+                                <span class="label bug">bug</span>
+                                <span class="label feature">security</span>
+                            </div>
+                            <span class="priority priority-high">
+                                <span class="priority-dot"></span>
+                                High Priority
+                            </span>
+                            <span>Due: Today</span>
+                        </div>
+                    </div>
+                    <div class="issue-status status-progress">
+                        <span class="status-dot"></span>
+                        In Progress
+                    </div>
+                </div>
+                
+                <div class="issue-item">
+                    <input type="checkbox" class="issue-checkbox">
+                    <div class="issue-content">
+                        <div class="issue-title">Database connection timeout bug</div>
+                        <div class="issue-meta">
+                            <span class="issue-id">#012</span>
+                            <div class="issue-labels">
+                                <span class="label bug">bug</span>
+                                <span class="label feature">database</span>
+                            </div>
+                            <span class="priority priority-high">
+                                <span class="priority-dot"></span>
+                                High Priority
+                            </span>
+                            <span>Due: Tomorrow</span>
+                        </div>
+                    </div>
+                    <div class="issue-status status-todo">
+                        <span class="status-dot"></span>
+                        To Do
+                    </div>
+                </div>
+                
+                <div class="issue-item">
+                    <input type="checkbox" class="issue-checkbox">
+                    <div class="issue-content">
+                        <div class="issue-title">Memory leak in issue renderer</div>
+                        <div class="issue-meta">
+                            <span class="issue-id">#018</span>
+                            <div class="issue-labels">
+                                <span class="label bug">bug</span>
+                                <span class="label enhancement">performance</span>
+                            </div>
+                            <span class="priority priority-high">
+                                <span class="priority-dot"></span>
+                                High Priority
+                            </span>
+                            <span>Due: This week</span>
+                        </div>
+                    </div>
+                    <div class="issue-status status-review">
+                        <span class="status-dot"></span>
+                        Review
+                    </div>
+                </div>
+                
+                <div class="issue-item">
+                    <input type="checkbox" class="issue-checkbox">
+                    <div class="issue-content">
+                        <div class="issue-title">API endpoint returning 500 errors</div>
+                        <div class="issue-meta">
+                            <span class="issue-id">#025</span>
+                            <div class="issue-labels">
+                                <span class="label bug">bug</span>
+                                <span class="label feature">api</span>
+                            </div>
+                            <span class="priority priority-high">
+                                <span class="priority-dot"></span>
+                                High Priority
+                            </span>
+                            <span>Due: Next week</span>
+                        </div>
+                    </div>
+                    <div class="issue-status status-todo">
+                        <span class="status-dot"></span>
+                        To Do
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
