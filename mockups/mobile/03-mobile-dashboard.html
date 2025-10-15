@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DITS Mobile - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            max-width: 390px;
+            margin: 0 auto;
+            border: 1px solid #e2e8f0;
+        }
+        
+        /* Status Bar */
+        .status-bar {
+            height: 44px;
+            background: #000;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .status-left {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .status-right {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 16px 16px 12px;
+        }
+        
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .greeting {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .greeting-time {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 2px;
+        }
+        
+        .greeting-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.15s ease;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .icon-btn:active {
+            background-color: #f1f5f9;
+        }
+        
+        /* Date Selector */
+        .date-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        
+        .date-nav {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #f8fafc;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-size: 14px;
+        }
+        
+        .date-nav:active {
+            background-color: #e2e8f0;
+        }
+        
+        .date-display {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .date-day {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .date-full {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Stats Cards */
+        .stats-section {
+            padding: 16px;
+            background: white;
+            border-bottom: 8px solid #f8fafc;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .stat-card:active {
+            transform: scale(0.98);
+        }
+        
+        .stat-card.blue {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .stat-card.orange {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .stat-card.green {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .stat-card.purple {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            line-height: 1;
+        }
+        
+        .stat-change {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 6px;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            padding: 16px;
+            background: white;
+            border-bottom: 8px solid #f8fafc;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .section-action {
+            font-size: 13px;
+            color: #3b82f6;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        
+        .action-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 8px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            background: #f8fafc;
+        }
+        
+        .action-item:active {
+            background-color: #e2e8f0;
+            transform: scale(0.95);
+        }
+        
+        .action-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+        
+        .action-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: #475569;
+            text-align: center;
+        }
+        
+        /* Smart Views */
+        .smart-views {
+            padding: 16px;
+            background: white;
+            border-bottom: 8px solid #f8fafc;
+        }
+        
+        .view-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            background: white;
+        }
+        
+        .view-card:last-child {
+            margin-bottom: 0;
+        }
+        
+        .view-card:active {
+            background-color: #f8fafc;
+            border-color: #3b82f6;
+        }
+        
+        .view-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .view-icon.inbox { background-color: #dbeafe; }
+        .view-icon.today { background-color: #fef3c7; }
+        .view-icon.upcoming { background-color: #ede9fe; }
+        .view-icon.logbook { background-color: #d1fae5; }
+        
+        .view-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .view-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 2px;
+        }
+        
+        .view-subtitle {
+            font-size: 12px;
+            color: #64748b;
+        }
+        
+        .view-count {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background-color: #3b82f6;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        /* Recent Activity */
+        .recent-activity {
+            padding: 16px;
+            background: white;
+            border-bottom: 8px solid #f8fafc;
+        }
+        
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon-wrapper {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        .activity-icon-wrapper.completed { background-color: #d1fae5; }
+        .activity-icon-wrapper.created { background-color: #dbeafe; }
+        .activity-icon-wrapper.updated { background-color: #fef3c7; }
+        
+        .activity-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .activity-text {
+            font-size: 14px;
+            color: #374151;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+        
+        .activity-text strong {
+            color: #1e293b;
+            font-weight: 600;
+        }
+        
+        .activity-time {
+            font-size: 12px;
+            color: #64748b;
+        }
+        
+        /* Projects Overview */
+        .projects-section {
+            padding: 16px;
+            background: white;
+            border-bottom: 8px solid #f8fafc;
+        }
+        
+        .project-card {
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .project-card:last-child {
+            margin-bottom: 0;
+        }
+        
+        .project-card:active {
+            background-color: #f8fafc;
+            border-color: #3b82f6;
+        }
+        
+        .project-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .project-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .project-count {
+            font-size: 12px;
+            color: #64748b;
+            background-color: #f1f5f9;
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: #f1f5f9;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        
+        .project-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #64748b;
+        }
+        
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background-color: #3b82f6;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            z-index: 100;
+        }
+        
+        .fab:active {
+            transform: scale(0.95);
+        }
+        
+        .fab-icon {
+            color: white;
+            font-size: 24px;
+            font-weight: 300;
+        }
+        
+        /* Bottom Tab Bar */
+        .tab-bar {
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            padding: 8px 0 20px;
+        }
+        
+        .tab-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            color: #64748b;
+            position: relative;
+        }
+        
+        .tab-item.active {
+            color: #3b82f6;
+        }
+        
+        .tab-item:active {
+            background-color: #f8fafc;
+        }
+        
+        .tab-icon {
+            font-size: 20px;
+        }
+        
+        .tab-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+        
+        .tab-badge {
+            position: absolute;
+            top: 4px;
+            right: 50%;
+            transform: translateX(12px);
+            width: 16px;
+            height: 16px;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 50%;
+            font-size: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <div class="status-left">
+            <span>9:41</span>
+        </div>
+        <div class="status-right">
+            <span>📶</span>
+            <span>📶</span>
+            <span>🔋</span>
+        </div>
+    </div>
+    
+    <!-- Header -->
+    <div class="header">
+        <div class="header-top">
+            <div class="greeting">
+                <div class="greeting-time">Good morning</div>
+                <div class="greeting-name">Developer</div>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn">🔔</button>
+                <button class="icon-btn">⚙️</button>
+            </div>
+        </div>
+        
+        <!-- Date Selector -->
+        <div class="date-selector">
+            <button class="date-nav">←</button>
+            <div class="date-display">
+                <div class="date-day">Today</div>
+                <div class="date-full">Monday, Oct 14</div>
+            </div>
+            <button class="date-nav">→</button>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Stats Cards -->
+        <div class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card blue">
+                    <div class="stat-label">ACTIVE</div>
+                    <div class="stat-value">12</div>
+                    <div class="stat-change">↑ 2 from yesterday</div>
+                </div>
+                <div class="stat-card orange">
+                    <div class="stat-label">DUE TODAY</div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-change">2 high priority</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-label">COMPLETED</div>
+                    <div class="stat-value">48</div>
+                    <div class="stat-change">This week</div>
+                </div>
+                <div class="stat-card purple">
+                    <div class="stat-label">STREAK</div>
+                    <div class="stat-value">7</div>
+                    <div class="stat-change">Days in a row 🔥</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="section-header">
+                <div class="section-title">Quick Actions</div>
+            </div>
+            <div class="actions-grid">
+                <div class="action-item">
+                    <div class="action-icon">➕</div>
+                    <div class="action-label">New Issue</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-icon">🔍</div>
+                    <div class="action-label">Search</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-icon">🔗</div>
+                    <div class="action-label">From Git</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-icon">📋</div>
+                    <div class="action-label">Template</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Smart Views -->
+        <div class="smart-views">
+            <div class="section-header">
+                <div class="section-title">Smart Views</div>
+                <div class="section-action">See All</div>
+            </div>
+            
+            <div class="view-card">
+                <div class="view-icon inbox">📥</div>
+                <div class="view-content">
+                    <div class="view-title">Inbox</div>
+                    <div class="view-subtitle">Uncategorized issues</div>
+                </div>
+                <div class="view-count">5</div>
+            </div>
+            
+            <div class="view-card">
+                <div class="view-icon today">📅</div>
+                <div class="view-content">
+                    <div class="view-title">Today</div>
+                    <div class="view-subtitle">Due or scheduled for today</div>
+                </div>
+                <div class="view-count">3</div>
+            </div>
+            
+            <div class="view-card">
+                <div class="view-icon upcoming">🗓️</div>
+                <div class="view-content">
+                    <div class="view-title">Upcoming</div>
+                    <div class="view-subtitle">Next 7 days</div>
+                </div>
+                <div class="view-count">8</div>
+            </div>
+            
+            <div class="view-card">
+                <div class="view-icon logbook">✅</div>
+                <div class="view-content">
+                    <div class="view-title">Logbook</div>
+                    <div class="view-subtitle">Completed this week</div>
+                </div>
+                <div class="view-count">12</div>
+            </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <div class="recent-activity">
+            <div class="section-header">
+                <div class="section-title">Recent Activity</div>
+                <div class="section-action">View All</div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon-wrapper completed">✓</div>
+                <div class="activity-content">
+                    <div class="activity-text">Completed <strong>Set up CI/CD pipeline</strong></div>
+                    <div class="activity-time">2 hours ago</div>
+                </div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon-wrapper created">+</div>
+                <div class="activity-content">
+                    <div class="activity-text">Created <strong>Implement user authentication</strong></div>
+                    <div class="activity-time">4 hours ago</div>
+                </div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon-wrapper updated">✎</div>
+                <div class="activity-content">
+                    <div class="activity-text">Updated <strong>Database schema design</strong></div>
+                    <div class="activity-time">Yesterday</div>
+                </div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon-wrapper completed">✓</div>
+                <div class="activity-content">
+                    <div class="activity-text">Completed <strong>Mobile mockups</strong></div>
+                    <div class="activity-time">Yesterday</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Projects Overview -->
+        <div class="projects-section">
+            <div class="section-header">
+                <div class="section-title">Active Projects</div>
+                <div class="section-action">View All</div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-name">DITS v1.0</div>
+                    <div class="project-count">8 issues</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%"></div>
+                </div>
+                <div class="project-meta">
+                    <span>65% complete</span>
+                    <span>Due in 12 days</span>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-name">Portfolio Redesign</div>
+                    <div class="project-count">5 issues</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 40%"></div>
+                </div>
+                <div class="project-meta">
+                    <span>40% complete</span>
+                    <span>Due in 18 days</span>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-name">Mobile App</div>
+                    <div class="project-count">12 issues</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 25%"></div>
+                </div>
+                <div class="project-meta">
+                    <span>25% complete</span>
+                    <span>Due in 25 days</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating Action Button -->
+    <button class="fab">
+        <span class="fab-icon">+</span>
+    </button>
+    
+    <!-- Bottom Tab Bar -->
+    <div class="tab-bar">
+        <a href="#" class="tab-item active">
+            <span class="tab-icon">🏠</span>
+            <span class="tab-label">Home</span>
+        </a>
+        <a href="#" class="tab-item">
+            <span class="tab-icon">📥</span>
+            <span class="tab-label">Inbox</span>
+            <span class="tab-badge">3</span>
+        </a>
+        <a href="#" class="tab-item">
+            <span class="tab-icon">🚀</span>
+            <span class="tab-label">Projects</span>
+        </a>
+        <a href="#" class="tab-item">
+            <span class="tab-icon">🔍</span>
+            <span class="tab-label">Search</span>
+        </a>
+        <a href="#" class="tab-item">
+            <span class="tab-icon">⚙️</span>
+            <span class="tab-label">Settings</span>
+        </a>
+    </div>
+</body>
+</html>
