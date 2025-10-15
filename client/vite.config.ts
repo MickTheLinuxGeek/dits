@@ -1,11 +1,16 @@
+/// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
 // https://vite.dev/config/
+import { fileURLToPath } from 'node:url';
+import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
+const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
+
+// More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   plugins: [react()],
-
   // Path resolution for cleaner imports
   resolve: {
     alias: {
@@ -16,9 +21,20 @@ export default defineConfig({
       '@hooks': path.resolve(__dirname, './src/hooks'),
       '@utils': path.resolve(__dirname, './src/utils'),
       '@types': path.resolve(__dirname, './src/types'),
-    },
+      '@styles': path.resolve(__dirname, './src/styles')
+    }
   },
-
+  // CSS Modules configuration
+  css: {
+    modules: {
+      // Generate scoped class names in development for debugging
+      generateScopedName: '[name]__[local]___[hash:base64:5]',
+      // Enable camelCase for CSS class names
+      localsConvention: 'camelCaseOnly'
+    },
+    // PostCSS configuration (for potential future use)
+    postcss: {}
+  },
   // Development server configuration
   server: {
     port: 5173,
@@ -29,16 +45,15 @@ export default defineConfig({
       '/api': {
         target: process.env.VITE_API_URL || 'http://localhost:3000',
         changeOrigin: true,
-        secure: false,
+        secure: false
       },
       '/graphql': {
         target: process.env.VITE_API_URL || 'http://localhost:3000',
         changeOrigin: true,
-        secure: false,
-      },
-    },
+        secure: false
+      }
+    }
   },
-
   // Build optimization configuration
   build: {
     outDir: 'dist',
@@ -56,17 +71,39 @@ export default defineConfig({
           // Data fetching libraries
           'query-vendor': ['@tanstack/react-query'],
           // State management
-          'state-vendor': ['zustand'],
-        },
-      },
+          'state-vendor': ['zustand']
+        }
+      }
     },
     // Enable minification (terser options are applied by default)
-    minify: 'terser',
+    minify: 'terser'
   },
-
   // Preview server configuration
   preview: {
     port: 4173,
-    strictPort: true,
+    strictPort: true
   },
+  test: {
+    projects: [{
+      extends: true,
+      plugins: [
+      // The plugin will run tests for the stories defined in your Storybook config
+      // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      storybookTest({
+        configDir: path.join(dirname, '.storybook')
+      })],
+      test: {
+        name: 'storybook',
+        browser: {
+          enabled: true,
+          headless: true,
+          provider: 'playwright',
+          instances: [{
+            browser: 'chromium'
+          }]
+        },
+        setupFiles: ['.storybook/vitest.setup.ts']
+      }
+    }]
+  }
 });
