@@ -162,5 +162,4 @@ jobs:
         continue-on-error: true
 
       - name: Check for known vulnerabilities
-        run: npx audit-ci --moderate
-        continue-on-error: true
+        run: npx audit-ci --config .audit-ci.json
