@@ -43,19 +43,19 @@ The project uses `audit-ci` to check for known vulnerabilities in dependencies. 
 # Check all dependencies (including dev)
 npm audit
 
-# Check production dependencies only
-npx audit-ci --config .audit-ci.json
+# Check production dependencies only (recommended)
+npm audit --omit=dev --audit-level=moderate
 
-# Check production dependencies (CI simulation)
-npm ci --production
-npm audit --production
+# Check with audit-ci (CI simulation)
+npx audit-ci --config .audit-ci.json
 ```
 
 ### CI/CD
 The GitHub Actions workflow runs security audits on every push and PR:
-- Checks production dependencies only
-- Fails on moderate severity or higher (in production deps)
-- Allows dev dependency vulnerabilities if they don't affect production
+- **npm audit**: Checks production dependencies only (`--omit=dev`)
+- **audit-ci**: Uses `.audit-ci.json` config with `skip-dev: true`
+- Fails on moderate severity or higher in production dependencies
+- Dev dependency vulnerabilities are excluded from CI checks
 
 ## Best Practices
 
