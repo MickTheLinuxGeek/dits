@@ -9,6 +9,21 @@
 [![Coverage](https://img.shields.io/badge/Coverage-85%25-green)](https://github.com/MickTheLinuxGeek/dits)
 ![Static Badge](https://img.shields.io/badge/Project_Status-Phase_1_Development-blue)
 
+## Table of Contents
+- [Overview](https://github.com/MickTheLinuxGeek/dits#-overview)
+- [Key Features](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-key-features)
+- [Quick Start](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-quick-start)
+- [Development](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-development)
+- [Architecture](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#%EF%B8%8F-architecture)
+- [Documentation](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-documentation)
+- [Testing](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-testing)
+- [Roadmap](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#%EF%B8%8F-roadmap)
+- [Contributing](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-contributing)
+- [Links](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-links)
+- [Philosophy](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-philosophy)
+- [Security & Privacy](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-security--privacy)
+- [License](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-license)
+
 ## 🎯 Overview
 
 DITS eliminates the "collaboration tax" imposed by team-oriented tools while providing deep integration with developer ecosystems. Built for developers who need a powerful, fast, and distraction-free issue tracking system that actually understands their workflow.
