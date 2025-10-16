@@ -11,12 +11,12 @@
 
 ## Table of Contents
 - [Overview](https://github.com/MickTheLinuxGeek/dits#-overview)
-  - [Core Principles](https://github.com/MickTheLinuxGeek/dits/blob/main/README.md#core-principles)
+  - [Core Principles](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#core-principles)
 - [Key Features](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-key-features)
-  - [Issue Management](https://github.com/MickTheLinuxGeek/dits/blob/main/README.md#issue-management)
-  - [Smart Views](https://github.com/MickTheLinuxGeek/dits/blob/main/README.md#smart-views)
-  - [Git Integration](https://github.com/MickTheLinuxGeek/dits/blob/main/README.md#git-integration)
-  - [Developer Experience](https://github.com/MickTheLinuxGeek/dits/blob/main/README.md#developer-experience)
+  - [Issue Management](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#issue-management)
+  - [Smart Views](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#smart-views)
+  - [Git Integration](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#git-integration)
+  - [Developer Experience](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#developer-experience)
 - [Quick Start](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-quick-start)
 - [Development](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-development)
 - [Architecture](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#%EF%B8%8F-architecture)
