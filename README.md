@@ -25,7 +25,7 @@
   - [Available Scripts](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#available-scripts)
   - [Git Hooks](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#git-hooks)
 - [Architecture](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#%EF%B8%8F-architecture)
-  - [Technology Stack](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#technonogy-stack)
+  - [Technology Stack](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#technology-stack)
   - [Project Structure](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#project-structure)
   - [Core Data Models](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#core-data-models)
   - [API Architecture](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#api-architecture)
