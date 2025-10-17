@@ -8,11 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.applyGraphQLMiddleware = exports.createGraphQLContext = exports.createApolloServer = void 0;
 const server_1 = require("@apollo/server");
 const express4_1 = require("@apollo/server/express4");
-const express_1 = require("express");
+const default_1 = require("@apollo/server/plugin/landingPage/default");
+const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
 const typeDefs_1 = require("./typeDefs");
 const resolvers_1 = require("./resolvers");
 const env_1 = require("../config/env");
@@ -24,6 +29,9 @@ const createApolloServer = () => {
         typeDefs: typeDefs_1.typeDefs,
         resolvers: resolvers_1.resolvers,
         introspection: env_1.config.app.env !== 'production',
+        plugins: env_1.config.app.env === 'development'
+            ? [(0, default_1.ApolloServerPluginLandingPageLocalDefault)()]
+            : [],
         formatError: (formattedError, error) => {
             var _a;
             // Log errors in development
@@ -65,7 +73,17 @@ const applyGraphQLMiddleware = (app) => __awaiter(void 0, void 0, void 0, functi
     // Start Apollo Server
     yield apolloServer.start();
     // Apply GraphQL middleware to /graphql endpoint
-    app.use('/graphql', (0, express_1.json)(), (0, express4_1.expressMiddleware)(apolloServer, {
+    app.use('/graphql', (0, cors_1.default)({
+        origin: env_1.config.cors.origin,
+        credentials: env_1.config.cors.credentials,
+    }), express_1.default.json(), 
+    // Initialize req.body for GET requests (needed by Apollo landing page)
+    (req, _res, next) => {
+        if (!req.body) {
+            req.body = {};
+        }
+        next();
+    }, (0, express4_1.expressMiddleware)(apolloServer, {
         context: exports.createGraphQLContext,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }));

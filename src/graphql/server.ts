@@ -1,6 +1,9 @@
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
-import { Application, json } from 'express';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { Application } from 'express';
+import express from 'express';
+import cors from 'cors';
 import { typeDefs } from './typeDefs';
 import { resolvers, GraphQLContext } from './resolvers';
 import { config } from '../config/env';
@@ -13,6 +16,10 @@ export const createApolloServer = () => {
     typeDefs,
     resolvers,
     introspection: config.app.env !== 'production',
+    plugins:
+      config.app.env === 'development'
+        ? [ApolloServerPluginLandingPageLocalDefault()]
+        : [],
     formatError: (formattedError, error) => {
       // Log errors in development
       if (config.app.env === 'development') {
@@ -41,9 +48,8 @@ export const createGraphQLContext = async ({
   req,
   res,
 }: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   req: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   res: any;
 }): Promise<GraphQLContext> => {
   // TODO: Extract user from JWT token in Authorization header
@@ -67,10 +73,20 @@ export const applyGraphQLMiddleware = async (app: Application) => {
   // Apply GraphQL middleware to /graphql endpoint
   app.use(
     '/graphql',
-    json(),
+    cors<cors.CorsRequest>({
+      origin: config.cors.origin,
+      credentials: config.cors.credentials,
+    }),
+    express.json(),
+    // Initialize req.body for GET requests (needed by Apollo landing page)
+    (req, _res, next) => {
+      if (!req.body) {
+        req.body = {};
+      }
+      next();
+    },
     expressMiddleware(apolloServer, {
       context: createGraphQLContext,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }) as any, // Type workaround for express version mismatch
   );
 

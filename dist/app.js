@@ -32,14 +32,16 @@ const createApp = () => __awaiter(void 0, void 0, void 0, function* () {
     const app = (0, express_1.default)();
     // Security middleware - must be first
     app.use((0, helmet_1.default)({
-        contentSecurityPolicy: {
-            directives: {
-                defaultSrc: ["'self'"],
-                styleSrc: ["'self'", "'unsafe-inline'"],
-                scriptSrc: ["'self'"],
-                imgSrc: ["'self'", 'data:', 'https:'],
-            },
-        },
+        contentSecurityPolicy: env_1.config.app.env === 'production'
+            ? {
+                directives: {
+                    defaultSrc: ["'self'"],
+                    styleSrc: ["'self'", "'unsafe-inline'"],
+                    scriptSrc: ["'self'"],
+                    imgSrc: ["'self'", 'data:', 'https:'],
+                },
+            }
+            : false, // Disable CSP in development for GraphQL Playground
         crossOriginEmbedderPolicy: false,
     }));
     // CORS configuration

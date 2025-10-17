@@ -20,14 +20,17 @@ export const createApp = async (): Promise<Application> => {
   // Security middleware - must be first
   app.use(
     helmet({
-      contentSecurityPolicy: {
-        directives: {
-          defaultSrc: ["'self'"],
-          styleSrc: ["'self'", "'unsafe-inline'"],
-          scriptSrc: ["'self'"],
-          imgSrc: ["'self'", 'data:', 'https:'],
-        },
-      },
+      contentSecurityPolicy:
+        config.app.env === 'production'
+          ? {
+              directives: {
+                defaultSrc: ["'self'"],
+                styleSrc: ["'self'", "'unsafe-inline'"],
+                scriptSrc: ["'self'"],
+                imgSrc: ["'self'", 'data:', 'https:'],
+              },
+            }
+          : false, // Disable CSP in development for GraphQL Playground
       crossOriginEmbedderPolicy: false,
     }),
   );
