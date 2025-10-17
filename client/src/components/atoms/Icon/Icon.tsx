@@ -1,5 +1,5 @@
 import React from 'react';
-import { icons, LucideIcon } from 'lucide-react';
+import { icons, type LucideIcon } from 'lucide-react';
 import styles from './Icon.module.css';
 
 export type IconName = keyof typeof icons;
@@ -23,7 +23,7 @@ export interface IconProps {
 
 /**
  * Icon component using Lucide React icons
- * 
+ *
  * @example
  * ```tsx
  * <Icon name="Check" size={24} />
@@ -47,11 +47,7 @@ export const Icon: React.FC<IconProps> = ({
     return null;
   }
 
-  const iconClasses = [
-    styles.icon,
-    onClick && styles.clickable,
-    className,
-  ]
+  const iconClasses = [styles.icon, onClick && styles.clickable, className]
     .filter(Boolean)
     .join(' ');
 
