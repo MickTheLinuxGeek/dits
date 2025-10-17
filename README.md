@@ -255,6 +255,7 @@ For coverage reports:
 ```bash
 npm run test:coverage
 ```
+**SEE WIKI FOR MORE TESTING INFORMATION**
 
 ## 🗺️ Roadmap
 
