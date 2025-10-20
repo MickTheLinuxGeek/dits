@@ -9,7 +9,7 @@ export class AppError extends Error {
     public statusCode: number,
     public message: string,
     public isOperational = true,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     public errors?: any[],
   ) {
     super(message);
@@ -24,7 +24,7 @@ export class AppError extends Error {
 interface ErrorResponse {
   status: 'error' | 'fail';
   message: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   errors?: any[];
   stack?: string;
 }
@@ -36,14 +36,14 @@ export const errorHandler = (
   err: Error | AppError,
   req: Request,
   res: Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   _next: NextFunction,
 ): void => {
   // Default to 500 server error
   let statusCode = 500;
   let message = 'Internal Server Error';
   let isOperational = false;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   let errors: any[] | undefined;
 
   // Handle AppError instances

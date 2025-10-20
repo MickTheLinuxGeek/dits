@@ -6,11 +6,10 @@ import { config } from '../config/env';
  * GraphQL context type
  */
 export interface GraphQLContext {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   user?: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   req: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   res: any;
 }
 
@@ -20,14 +19,14 @@ export interface GraphQLContext {
 const dateTimeScalar = new GraphQLScalarType({
   name: 'DateTime',
   description: 'Date and time as ISO 8601 string',
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   serialize(value: any) {
     if (value instanceof Date) {
       return value.toISOString();
     }
     return value;
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   parseValue(value: any) {
     if (typeof value === 'string') {
       return new Date(value);
@@ -48,11 +47,11 @@ const dateTimeScalar = new GraphQLScalarType({
 const jsonScalar = new GraphQLScalarType({
   name: 'JSON',
   description: 'JSON object',
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   serialize(value: any) {
     return value;
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   parseValue(value: any) {
     return value;
   },
@@ -77,7 +76,7 @@ export const resolvers = {
     /**
      * Get current authenticated user
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     me: async (_parent: any, _args: any, context: GraphQLContext) => {
       if (!context.user) {
         throw new GraphQLError('Not authenticated', {
@@ -105,7 +104,6 @@ export const resolvers = {
      */
 
     register: async (
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
       _parent: any,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       args: {
@@ -115,7 +113,7 @@ export const resolvers = {
         firstName?: string;
         lastName?: string;
       },
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
       _context: GraphQLContext,
     ) => {
       // TODO: Implement user registration logic
@@ -129,11 +127,10 @@ export const resolvers = {
      */
 
     login: async (
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
       _parent: any,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       args: { email: string; password: string },
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
       _context: GraphQLContext,
     ) => {
       // TODO: Implement login logic
@@ -147,11 +144,10 @@ export const resolvers = {
      */
 
     refreshToken: async (
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
       _parent: any,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       args: { refreshToken: string },
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
       _context: GraphQLContext,
     ) => {
       // TODO: Implement token refresh logic
@@ -163,7 +159,7 @@ export const resolvers = {
     /**
      * Logout user
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     logout: async (_parent: any, _args: any, context: GraphQLContext) => {
       if (!context.user) {
         throw new GraphQLError('Not authenticated', {
@@ -179,11 +175,10 @@ export const resolvers = {
      */
 
     requestPasswordReset: async (
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
       _parent: any,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       args: { email: string },
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
       _context: GraphQLContext,
     ) => {
       // TODO: Implement password reset request logic
@@ -197,11 +192,10 @@ export const resolvers = {
      */
 
     resetPassword: async (
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
       _parent: any,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       args: { token: string; newPassword: string },
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
       _context: GraphQLContext,
     ) => {
       // TODO: Implement password reset logic
@@ -215,11 +209,10 @@ export const resolvers = {
      */
 
     verifyEmail: async (
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
       _parent: any,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       args: { token: string },
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
       _context: GraphQLContext,
     ) => {
       // TODO: Implement email verification logic
@@ -233,9 +226,8 @@ export const resolvers = {
      */
 
     resendVerificationEmail: async (
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       _parent: any,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
       _args: any,
       context: GraphQLContext,
     ) => {

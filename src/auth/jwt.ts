@@ -32,7 +32,6 @@ export function generateAccessToken(userId: string, email: string): string {
   };
 
   const options: SignOptions = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expiresIn: config.jwt.expiresIn as any,
   };
 
@@ -53,7 +52,6 @@ export function generateRefreshToken(userId: string, email: string): string {
   };
 
   const options: SignOptions = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expiresIn: config.jwt.refreshExpiresIn as any,
   };
 

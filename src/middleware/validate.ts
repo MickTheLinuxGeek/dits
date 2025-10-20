@@ -47,7 +47,6 @@ export const validateMultiple =
   (schemas: Partial<Record<ValidationTarget, ZodSchema>>) =>
   (req: Request, _res: Response, next: NextFunction): void => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const errors: any[] = [];
 
       // Validate each specified target

@@ -145,7 +145,7 @@ class RedisClient {
    */
   static async setCache(
     key: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     value: any,
     expirySeconds?: number,
   ): Promise<void> {
@@ -196,7 +196,7 @@ class RedisClient {
    */
   static async setSession(
     sessionId: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     data: any,
     expirySeconds: number = 86400, // 24 hours default
   ): Promise<void> {
