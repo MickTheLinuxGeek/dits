@@ -16,17 +16,17 @@ export interface RateLimitConfig {
  * Default rate limit configurations
  */
 export const RateLimitPresets = {
-  // Very strict for login attempts (5 attempts per 15 minutes)
+  // Very strict for login attempts (5 attempts per 15 minutes in production, 50 in dev)
   AUTH_LOGIN: {
     windowMs: 15 * 60 * 1000,
-    maxRequests: 5,
+    maxRequests: config.app.env === 'development' ? 50 : 5,
     message: 'Too many login attempts. Please try again later.',
   },
 
-  // Strict for registration (3 attempts per hour)
+  // Strict for registration (3 attempts per hour in production, 20 in dev)
   AUTH_REGISTER: {
     windowMs: 60 * 60 * 1000,
-    maxRequests: 3,
+    maxRequests: config.app.env === 'development' ? 20 : 3,
     message: 'Too many registration attempts. Please try again later.',
   },
 

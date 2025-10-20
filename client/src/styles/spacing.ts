@@ -97,7 +97,7 @@ export const layout = {
     max: 'max-content',
     fit: 'fit-content',
   },
-  
+
   // Common heights
   heights: {
     full: '100%',
@@ -106,7 +106,7 @@ export const layout = {
     max: 'max-content',
     fit: 'fit-content',
   },
-  
+
   // Flex utilities
   flex: {
     1: '1 1 0%',
@@ -133,7 +133,7 @@ export const easings = {
 } as const;
 
 // Helper function to create grid column styles
-export const getGridColumn = (span: number, columns = grid.columns) => {
+export const getGridColumn = (span: number) => {
   return `span ${span} / span ${span}`;
 };
 

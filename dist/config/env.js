@@ -22,6 +22,7 @@ exports.config = {
         env: process.env.NODE_ENV || 'development',
         port: parseInt(process.env.PORT || '3000', 10),
         url: process.env.APP_URL || 'http://localhost:3000',
+        clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
     },
     // Database
     database: {

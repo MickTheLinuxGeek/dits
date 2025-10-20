@@ -117,7 +117,7 @@ export async function sendVerificationEmail(
   name: string,
   verificationToken: string,
 ): Promise<boolean> {
-  const verificationUrl = `${config.app.url}/auth/verify-email?token=${verificationToken}`;
+  const verificationUrl = `${config.app.url}/api/v1/auth/verify-email?token=${verificationToken}`;
   const subject = 'Verify Your Email Address';
   const html = `
     <!DOCTYPE html>
@@ -163,7 +163,7 @@ export async function sendPasswordResetEmail(
   name: string,
   resetToken: string,
 ): Promise<boolean> {
-  const resetUrl = `${config.app.url}/auth/reset-password?token=${resetToken}`;
+  const resetUrl = `${config.app.url}/api/v1/auth/reset-password?token=${resetToken}`;
   const subject = 'Reset Your Password';
   const html = `
     <!DOCTYPE html>

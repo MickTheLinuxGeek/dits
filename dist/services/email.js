@@ -124,7 +124,7 @@ function sendWelcomeEmail(email, name) {
  */
 function sendVerificationEmail(email, name, verificationToken) {
     return __awaiter(this, void 0, void 0, function* () {
-        const verificationUrl = `${env_1.config.app.url}/auth/verify-email?token=${verificationToken}`;
+        const verificationUrl = `${env_1.config.app.url}/api/v1/auth/verify-email?token=${verificationToken}`;
         const subject = 'Verify Your Email Address';
         const html = `
     <!DOCTYPE html>
@@ -166,7 +166,7 @@ function sendVerificationEmail(email, name, verificationToken) {
  */
 function sendPasswordResetEmail(email, name, resetToken) {
     return __awaiter(this, void 0, void 0, function* () {
-        const resetUrl = `${env_1.config.app.url}/auth/reset-password?token=${resetToken}`;
+        const resetUrl = `${env_1.config.app.url}/api/v1/auth/reset-password?token=${resetToken}`;
         const subject = 'Reset Your Password';
         const html = `
     <!DOCTYPE html>

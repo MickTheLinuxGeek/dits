@@ -183,7 +183,8 @@ export const getTypographyCSS = (preset: keyof typeof typography) => {
     fontSize: styles.fontSize,
     fontWeight: styles.fontWeight,
     lineHeight: styles.lineHeight,
-    letterSpacing: styles.letterSpacing,
-    ...(styles.textTransform && { textTransform: styles.textTransform }),
+    letterSpacing: 'letterSpacing' in styles ? styles.letterSpacing : undefined,
+    ...('textTransform' in styles &&
+      styles.textTransform && { textTransform: styles.textTransform }),
   };
 };

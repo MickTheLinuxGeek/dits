@@ -1,5 +1,14 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import App from '../App';
+import { ProtectedRoute } from '../components/auth';
+import { AuthPage } from '../pages/AuthPage';
+import {
+  LoginForm,
+  RegisterForm,
+  ForgotPasswordForm,
+  ResetPasswordForm,
+  VerifyEmail,
+} from '../components/auth';
 
 /**
  * Application routes configuration
@@ -8,7 +17,11 @@ import App from '../App';
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,
@@ -115,18 +128,49 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/login',
-    lazy: async () => {
-      // Placeholder for future login page
-      return {
-        Component: () => (
-          <div>
-            <h1>Login</h1>
-            <p>Authentication page</p>
-          </div>
+    path: '/auth',
+    children: [
+      {
+        path: 'login',
+        element: (
+          <AuthPage>
+            <LoginForm />
+          </AuthPage>
         ),
-      };
-    },
+      },
+      {
+        path: 'register',
+        element: (
+          <AuthPage>
+            <RegisterForm />
+          </AuthPage>
+        ),
+      },
+      {
+        path: 'forgot-password',
+        element: (
+          <AuthPage>
+            <ForgotPasswordForm />
+          </AuthPage>
+        ),
+      },
+      {
+        path: 'reset-password',
+        element: (
+          <AuthPage>
+            <ResetPasswordForm />
+          </AuthPage>
+        ),
+      },
+      {
+        path: 'verify-email',
+        element: (
+          <AuthPage>
+            <VerifyEmail />
+          </AuthPage>
+        ),
+      },
+    ],
   },
   {
     path: '*',

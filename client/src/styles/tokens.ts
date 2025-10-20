@@ -211,7 +211,7 @@ export const darkTheme = {
 } as const;
 
 // Export theme type
-export type Theme = typeof lightTheme;
+export type Theme = typeof lightTheme | typeof darkTheme;
 export type ThemeMode = 'light' | 'dark';
 
 // Helper function to get theme

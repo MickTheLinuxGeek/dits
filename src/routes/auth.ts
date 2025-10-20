@@ -33,6 +33,8 @@ import {
   sendPasswordChangedEmail,
 } from '../services/email';
 import { rateLimiters } from '../middleware/rateLimit';
+import { requireAuth, getUserId } from '../middleware/auth';
+import { config } from '../config/env';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -70,7 +72,8 @@ router.post(
       if (!passwordValidation.isValid) {
         return res.status(400).json({
           error: 'Validation Error',
-          message: 'Password does not meet requirements',
+          message:
+            'Password must be 8-128 characters and contain at least one lowercase letter, uppercase letter, number, and special character',
           errors: passwordValidation.errors,
         });
       }
@@ -136,8 +139,12 @@ router.post(
           id: user.id,
           email: user.email,
           name: user.name,
+          emailVerified: false, // New users are not verified yet
+          createdAt: user.createdAt.toISOString(),
+          updatedAt: user.updatedAt.toISOString(),
         },
-        tokens,
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
       });
     } catch (error) {
       console.error('Registration error:', error);
@@ -208,8 +215,12 @@ router.post(
           id: user.id,
           email: user.email,
           name: user.name,
+          emailVerified: true, // Assuming existing users are verified
+          createdAt: user.createdAt.toISOString(),
+          updatedAt: user.updatedAt.toISOString(),
         },
-        tokens,
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
       });
     } catch (error) {
       console.error('Login error:', error);
@@ -220,6 +231,56 @@ router.post(
     }
   },
 );
+
+/**
+ * GET /auth/me
+ * Get current user profile
+ */
+router.get('/me', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const userId = getUserId(req);
+
+    if (!userId) {
+      return res.status(401).json({
+        error: 'Authentication Failed',
+        message: 'Invalid token',
+      });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'User Not Found',
+        message: 'User not found',
+      });
+    }
+
+    return res.status(200).json({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      emailVerified: true, // TODO: Add emailVerified field to schema
+      createdAt: user.createdAt.toISOString(),
+      updatedAt: user.updatedAt.toISOString(),
+    });
+  } catch (error) {
+    console.error('Get current user error:', error);
+    return res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'An error occurred while fetching user profile',
+    });
+  }
+});
 
 /**
  * POST /auth/refresh
@@ -251,7 +312,8 @@ router.post(
 
       return res.status(200).json({
         message: 'Token refreshed successfully',
-        tokens: newTokens,
+        accessToken: newTokens.accessToken,
+        refreshToken: newTokens.refreshToken,
       });
     } catch (error) {
       console.error('Token refresh error:', error);
@@ -269,7 +331,7 @@ router.post(
  */
 router.post('/logout', async (req: Request, res: Response) => {
   try {
-    const { refreshToken } = req.body;
+    const refreshToken = req.body?.refreshToken;
 
     if (refreshToken) {
       // Revoke refresh token
@@ -349,6 +411,41 @@ router.post(
 );
 
 /**
+ * GET /auth/reset-password
+ * Handle password reset link (GET request from email)
+ */
+router.get('/reset-password', async (req: Request, res: Response) => {
+  try {
+    const { token } = req.query;
+
+    if (!token || typeof token !== 'string') {
+      // Redirect to frontend reset password page without token
+      return res.redirect(`${config.app.clientUrl}/auth/reset-password`);
+    }
+
+    // Verify token
+    const tokenData = await verifyPasswordResetToken(token);
+    if (!tokenData) {
+      // Redirect to frontend with error
+      return res.redirect(
+        `${config.app.clientUrl}/auth/reset-password?error=invalid-token`,
+      );
+    }
+
+    // Redirect to frontend with valid token
+    return res.redirect(
+      `${config.app.clientUrl}/auth/reset-password?token=${token}`,
+    );
+  } catch (error) {
+    console.error('Password reset link error:', error);
+    // Redirect to frontend with error
+    return res.redirect(
+      `${config.app.clientUrl}/auth/reset-password?error=server-error`,
+    );
+  }
+});
+
+/**
  * POST /auth/reset-password
  * Reset password using token
  */
@@ -371,7 +468,8 @@ router.post(
       if (!passwordValidation.isValid) {
         return res.status(400).json({
           error: 'Validation Error',
-          message: 'Password does not meet requirements',
+          message:
+            'Password must be 8-128 characters and contain at least one lowercase letter, uppercase letter, number, and special character',
           errors: passwordValidation.errors,
         });
       }
@@ -427,8 +525,46 @@ router.post(
 );
 
 /**
+ * GET /auth/verify-email
+ * Handle email verification link (GET request from email)
+ */
+router.get('/verify-email', async (req: Request, res: Response) => {
+  try {
+    const { token } = req.query;
+
+    if (!token || typeof token !== 'string') {
+      // Redirect to frontend verification page without token
+      return res.redirect(`${config.app.clientUrl}/auth/verify-email`);
+    }
+
+    // Verify token
+    const tokenData = await verifyEmailVerificationToken(token);
+    if (!tokenData) {
+      // Redirect to frontend verification page with error
+      return res.redirect(
+        `${config.app.clientUrl}/auth/verify-email?error=invalid-token`,
+      );
+    }
+
+    // Consume token
+    await consumeEmailVerificationToken(token);
+
+    // Redirect to frontend verification page with success
+    return res.redirect(
+      `${config.app.clientUrl}/auth/verify-email?success=true`,
+    );
+  } catch (error) {
+    console.error('Email verification error:', error);
+    // Redirect to frontend verification page with error
+    return res.redirect(
+      `${config.app.clientUrl}/auth/verify-email?error=server-error`,
+    );
+  }
+});
+
+/**
  * POST /auth/verify-email
- * Verify email address using token
+ * Verify email address using token (API endpoint)
  */
 router.post(
   '/verify-email',
@@ -454,12 +590,38 @@ router.post(
         });
       }
 
-      // Update user verification status (you may want to add an emailVerified field to schema)
-      // For now, we'll just consume the token
+      // Get user data
+      const user = await prisma.user.findUnique({
+        where: { id: tokenData.userId },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      });
+
+      if (!user) {
+        return res.status(404).json({
+          error: 'User Not Found',
+          message: 'User not found',
+        });
+      }
+
+      // Consume token
       await consumeEmailVerificationToken(token);
 
       return res.status(200).json({
         message: 'Email verified successfully',
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          emailVerified: true,
+          createdAt: user.createdAt.toISOString(),
+          updatedAt: user.updatedAt.toISOString(),
+        },
       });
     } catch (error) {
       console.error('Email verification error:', error);

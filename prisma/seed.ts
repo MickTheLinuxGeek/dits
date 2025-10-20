@@ -11,7 +11,7 @@ async function main() {
     update: {},
     create: {
       email: 'demo@dits.dev',
-      password: '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5XYq9eS8J7Hfq', // password: demo1234
+      password: '$2b$12$V6VjGcO0l.nlxWffJhjS4ut/EtcpPQE87/x10qDC7ZBtVR3A/MU12', // password: Demo1234!
       name: 'Demo User',
       preferences: {
         theme: 'dark',
@@ -255,7 +255,7 @@ async function main() {
   console.log('\n✅ Database seeded successfully!');
   console.log('\nDemo credentials:');
   console.log('Email: demo@dits.dev');
-  console.log('Password: demo1234');
+  console.log('Password: Demo1234!');
 }
 
 main()

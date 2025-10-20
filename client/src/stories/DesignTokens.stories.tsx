@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { colors, lightTheme, darkTheme } from '../styles/tokens';
+import { colors } from '../styles/tokens';
 import { spacing, borderRadius } from '../styles/spacing';
 import { fontSizes, fontWeights } from '../styles/typography';
 
@@ -22,7 +22,9 @@ export const Colors: Story = {
       <h2 style={{ marginBottom: '24px' }}>Color Palette</h2>
 
       {/* Primary Colors */}
-      <h3 style={{ marginTop: '32px', marginBottom: '16px' }}>Primary (Blue)</h3>
+      <h3 style={{ marginTop: '32px', marginBottom: '16px' }}>
+        Primary (Blue)
+      </h3>
       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
         {Object.entries(colors.primary).map(([shade, color]) => (
           <div key={shade} style={{ textAlign: 'center' }}>
@@ -62,8 +64,16 @@ export const Colors: Story = {
       </div>
 
       {/* Semantic Colors */}
-      <h3 style={{ marginTop: '32px', marginBottom: '16px' }}>Semantic Colors</h3>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+      <h3 style={{ marginTop: '32px', marginBottom: '16px' }}>
+        Semantic Colors
+      </h3>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: '16px',
+        }}
+      >
         <div>
           <h4>Success</h4>
           <div style={{ display: 'flex', gap: '4px' }}>
@@ -150,7 +160,10 @@ export const Spacing: Story = {
       <h2 style={{ marginBottom: '24px' }}>Spacing Scale (8pt Grid)</h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {[1, 2, 3, 4, 6, 8, 12, 16, 24].map((size) => (
-          <div key={size} style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div
+            key={size}
+            style={{ display: 'flex', alignItems: 'center', gap: '16px' }}
+          >
             <div style={{ width: '60px', fontSize: '14px', fontWeight: 600 }}>
               {size} ({spacing[size as keyof typeof spacing]})
             </div>
@@ -187,7 +200,11 @@ export const BorderRadius: Story = {
                 borderRadius: value,
               }}
             />
-            <div style={{ fontSize: '14px', marginTop: '8px', fontWeight: 600 }}>{name}</div>
+            <div
+              style={{ fontSize: '14px', marginTop: '8px', fontWeight: 600 }}
+            >
+              {name}
+            </div>
             <div style={{ fontSize: '12px', color: '#6b7280' }}>{value}</div>
           </div>
         ))}
@@ -207,11 +224,16 @@ export const Typography: Story = {
       <h3 style={{ marginTop: '32px', marginBottom: '16px' }}>Font Sizes</h3>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {Object.entries(fontSizes).map(([name, size]) => (
-          <div key={name} style={{ display: 'flex', alignItems: 'baseline', gap: '16px' }}>
+          <div
+            key={name}
+            style={{ display: 'flex', alignItems: 'baseline', gap: '16px' }}
+          >
             <div style={{ width: '80px', fontSize: '12px', color: '#6b7280' }}>
               {name} ({size})
             </div>
-            <div style={{ fontSize: size }}>The quick brown fox jumps over the lazy dog</div>
+            <div style={{ fontSize: size }}>
+              The quick brown fox jumps over the lazy dog
+            </div>
           </div>
         ))}
       </div>
@@ -219,7 +241,10 @@ export const Typography: Story = {
       <h3 style={{ marginTop: '32px', marginBottom: '16px' }}>Font Weights</h3>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {Object.entries(fontWeights).map(([name, weight]) => (
-          <div key={name} style={{ display: 'flex', alignItems: 'baseline', gap: '16px' }}>
+          <div
+            key={name}
+            style={{ display: 'flex', alignItems: 'baseline', gap: '16px' }}
+          >
             <div style={{ width: '80px', fontSize: '12px', color: '#6b7280' }}>
               {name} ({weight})
             </div>

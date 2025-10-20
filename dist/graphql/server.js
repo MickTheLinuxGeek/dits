@@ -85,7 +85,6 @@ const applyGraphQLMiddleware = (app) => __awaiter(void 0, void 0, void 0, functi
         next();
     }, (0, express4_1.expressMiddleware)(apolloServer, {
         context: exports.createGraphQLContext,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }));
     console.log(`GraphQL endpoint available at /graphql`);
 });

@@ -117,6 +117,9 @@ export const Clickable: Story = {
  * Gallery of common icons used in the application
  */
 export const CommonIcons: Story = {
+  args: {
+    name: ICONS.CHECK,
+  },
   render: () => (
     <div
       style={{
@@ -151,6 +154,9 @@ export const CommonIcons: Story = {
  * Priority icons
  */
 export const PriorityIcons: Story = {
+  args: {
+    name: ICONS.PRIORITY_HIGH,
+  },
   render: () => (
     <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
       <div style={{ textAlign: 'center' }}>
@@ -173,6 +179,9 @@ export const PriorityIcons: Story = {
  * Issue status icons
  */
 export const StatusIcons: Story = {
+  args: {
+    name: ICONS.ISSUE,
+  },
   render: () => (
     <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
       <div style={{ textAlign: 'center' }}>

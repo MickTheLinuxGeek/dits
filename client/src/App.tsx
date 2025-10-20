@@ -1,9 +1,11 @@
 import { Outlet, Link } from 'react-router-dom';
 import { useAppStore } from './store';
+import { useLogout } from './hooks/useLogout';
 import './App.css';
 
 function App() {
-  const { sidebarOpen, toggleSidebar, theme } = useAppStore();
+  const { sidebarOpen, toggleSidebar, theme, user } = useAppStore();
+  const { logout, isLoggingOut } = useLogout();
 
   return (
     <div className="app" data-theme={theme}>
@@ -15,7 +17,24 @@ function App() {
           </button>
           <h1>DITS</h1>
           <div className="header-actions">
-            {/* Placeholder for future actions */}
+            {user && (
+              <>
+                <span style={{ marginRight: '1rem' }}>{user.name}</span>
+                <button
+                  onClick={logout}
+                  disabled={isLoggingOut}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    cursor: 'pointer',
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                    background: '#fff',
+                  }}
+                >
+                  {isLoggingOut ? 'Logging out...' : 'Logout'}
+                </button>
+              </>
+            )}
           </div>
         </div>
       </header>
