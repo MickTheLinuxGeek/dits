@@ -105,6 +105,11 @@ export default defineConfig({
         test: {
           name: 'unit',
           environment: 'jsdom',
+          environmentOptions: {
+            jsdom: {
+              resources: 'usable',
+            },
+          },
           globals: true,
           setupFiles: ['./vitest.setup.ts'],
           include: ['src/**/*.{test,spec}.{ts,tsx}'],
@@ -113,6 +118,10 @@ export default defineConfig({
             forks: {
               singleFork: true,
             },
+          },
+          isolate: false,
+          sequence: {
+            hooks: 'list',
           },
         },
       },
@@ -139,6 +148,12 @@ export default defineConfig({
             ],
           },
           setupFiles: ['.storybook/vitest.setup.ts'],
+          pool: 'forks',
+          poolOptions: {
+            forks: {
+              singleFork: true,
+            },
+          },
         },
       },
     ],
