@@ -79,7 +79,7 @@ describe('AuthService', () => {
 
     it('should throw error with user-friendly message on 401', async () => {
       const axiosError = new AxiosError('Unauthorized');
-      axiosError.response = { status: 401, data: {} } as any;
+      axiosError.response = { status: 401, data: {} } as never;
       vi.mocked(apiClient.post).mockRejectedValue(axiosError);
 
       await expect(
@@ -93,7 +93,7 @@ describe('AuthService', () => {
 
     it('should throw error with user-friendly message on 429', async () => {
       const axiosError = new AxiosError('Too Many Requests');
-      axiosError.response = { status: 429, data: {} } as any;
+      axiosError.response = { status: 429, data: {} } as never;
       vi.mocked(apiClient.post).mockRejectedValue(axiosError);
 
       await expect(
@@ -107,7 +107,7 @@ describe('AuthService', () => {
 
     it('should throw error with user-friendly message on 500', async () => {
       const axiosError = new AxiosError('Internal Server Error');
-      axiosError.response = { status: 500, data: {} } as any;
+      axiosError.response = { status: 500, data: {} } as never;
       vi.mocked(apiClient.post).mockRejectedValue(axiosError);
 
       await expect(
@@ -124,7 +124,7 @@ describe('AuthService', () => {
       axiosError.response = {
         status: 400,
         data: { message: 'Custom error message' },
-      } as any;
+      } as never;
       vi.mocked(apiClient.post).mockRejectedValue(axiosError);
 
       await expect(
@@ -188,7 +188,7 @@ describe('AuthService', () => {
 
     it('should throw error on 409 (email exists)', async () => {
       const axiosError = new AxiosError('Conflict');
-      axiosError.response = { status: 409, data: {} } as any;
+      axiosError.response = { status: 409, data: {} } as never;
       vi.mocked(apiClient.post).mockRejectedValue(axiosError);
 
       await expect(
@@ -205,7 +205,7 @@ describe('AuthService', () => {
       axiosError.response = {
         status: 400,
         data: { message: 'Invalid email format' },
-      } as any;
+      } as never;
       vi.mocked(apiClient.post).mockRejectedValue(axiosError);
 
       await expect(
@@ -237,7 +237,7 @@ describe('AuthService', () => {
       // We need to catch the error to prevent test failure while still checking cleanup
       try {
         await authService.logout();
-      } catch (error) {
+      } catch {
         // Expected to throw
       }
 
@@ -314,7 +314,7 @@ describe('AuthService', () => {
 
     it('should throw error on invalid token (401)', async () => {
       const axiosError = new AxiosError('Unauthorized');
-      axiosError.response = { status: 401, data: {} } as any;
+      axiosError.response = { status: 401, data: {} } as never;
       vi.mocked(apiClient.post).mockRejectedValue(axiosError);
 
       await expect(
@@ -332,7 +332,7 @@ describe('AuthService', () => {
       axiosError.response = {
         status: 400,
         data: { message: 'Password too weak' },
-      } as any;
+      } as never;
       vi.mocked(apiClient.post).mockRejectedValue(axiosError);
 
       await expect(

@@ -87,6 +87,17 @@ export default defineConfig({
     strictPort: true,
   },
   test: {
+    // Global coverage configuration
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      exclude: [
+        'node_modules/',
+        'src/**/*.stories.tsx',
+        'src/main.tsx',
+        '.storybook/**',
+      ],
+    },
     projects: [
       {
         // Unit tests configuration
@@ -97,16 +108,6 @@ export default defineConfig({
           globals: true,
           setupFiles: ['./vitest.setup.ts'],
           include: ['src/**/*.{test,spec}.{ts,tsx}'],
-          coverage: {
-            provider: 'v8',
-            reporter: ['text', 'json', 'html'],
-            exclude: [
-              'node_modules/',
-              'src/**/*.stories.tsx',
-              'src/main.tsx',
-              '.storybook/**',
-            ],
-          },
         },
       },
       {

@@ -88,15 +88,16 @@ export const authService = {
 
       return response.data;
     } catch (error) {
-      if (error instanceof AxiosError) {
+      if (error instanceof AxiosError && error.response) {
         // Handle specific HTTP status codes with user-friendly messages
-        if (error.response?.status === 401) {
+        const status = error.response.status;
+        if (status === 401) {
           throw new Error('Invalid email or password. Please try again.');
-        } else if (error.response?.status === 429) {
+        } else if (status === 429) {
           throw new Error('Too many login attempts. Please try again later.');
-        } else if (error.response?.status >= 500) {
+        } else if (status >= 500) {
           throw new Error('Server error. Please try again later.');
-        } else if (error.response?.data?.message) {
+        } else if (error.response.data?.message) {
           // Use server-provided error message if available
           throw new Error(error.response.data.message);
         }
@@ -126,22 +127,23 @@ export const authService = {
       console.log('[AuthService] Tokens saved to localStorage');
       return response.data;
     } catch (error) {
-      if (error instanceof AxiosError) {
+      if (error instanceof AxiosError && error.response) {
         // Handle specific HTTP status codes with user-friendly messages
-        if (error.response?.status === 400) {
+        const status = error.response.status;
+        if (status === 400) {
           const message =
             error.response.data?.message ||
             'Invalid registration data. Please check your inputs.';
           throw new Error(message);
-        } else if (error.response?.status === 409) {
+        } else if (status === 409) {
           throw new Error('An account with this email already exists.');
-        } else if (error.response?.status === 429) {
+        } else if (status === 429) {
           throw new Error(
             'Too many registration attempts. Please try again later.',
           );
-        } else if (error.response?.status >= 500) {
+        } else if (status >= 500) {
           throw new Error('Server error. Please try again later.');
-        } else if (error.response?.data?.message) {
+        } else if (error.response.data?.message) {
           // Use server-provided error message if available
           throw new Error(error.response.data.message);
         }
@@ -201,20 +203,21 @@ export const authService = {
       );
       return response.data;
     } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response?.status === 400) {
+      if (error instanceof AxiosError && error.response) {
+        const status = error.response.status;
+        if (status === 400) {
           const message =
             error.response.data?.message || 'Invalid password or token';
           throw new Error(message);
-        } else if (error.response?.status === 401) {
+        } else if (status === 401) {
           throw new Error(
             'Invalid or expired reset token. Please request a new password reset.',
           );
-        } else if (error.response?.status === 429) {
+        } else if (status === 429) {
           throw new Error('Too many attempts. Please try again later.');
-        } else if (error.response?.status >= 500) {
+        } else if (status >= 500) {
           throw new Error('Server error. Please try again later.');
-        } else if (error.response?.data?.message) {
+        } else if (error.response.data?.message) {
           throw new Error(error.response.data.message);
         }
       }

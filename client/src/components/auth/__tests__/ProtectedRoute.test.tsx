@@ -63,7 +63,7 @@ describe('ProtectedRoute', () => {
       mockStore.isAuthenticated = false;
       mockUseAuthInit.isInitializing = false;
 
-      const { container } = renderProtectedRoute('/protected');
+      renderProtectedRoute('/protected');
 
       // Verify redirect happened (Login Page is shown)
       expect(screen.getByText('Login Page')).toBeInTheDocument();
