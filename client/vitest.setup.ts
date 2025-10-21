@@ -1,6 +1,26 @@
 import { cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 
+// Fix for webidl-conversions compatibility with jsdom
+// https://github.com/jsdom/jsdom/issues/3363
+// Ensure TypedArray constructors are available globally for jsdom
+if (typeof globalThis.ArrayBuffer === 'undefined') {
+  Object.assign(globalThis, {
+    ArrayBuffer,
+    Uint8Array,
+    Int8Array,
+    Uint16Array,
+    Int16Array,
+    Uint32Array,
+    Int32Array,
+    Float32Array,
+    Float64Array,
+    Uint8ClampedArray,
+    BigInt64Array,
+    BigUint64Array,
+  });
+}
+
 // Cleanup after each test
 afterEach(() => {
   cleanup();
