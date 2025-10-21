@@ -64,7 +64,7 @@ describe('Redis Connection and Helpers', () => {
         expect(result).toEqual(testValue);
 
         // Wait for expiry with extra margin for CI environments
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        await new Promise((resolve) => setTimeout(resolve, 1500).unref());
         const expiredResult = await getCache(testKey);
         expect(expiredResult).toBeNull();
       },
@@ -129,7 +129,7 @@ describe('Redis Connection and Helpers', () => {
         expect(result).toEqual(sessionData);
 
         // Wait for expiry with extra margin for CI environments
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        await new Promise((resolve) => setTimeout(resolve, 1500).unref());
         const expiredResult = await getSession(sessionId);
         expect(expiredResult).toBeNull();
       },
@@ -152,13 +152,13 @@ describe('Redis Connection and Helpers', () => {
         await setSession(sessionId, sessionData, 2);
 
         // Wait 1 second
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000).unref());
 
         // Refresh expiry to 3 more seconds (longer window)
         await refreshSessionExpiry(sessionId, 3);
 
         // Wait another 1.5 seconds (would have expired without refresh)
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        await new Promise((resolve) => setTimeout(resolve, 1500).unref());
 
         const result = await getSession(sessionId);
         expect(result).toEqual(sessionData);

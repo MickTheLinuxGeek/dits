@@ -7,4 +7,6 @@ module.exports = {
     '/client/',
     '/dist/',
   ],
+  forceExit: true,
+  detectOpenHandles: true,
 };
