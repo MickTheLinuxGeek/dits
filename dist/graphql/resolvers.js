@@ -19,14 +19,12 @@ const env_1 = require("../config/env");
 const dateTimeScalar = new graphql_2.GraphQLScalarType({
     name: 'DateTime',
     description: 'Date and time as ISO 8601 string',
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     serialize(value) {
         if (value instanceof Date) {
             return value.toISOString();
         }
         return value;
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     parseValue(value) {
         if (typeof value === 'string') {
             return new Date(value);
@@ -46,11 +44,9 @@ const dateTimeScalar = new graphql_2.GraphQLScalarType({
 const jsonScalar = new graphql_2.GraphQLScalarType({
     name: 'JSON',
     description: 'JSON object',
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     serialize(value) {
         return value;
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     parseValue(value) {
         return value;
     },
@@ -73,7 +69,6 @@ exports.resolvers = {
         /**
          * Get current authenticated user
          */
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         me: (_parent, _args, context) => __awaiter(void 0, void 0, void 0, function* () {
             if (!context.user) {
                 throw new graphql_1.GraphQLError('Not authenticated', {
@@ -97,13 +92,9 @@ exports.resolvers = {
         /**
          * Register a new user
          */
-        register: (
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
-        _parent, 
+        register: (_parent, 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        args, 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        _context) => __awaiter(void 0, void 0, void 0, function* () {
+        args, _context) => __awaiter(void 0, void 0, void 0, function* () {
             // TODO: Implement user registration logic
             throw new graphql_1.GraphQLError('Not implemented yet', {
                 extensions: { code: 'NOT_IMPLEMENTED' },
@@ -112,13 +103,9 @@ exports.resolvers = {
         /**
          * Login user
          */
-        login: (
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
-        _parent, 
+        login: (_parent, 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        args, 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        _context) => __awaiter(void 0, void 0, void 0, function* () {
+        args, _context) => __awaiter(void 0, void 0, void 0, function* () {
             // TODO: Implement login logic
             throw new graphql_1.GraphQLError('Not implemented yet', {
                 extensions: { code: 'NOT_IMPLEMENTED' },
@@ -127,13 +114,9 @@ exports.resolvers = {
         /**
          * Refresh access token
          */
-        refreshToken: (
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
-        _parent, 
+        refreshToken: (_parent, 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        args, 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        _context) => __awaiter(void 0, void 0, void 0, function* () {
+        args, _context) => __awaiter(void 0, void 0, void 0, function* () {
             // TODO: Implement token refresh logic
             throw new graphql_1.GraphQLError('Not implemented yet', {
                 extensions: { code: 'NOT_IMPLEMENTED' },
@@ -142,7 +125,6 @@ exports.resolvers = {
         /**
          * Logout user
          */
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         logout: (_parent, _args, context) => __awaiter(void 0, void 0, void 0, function* () {
             if (!context.user) {
                 throw new graphql_1.GraphQLError('Not authenticated', {
@@ -155,13 +137,9 @@ exports.resolvers = {
         /**
          * Request password reset
          */
-        requestPasswordReset: (
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
-        _parent, 
+        requestPasswordReset: (_parent, 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        args, 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        _context) => __awaiter(void 0, void 0, void 0, function* () {
+        args, _context) => __awaiter(void 0, void 0, void 0, function* () {
             // TODO: Implement password reset request logic
             throw new graphql_1.GraphQLError('Not implemented yet', {
                 extensions: { code: 'NOT_IMPLEMENTED' },
@@ -170,13 +148,9 @@ exports.resolvers = {
         /**
          * Reset password with token
          */
-        resetPassword: (
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
-        _parent, 
+        resetPassword: (_parent, 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        args, 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        _context) => __awaiter(void 0, void 0, void 0, function* () {
+        args, _context) => __awaiter(void 0, void 0, void 0, function* () {
             // TODO: Implement password reset logic
             throw new graphql_1.GraphQLError('Not implemented yet', {
                 extensions: { code: 'NOT_IMPLEMENTED' },
@@ -185,13 +159,9 @@ exports.resolvers = {
         /**
          * Verify email with token
          */
-        verifyEmail: (
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
-        _parent, 
+        verifyEmail: (_parent, 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        args, 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        _context) => __awaiter(void 0, void 0, void 0, function* () {
+        args, _context) => __awaiter(void 0, void 0, void 0, function* () {
             // TODO: Implement email verification logic
             throw new graphql_1.GraphQLError('Not implemented yet', {
                 extensions: { code: 'NOT_IMPLEMENTED' },
@@ -200,11 +170,7 @@ exports.resolvers = {
         /**
          * Resend verification email
          */
-        resendVerificationEmail: (
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        _parent, 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        _args, context) => __awaiter(void 0, void 0, void 0, function* () {
+        resendVerificationEmail: (_parent, _args, context) => __awaiter(void 0, void 0, void 0, function* () {
             if (!context.user) {
                 throw new graphql_1.GraphQLError('Not authenticated', {
                     extensions: { code: 'UNAUTHENTICATED' },

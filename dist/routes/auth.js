@@ -49,7 +49,7 @@ router.post('/register', rateLimit_1.rateLimiters.register, (req, res) => __awai
         if (!passwordValidation.isValid) {
             return res.status(400).json({
                 error: 'Validation Error',
-                message: 'Password does not meet requirements',
+                message: 'Password must be 8-128 characters and contain at least one lowercase letter, uppercase letter, number, and special character',
                 errors: passwordValidation.errors,
             });
         }
@@ -264,8 +264,9 @@ router.post('/refresh', rateLimit_1.rateLimiters.tokenRefresh, (req, res) => __a
  * Logout user and revoke tokens
  */
 router.post('/logout', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { refreshToken } = req.body;
+        const refreshToken = (_a = req.body) === null || _a === void 0 ? void 0 : _a.refreshToken;
         if (refreshToken) {
             // Revoke refresh token
             yield (0, refreshToken_1.revokeRefreshToken)(refreshToken);
@@ -370,7 +371,7 @@ router.post('/reset-password', rateLimit_1.rateLimiters.passwordResetConfirm, (r
         if (!passwordValidation.isValid) {
             return res.status(400).json({
                 error: 'Validation Error',
-                message: 'Password does not meet requirements',
+                message: 'Password must be 8-128 characters and contain at least one lowercase letter, uppercase letter, number, and special character',
                 errors: passwordValidation.errors,
             });
         }

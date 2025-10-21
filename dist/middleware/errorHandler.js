@@ -6,9 +6,7 @@ const env_1 = require("../config/env");
  * Custom error class with status code
  */
 class AppError extends Error {
-    constructor(statusCode, message, isOperational = true, 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    errors) {
+    constructor(statusCode, message, isOperational = true, errors) {
         super(message);
         this.statusCode = statusCode;
         this.message = message;
@@ -22,14 +20,11 @@ exports.AppError = AppError;
 /**
  * Centralized error handling middleware
  */
-const errorHandler = (err, req, res, 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-_next) => {
+const errorHandler = (err, req, res, _next) => {
     // Default to 500 server error
     let statusCode = 500;
     let message = 'Internal Server Error';
     let isOperational = false;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let errors;
     // Handle AppError instances
     if (err instanceof AppError) {

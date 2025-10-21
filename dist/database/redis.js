@@ -142,9 +142,7 @@ class RedisClient {
     /**
      * Cache helper methods
      */
-    static setCache(key, 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    value, expirySeconds) {
+    static setCache(key, value, expirySeconds) {
         return __awaiter(this, void 0, void 0, function* () {
             const client = RedisClient.getInstance();
             const serialized = JSON.stringify(value);
@@ -192,9 +190,7 @@ class RedisClient {
      * Session helper methods
      */
     static setSession(sessionId_1, data_1) {
-        return __awaiter(this, arguments, void 0, function* (sessionId, 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        data, expirySeconds = 86400) {
+        return __awaiter(this, arguments, void 0, function* (sessionId, data, expirySeconds = 86400) {
             const key = `session:${sessionId}`;
             yield RedisClient.setCache(key, data, expirySeconds);
         });

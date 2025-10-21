@@ -38,7 +38,6 @@ exports.validate = validate;
  */
 const validateMultiple = (schemas) => (req, _res, next) => {
     try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const errors = [];
         // Validate each specified target
         for (const [target, schema] of Object.entries(schemas)) {
