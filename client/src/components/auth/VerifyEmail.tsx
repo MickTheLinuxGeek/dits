@@ -81,7 +81,7 @@ export const VerifyEmail: React.FC = () => {
     if (token && !verifyMutation.isPending) {
       verifyMutation.mutate({ token });
     }
-  }, [token, successParam, errorParam]);
+  }, [token, successParam, errorParam, navigate, verifyMutation]);
 
   const handleResend = () => {
     resendMutation.mutate();

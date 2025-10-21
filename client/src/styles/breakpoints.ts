@@ -20,7 +20,9 @@ export const mediaQueries = {
   // Min-width queries (mobile-first approach)
   up: (breakpoint: Breakpoint): string => {
     const value = breakpointValues[breakpoint];
-    return value === 0 ? '@media (min-width: 0px)' : `@media (min-width: ${value}px)`;
+    return value === 0
+      ? '@media (min-width: 0px)'
+      : `@media (min-width: ${value}px)`;
   },
 
   // Max-width queries
@@ -41,12 +43,12 @@ export const mediaQueries = {
   only: (breakpoint: Breakpoint): string => {
     const breakpoints = Object.keys(breakpointValues) as Breakpoint[];
     const index = breakpoints.indexOf(breakpoint);
-    
+
     if (index === breakpoints.length - 1) {
       // Last breakpoint, only has a lower bound
       return mediaQueries.up(breakpoint);
     }
-    
+
     const nextBreakpoint = breakpoints[index + 1];
     return mediaQueries.between(breakpoint, nextBreakpoint);
   },
@@ -94,17 +96,18 @@ export const isBreakpoint = (breakpoint: Breakpoint): boolean => {
 // Get current breakpoint based on window width
 export const getCurrentBreakpoint = (): Breakpoint => {
   if (typeof window === 'undefined') return 'lg';
-  
+
   const width = window.innerWidth;
-  const breakpoints = Object.entries(breakpointValues)
-    .sort(([, a], [, b]) => b - a) as [Breakpoint, number][];
-  
+  const breakpoints = Object.entries(breakpointValues).sort(
+    ([, a], [, b]) => b - a,
+  ) as [Breakpoint, number][];
+
   for (const [name, value] of breakpoints) {
     if (width >= value) {
       return name;
     }
   }
-  
+
   return 'xs';
 };
 
@@ -113,20 +116,20 @@ export const useBreakpoint = () => {
   if (typeof window === 'undefined') {
     return {
       current: 'lg' as Breakpoint,
-      is: (_: Breakpoint) => false,
-      up: (_: Breakpoint) => false,
-      down: (_: Breakpoint) => false,
+      is: () => false,
+      up: () => false,
+      down: () => false,
     };
   }
 
   const current = getCurrentBreakpoint();
-  
+
   return {
     current,
     is: (breakpoint: Breakpoint) => current === breakpoint,
-    up: (breakpoint: Breakpoint) => 
+    up: (breakpoint: Breakpoint) =>
       breakpointValues[current] >= breakpointValues[breakpoint],
-    down: (breakpoint: Breakpoint) => 
+    down: (breakpoint: Breakpoint) =>
       breakpointValues[current] < breakpointValues[breakpoint],
   };
 };
@@ -137,7 +140,7 @@ export const breakpointCSSVars = Object.entries(breakpointValues).reduce(
     ...acc,
     [`--breakpoint-${key}`]: `${value}px`,
   }),
-  {} as Record<string, string>
+  {} as Record<string, string>,
 );
 
 // Container queries support (experimental)
