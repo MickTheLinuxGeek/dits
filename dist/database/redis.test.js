@@ -50,7 +50,7 @@ describe('Redis Connection and Helpers', () => {
             const result = yield (0, redis_1.getCache)(testKey);
             expect(result).toEqual(testValue);
             // Wait for expiry with extra margin for CI environments
-            yield new Promise((resolve) => setTimeout(resolve, 1500));
+            yield new Promise((resolve) => setTimeout(resolve, 1500).unref());
             const expiredResult = yield (0, redis_1.getCache)(testKey);
             expect(expiredResult).toBeNull();
         }), 10000); // Increase test timeout
@@ -97,7 +97,7 @@ describe('Redis Connection and Helpers', () => {
             const result = yield (0, redis_1.getSession)(sessionId);
             expect(result).toEqual(sessionData);
             // Wait for expiry with extra margin for CI environments
-            yield new Promise((resolve) => setTimeout(resolve, 1500));
+            yield new Promise((resolve) => setTimeout(resolve, 1500).unref());
             const expiredResult = yield (0, redis_1.getSession)(sessionId);
             expect(expiredResult).toBeNull();
         }), 10000); // Increase test timeout
@@ -112,11 +112,11 @@ describe('Redis Connection and Helpers', () => {
             // Use slightly longer timeouts for CI reliability
             yield (0, redis_1.setSession)(sessionId, sessionData, 2);
             // Wait 1 second
-            yield new Promise((resolve) => setTimeout(resolve, 1000));
+            yield new Promise((resolve) => setTimeout(resolve, 1000).unref());
             // Refresh expiry to 3 more seconds (longer window)
             yield (0, redis_1.refreshSessionExpiry)(sessionId, 3);
             // Wait another 1.5 seconds (would have expired without refresh)
-            yield new Promise((resolve) => setTimeout(resolve, 1500));
+            yield new Promise((resolve) => setTimeout(resolve, 1500).unref());
             const result = yield (0, redis_1.getSession)(sessionId);
             expect(result).toEqual(sessionData);
         }), 10000); // Increase test timeout
