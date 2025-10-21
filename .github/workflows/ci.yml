@@ -56,8 +56,8 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
 
-      - name: Run database migrations
-        run: npx prisma migrate deploy
+      - name: Setup test database schema
+        run: npx prisma db push --accept-data-loss --skip-generate
         env:
           DATABASE_URL: postgresql://dits_user:dits_password@localhost:5432/dits_test
 
