@@ -121,12 +121,15 @@ export const Popover: React.FC<PopoverProps> = ({
     setPosition({ top, left });
   }, [placement]);
 
-  const handleOpenChange = (newIsOpen: boolean) => {
-    if (controlledIsOpen === undefined) {
-      setInternalIsOpen(newIsOpen);
-    }
-    onOpenChange?.(newIsOpen);
-  };
+  const handleOpenChange = React.useCallback(
+    (newIsOpen: boolean) => {
+      if (controlledIsOpen === undefined) {
+        setInternalIsOpen(newIsOpen);
+      }
+      onOpenChange?.(newIsOpen);
+    },
+    [controlledIsOpen, onOpenChange],
+  );
 
   const showPopover = () => {
     if (disabled) return;
@@ -143,12 +146,12 @@ export const Popover: React.FC<PopoverProps> = ({
     }
   };
 
-  const hidePopover = () => {
+  const hidePopover = React.useCallback(() => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
     handleOpenChange(false);
-  };
+  }, [handleOpenChange]);
 
   const handleClick = () => {
     if (trigger === 'click') {
@@ -174,7 +177,7 @@ export const Popover: React.FC<PopoverProps> = ({
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isOpen, closeOnClickOutside]);
+  }, [isOpen, closeOnClickOutside, hidePopover]);
 
   // Update position when popover becomes visible
   React.useEffect(() => {
@@ -206,7 +209,7 @@ export const Popover: React.FC<PopoverProps> = ({
     };
   }, []);
 
-  const triggerProps: Record<string, any> = {
+  const triggerProps: Record<string, unknown> = {
     ref: triggerRef,
   };
 
@@ -218,7 +221,7 @@ export const Popover: React.FC<PopoverProps> = ({
   if (trigger === 'click') {
     triggerProps.onClick = (e: React.MouseEvent) => {
       handleClick();
-      (children.props as any).onClick?.(e);
+      (children.props as Record<string, unknown>).onClick?.(e);
     };
   }
 

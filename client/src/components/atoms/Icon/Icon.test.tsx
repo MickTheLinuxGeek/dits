@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import { Icon } from './Icon';
+import { Icon, type IconName } from './Icon';
 
 describe('Icon', () => {
   it('renders an icon', () => {
@@ -77,7 +77,7 @@ describe('Icon', () => {
   it('renders null and warns for invalid icon name', () => {
     const consoleWarn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-    const { container } = render(<Icon name={'InvalidIcon' as any} />);
+    const { container } = render(<Icon name={'InvalidIcon' as IconName} />);
 
     expect(container.firstChild).toBeNull();
     expect(consoleWarn).toHaveBeenCalledWith(

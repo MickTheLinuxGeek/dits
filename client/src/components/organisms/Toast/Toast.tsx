@@ -50,6 +50,13 @@ export const Toast: React.FC<ToastProps> = ({
 }) => {
   const [isExiting, setIsExiting] = React.useState(false);
 
+  const handleDismiss = React.useCallback(() => {
+    setIsExiting(true);
+    setTimeout(() => {
+      onDismiss?.(id);
+    }, 200); // Match animation duration
+  }, [id, onDismiss]);
+
   // Auto-dismiss timer
   React.useEffect(() => {
     if (!isVisible || duration === 0) return;
@@ -59,14 +66,7 @@ export const Toast: React.FC<ToastProps> = ({
     }, duration);
 
     return () => clearTimeout(timer);
-  }, [isVisible, duration]);
-
-  const handleDismiss = () => {
-    setIsExiting(true);
-    setTimeout(() => {
-      onDismiss?.(id);
-    }, 200); // Match animation duration
-  };
+  }, [isVisible, duration, handleDismiss]);
 
   const typeIcons: Record<string, IconName> = {
     success: ICONS.SUCCESS,

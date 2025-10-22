@@ -143,14 +143,14 @@ const columns: TableColumn<Issue>[] = [
 
 export const Default: Story = {
   args: {
-    columns: columns as any,
+    columns: columns as TableColumn<Issue>[],
     data: sampleIssues,
   },
 };
 
 export const WithSorting: Story = {
   args: {
-    columns: columns as any,
+    columns: columns as TableColumn<Issue>[],
     data: sampleIssues,
     defaultSortKey: 'dueDate',
     defaultSortDirection: 'asc',
@@ -184,7 +184,7 @@ export const Selectable: Story = {
 
 export const Striped: Story = {
   args: {
-    columns: columns as any,
+    columns: columns as TableColumn<Issue>[],
     data: sampleIssues,
     striped: true,
   },
@@ -192,7 +192,7 @@ export const Striped: Story = {
 
 export const WithoutHover: Story = {
   args: {
-    columns: columns as any,
+    columns: columns as TableColumn<Issue>[],
     data: sampleIssues,
     hoverable: false,
   },
@@ -200,7 +200,7 @@ export const WithoutHover: Story = {
 
 export const SmallSize: Story = {
   args: {
-    columns: columns as any,
+    columns: columns as TableColumn<Issue>[],
     data: sampleIssues,
     size: 'sm',
   },
@@ -208,7 +208,7 @@ export const SmallSize: Story = {
 
 export const LargeSize: Story = {
   args: {
-    columns: columns as any,
+    columns: columns as TableColumn<Issue>[],
     data: sampleIssues,
     size: 'lg',
   },
@@ -216,7 +216,7 @@ export const LargeSize: Story = {
 
 export const Loading: Story = {
   args: {
-    columns: columns as any,
+    columns: columns as TableColumn<Issue>[],
     data: [],
     isLoading: true,
   },
@@ -224,7 +224,7 @@ export const Loading: Story = {
 
 export const Empty: Story = {
   args: {
-    columns: columns as any,
+    columns: columns as TableColumn<Issue>[],
     data: [],
     emptyMessage: 'No issues found. Create your first issue to get started!',
   },
@@ -232,7 +232,7 @@ export const Empty: Story = {
 
 export const ClickableRows: Story = {
   args: {
-    columns: columns as any,
+    columns: columns as TableColumn<Issue>[],
     data: sampleIssues,
     onRowClick: (row, index) => {
       const issue = row as Issue;

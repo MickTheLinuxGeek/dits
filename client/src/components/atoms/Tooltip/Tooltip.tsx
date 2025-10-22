@@ -174,7 +174,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     };
   }, []);
 
-  const triggerProps: Record<string, any> = {
+  const triggerProps: Record<string, unknown> = {
     ref: triggerRef,
   };
 
@@ -186,7 +186,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   if (trigger === 'click') {
     triggerProps.onClick = (e: React.MouseEvent) => {
       handleClick();
-      (children.props as any).onClick?.(e);
+      (children.props as Record<string, unknown>).onClick?.(e);
     };
   }
 

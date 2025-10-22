@@ -62,7 +62,7 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
 
         onSubmit?.(event);
       },
-      [onSubmit, onValidationError],
+      [onSubmit, onValidationError, validationMode],
     );
 
     const formClasses = [

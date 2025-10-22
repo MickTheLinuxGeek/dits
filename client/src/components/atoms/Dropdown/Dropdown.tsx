@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Icon } from '@/components/atoms/Icon';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { Icon, type IconName } from '@/components/atoms/Icon';
 import styles from './Dropdown.module.css';
 
 export interface DropdownItem {
@@ -108,13 +108,16 @@ export const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
     }, [isOpen]);
 
     // Handle keyboard navigation
-    const handleItemSelect = (item: DropdownItem) => {
-      if (item.disabled) return;
-      onSelect?.(item);
-      setIsOpen(false);
-      setSearchValue('');
-      setFocusedIndex(-1);
-    };
+    const handleItemSelect = useCallback(
+      (item: DropdownItem) => {
+        if (item.disabled) return;
+        onSelect?.(item);
+        setIsOpen(false);
+        setSearchValue('');
+        setFocusedIndex(-1);
+      },
+      [onSelect],
+    );
 
     useEffect(() => {
       const handleKeyDown = (event: KeyboardEvent) => {
@@ -221,7 +224,7 @@ export const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
           <span className={styles.selectedContent}>
             {selectedItem?.icon && (
               <Icon
-                name={selectedItem.icon as any}
+                name={selectedItem.icon as IconName}
                 className={styles.selectedIcon}
                 aria-hidden="true"
               />
@@ -290,7 +293,7 @@ export const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
                       <div className={styles.itemContent}>
                         {item.icon && (
                           <Icon
-                            name={item.icon as any}
+                            name={item.icon as IconName}
                             className={styles.itemIcon}
                             aria-hidden="true"
                           />
