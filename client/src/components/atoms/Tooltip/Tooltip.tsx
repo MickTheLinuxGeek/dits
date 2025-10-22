@@ -186,7 +186,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
   if (trigger === 'click') {
     triggerProps.onClick = (e: React.MouseEvent) => {
       handleClick();
-      (children.props as Record<string, unknown>).onClick?.(e);
+      const childProps = children.props as {
+        onClick?: (e: React.MouseEvent) => void;
+      };
+      childProps.onClick?.(e);
     };
   }
 
