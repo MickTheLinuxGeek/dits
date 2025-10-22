@@ -1,0 +1,83 @@
+/* Base form styles */
+.form {
+  display: flex;
+  width: 100%;
+}
+
+/* Direction variants */
+.vertical {
+  flex-direction: column;
+}
+
+.horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+/* Spacing variants */
+.spacing-sm {
+  gap: 0.5rem;
+}
+
+.spacing-md {
+  gap: 1rem;
+}
+
+.spacing-lg {
+  gap: 1.5rem;
+}
+
+/* Horizontal form specific adjustments */
+.horizontal > * {
+  flex: 1;
+  min-width: 0;
+}
+
+.horizontal.spacing-sm > * {
+  margin-bottom: 0.5rem;
+}
+
+.horizontal.spacing-md > * {
+  margin-bottom: 1rem;
+}
+
+.horizontal.spacing-lg > * {
+  margin-bottom: 1.5rem;
+}
+
+/* Form field groups */
+.form > fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: inherit;
+  gap: inherit;
+}
+
+.form > fieldset > legend {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.75rem;
+  padding: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .horizontal {
+    flex-direction: column;
+  }
+  
+  .horizontal > * {
+    flex: none;
+  }
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .form > fieldset > legend {
+    color: #E5E7EB;
+  }
+}

@@ -1,0 +1,197 @@
+/* Wrapper styles */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.wrapper.fullWidth {
+  width: 100%;
+}
+
+.wrapper.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Label styles */
+.label {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: #374151;
+  margin-bottom: 0.125rem;
+}
+
+.required {
+  color: #DC2626;
+  margin-left: 0.125rem;
+}
+
+/* Select wrapper for positioning icon */
+.selectWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Base select styles */
+.select {
+  display: block;
+  width: 100%;
+  border: 1px solid #D1D5DB;
+  border-radius: 0.375rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #111827;
+  background-color: #FFFFFF;
+  background-image: none;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  padding-right: 2.5rem;
+}
+
+.select:hover:not(:disabled) {
+  border-color: #9CA3AF;
+}
+
+.select:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.select:disabled {
+  background-color: #F3F4F6;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Size variants */
+.select.sm {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  min-height: 2rem;
+}
+
+.select.md {
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  min-height: 2.5rem;
+}
+
+.select.lg {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  min-height: 3rem;
+}
+
+/* Error state */
+.select.error {
+  border-color: #EF4444;
+}
+
+.select.error:focus {
+  border-color: #EF4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Chevron icon */
+.chevronIcon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  color: #6B7280;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.wrapper.disabled .chevronIcon {
+  color: #9CA3AF;
+}
+
+/* Helper and error text */
+.helperText {
+  font-size: 0.75rem;
+  line-height: 1.25;
+  color: #6B7280;
+}
+
+.errorMessage {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  line-height: 1.25;
+  color: #EF4444;
+}
+
+.errorIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+}
+
+/* Full width */
+.fullWidth {
+  width: 100%;
+}
+
+/* Option styles (limited styling available for native select) */
+.select option {
+  padding: 0.5rem;
+}
+
+.select option:disabled {
+  color: #9CA3AF;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .label {
+    color: #E5E7EB;
+  }
+
+  .select {
+    background-color: #374151;
+    border-color: #4B5563;
+    color: #F3F4F6;
+  }
+
+  .select:hover:not(:disabled) {
+    border-color: #6B7280;
+  }
+
+  .select:focus {
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .select:disabled {
+    background-color: #1F2937;
+  }
+
+  .select option {
+    background-color: #374151;
+    color: #F3F4F6;
+  }
+
+  .chevronIcon {
+    color: #9CA3AF;
+  }
+
+  .helperText {
+    color: #9CA3AF;
+  }
+}

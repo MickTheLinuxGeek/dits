@@ -35,8 +35,8 @@ export const ICONS = {
 
   // Status
   INFO: 'Info' as IconName,
-  WARNING: 'AlertTriangle' as IconName,
-  ERROR: 'AlertCircle' as IconName,
+  WARNING: 'TriangleAlert' as IconName,
+  ERROR: 'CircleAlert' as IconName,
   SUCCESS: 'CheckCircle2' as IconName,
   LOADING: 'Loader2' as IconName,
 
@@ -97,7 +97,10 @@ export const ICONS = {
 /**
  * Priority level icons
  */
-export const PRIORITY_ICONS: Record<'high' | 'medium' | 'low' | 'none', IconName> = {
+export const PRIORITY_ICONS: Record<
+  'high' | 'medium' | 'low' | 'none',
+  IconName
+> = {
   high: ICONS.PRIORITY_HIGH,
   medium: ICONS.PRIORITY_MEDIUM,
   low: ICONS.PRIORITY_LOW,
@@ -107,7 +110,10 @@ export const PRIORITY_ICONS: Record<'high' | 'medium' | 'low' | 'none', IconName
 /**
  * Status icons
  */
-export const STATUS_ICONS: Record<'todo' | 'inProgress' | 'done' | 'canceled', IconName> = {
+export const STATUS_ICONS: Record<
+  'todo' | 'inProgress' | 'done' | 'canceled',
+  IconName
+> = {
   todo: ICONS.ISSUE,
   inProgress: ICONS.ISSUE_OPEN,
   done: ICONS.ISSUE_CLOSED,

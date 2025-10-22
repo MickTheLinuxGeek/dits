@@ -1,0 +1,222 @@
+/* Base button styles */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.button:focus-visible {
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+}
+
+/* Content wrapper for better alignment */
+.content {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Size variants */
+.sm {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  letter-spacing: 0.025em;
+}
+
+.md {
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  letter-spacing: 0.025em;
+}
+
+.lg {
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: 0.025em;
+}
+
+/* Icon-only button adjustments */
+.iconOnly.sm {
+  padding: 0.5rem;
+}
+
+.iconOnly.md {
+  padding: 0.625rem;
+}
+
+.iconOnly.lg {
+  padding: 0.75rem;
+}
+
+/* Full width */
+.fullWidth {
+  width: 100%;
+}
+
+/* Primary variant */
+.primary {
+  background-color: #2563EB;
+  color: #FFFFFF;
+  border-color: #2563EB;
+}
+
+.primary:hover:not(:disabled) {
+  background-color: #1D4ED8;
+  border-color: #1D4ED8;
+}
+
+.primary:active:not(:disabled) {
+  background-color: #1E40AF;
+  border-color: #1E40AF;
+}
+
+/* Secondary variant */
+.secondary {
+  background-color: #F3F4F6;
+  color: #374151;
+  border-color: #E5E7EB;
+}
+
+.secondary:hover:not(:disabled) {
+  background-color: #E5E7EB;
+  border-color: #D1D5DB;
+}
+
+.secondary:active:not(:disabled) {
+  background-color: #D1D5DB;
+  border-color: #9CA3AF;
+}
+
+/* Outline variant */
+.outline {
+  background-color: transparent;
+  color: #2563EB;
+  border-color: #2563EB;
+}
+
+.outline:hover:not(:disabled) {
+  background-color: #EFF6FF;
+  color: #1D4ED8;
+  border-color: #1D4ED8;
+}
+
+.outline:active:not(:disabled) {
+  background-color: #DBEAFE;
+  color: #1E40AF;
+  border-color: #1E40AF;
+}
+
+/* Ghost variant */
+.ghost {
+  background-color: transparent;
+  color: #374151;
+  border-color: transparent;
+}
+
+.ghost:hover:not(:disabled) {
+  background-color: #F3F4F6;
+  color: #1F2937;
+}
+
+.ghost:active:not(:disabled) {
+  background-color: #E5E7EB;
+  color: #111827;
+}
+
+/* Danger variant */
+.danger {
+  background-color: #DC2626;
+  color: #FFFFFF;
+  border-color: #DC2626;
+}
+
+.danger:hover:not(:disabled) {
+  background-color: #B91C1C;
+  border-color: #B91C1C;
+}
+
+.danger:active:not(:disabled) {
+  background-color: #991B1B;
+  border-color: #991B1B;
+}
+
+/* Icon styles */
+.leftIcon {
+  margin-right: -0.125rem;
+}
+
+.rightIcon {
+  margin-left: -0.125rem;
+}
+
+.loadingIcon {
+  animation: spin 1s linear infinite;
+}
+
+/* Loading state */
+.loading .content {
+  opacity: 0.8;
+}
+
+/* Spinner animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .secondary {
+    background-color: #374151;
+    color: #E5E7EB;
+    border-color: #4B5563;
+  }
+
+  .secondary:hover:not(:disabled) {
+    background-color: #4B5563;
+    border-color: #6B7280;
+  }
+
+  .secondary:active:not(:disabled) {
+    background-color: #6B7280;
+    border-color: #9CA3AF;
+  }
+
+  .ghost {
+    color: #E5E7EB;
+  }
+
+  .ghost:hover:not(:disabled) {
+    background-color: #374151;
+    color: #F3F4F6;
+  }
+
+  .ghost:active:not(:disabled) {
+    background-color: #4B5563;
+    color: #FFFFFF;
+  }
+}

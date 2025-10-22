@@ -1,0 +1,136 @@
+/* Container for progress bar and label */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+}
+
+/* Base progress bar styles */
+.progressBar {
+  width: 100%;
+  background-color: #E5E7EB;
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Size variants */
+.sm {
+  height: 0.25rem;
+}
+
+.md {
+  height: 0.5rem;
+}
+
+.lg {
+  height: 0.75rem;
+}
+
+/* Progress fill */
+.progressFill {
+  height: 100%;
+  border-radius: inherit;
+  transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Color variants */
+.primary {
+  background-color: #3B82F6;
+}
+
+.success {
+  background-color: #10B981;
+}
+
+.warning {
+  background-color: #F59E0B;
+}
+
+.error {
+  background-color: #EF4444;
+}
+
+/* Indeterminate animation */
+.indeterminate {
+  overflow: hidden;
+}
+
+.indeterminateFill {
+  width: 100% !important;
+  animation: indeterminateAnimation 2s infinite linear;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    currentColor 50%,
+    transparent 100%
+  );
+}
+
+.indeterminateFill.primary {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #3B82F6 50%,
+    transparent 100%
+  );
+}
+
+.indeterminateFill.success {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #10B981 50%,
+    transparent 100%
+  );
+}
+
+.indeterminateFill.warning {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #F59E0B 50%,
+    transparent 100%
+  );
+}
+
+.indeterminateFill.error {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #EF4444 50%,
+    transparent 100%
+  );
+}
+
+/* Label styles */
+.label {
+  font-size: 0.75rem;
+  color: #6B7280;
+  text-align: right;
+  font-weight: 500;
+}
+
+/* Animation keyframes */
+@keyframes indeterminateAnimation {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .progressBar {
+    background-color: #374151;
+  }
+  
+  .label {
+    color: #9CA3AF;
+  }
+}

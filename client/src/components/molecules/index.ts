@@ -4,8 +4,5 @@
  */
 
 // Export molecules here as they are created
-// Example:
-// export { FormField } from './FormField';
-// export { SearchBar } from './SearchBar';
-
-export {};
+export { Form } from './Form';
+export type { FormProps } from './Form';

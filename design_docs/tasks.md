@@ -107,14 +107,14 @@ This document provides a detailed, enumerated task list based on the implementat
 78. [X] Implement email verification UI
 
 #### Core UI Components
-79. [ ] Create Button component with variants
-80. [ ] Implement Input and Form components
-81. [ ] Create Modal and Dialog components
-82. [ ] Implement Dropdown and Select components
-83. [ ] Create Table component with sorting
-84. [ ] Implement Loading and Skeleton components
-85. [ ] Create Toast notification system
-86. [ ] Implement Tooltip and Popover components
+79. [x] Create Button component with variants
+80. [x] Implement Input and Form components
+81. [x] Create Modal and Dialog components
+82. [x] Implement Dropdown and Select components
+83. [x] Create Table component with sorting
+84. [x] Implement Loading and Skeleton components
+85. [x] Create Toast notification system
+86. [x] Implement Tooltip and Popover components
 
 #### List View Implementation
 87. [ ] Create issue list container component

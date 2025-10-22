@@ -1,0 +1,108 @@
+/* Dialog content layout */
+.content {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.body {
+  flex: 1;
+  min-width: 0;
+}
+
+.description {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #6B7280;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+/* Dialog type variants */
+.default {
+  /* No special styling for default */
+}
+
+.info .icon-info {
+  background-color: #DBEAFE;
+  color: #1D4ED8;
+}
+
+.warning .icon-warning {
+  background-color: #FEF3C7;
+  color: #D97706;
+}
+
+.error .icon-error {
+  background-color: #FEE2E2;
+  color: #DC2626;
+}
+
+.success .icon-success {
+  background-color: #D1FAE5;
+  color: #059669;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .content {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+  
+  .icon {
+    align-self: center;
+  }
+  
+  .actions {
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
+  
+  .actions > * {
+    width: 100%;
+  }
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .description {
+    color: #9CA3AF;
+  }
+  
+  .info .icon-info {
+    background-color: #1E3A8A;
+    color: #93C5FD;
+  }
+  
+  .warning .icon-warning {
+    background-color: #92400E;
+    color: #FCD34D;
+  }
+  
+  .error .icon-error {
+    background-color: #991B1B;
+    color: #FCA5A5;
+  }
+  
+  .success .icon-success {
+    background-color: #065F46;
+    color: #6EE7B7;
+  }
+}
