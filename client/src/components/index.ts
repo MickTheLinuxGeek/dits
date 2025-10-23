@@ -8,3 +8,12 @@ export * from './atoms';
 export * from './molecules';
 export * from './organisms';
 export * from './templates';
+
+// Layout components
+export * from './layout';
+
+// UI components
+export * from './ui';
+
+// Issue components
+export * from './issues';

@@ -13,14 +13,12 @@ interface AppState {
   isLoading: boolean;
 
   // UI state
-  sidebarOpen: boolean;
   theme: 'light' | 'dark';
 
   // Actions
   setUser: (user: User | null) => void;
   setLoading: (loading: boolean) => void;
   logout: () => void;
-  toggleSidebar: () => void;
   setTheme: (theme: 'light' | 'dark') => void;
   initializeAuth: () => void;
 }
@@ -37,7 +35,6 @@ export const useAppStore = create<AppState>()(
         isAuthenticated: false,
         user: null,
         isLoading: true,
-        sidebarOpen: true,
         theme: 'light',
 
         // Actions
@@ -50,8 +47,6 @@ export const useAppStore = create<AppState>()(
           set({ isLoading });
         },
         logout: () => set({ user: null, isAuthenticated: false }),
-        toggleSidebar: () =>
-          set((state) => ({ sidebarOpen: !state.sidebarOpen })),
         setTheme: (theme) => set({ theme }),
 
         // Initialize authentication state from stored tokens
@@ -74,7 +69,6 @@ export const useAppStore = create<AppState>()(
         name: 'dits-storage',
         partialize: (state) => ({
           theme: state.theme,
-          sidebarOpen: state.sidebarOpen,
         }),
         // Ensure non-persisted state is not overridden by persisted state
         merge: (persistedState, currentState) => ({

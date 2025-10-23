@@ -1,117 +1,15 @@
+/* App Layout - Horizontal Sidebar Design */
 .app {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  background-color: #f5f5f5;
+  flex-direction: row;
 }
 
-.app[data-theme='dark'] {
-  background-color: #1a1a1a;
-  color: #e0e0e0;
-}
-
-.app-header {
-  background-color: white;
-  border-bottom: 1px solid #e0e0e0;
-  padding: 1rem 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.app[data-theme='dark'] .app-header {
-  background-color: #2a2a2a;
-  border-bottom-color: #3a3a3a;
-}
-
-.header-content {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.sidebar-toggle {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 4px;
-  transition: background-color 0.2s;
-}
-
-.sidebar-toggle:hover {
-  background-color: #f0f0f0;
-}
-
-.app[data-theme='dark'] .sidebar-toggle:hover {
-  background-color: #3a3a3a;
-}
-
-.app-header h1 {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
-.header-actions {
-  margin-left: auto;
-}
-
-.app-layout {
-  display: flex;
-  flex: 1;
-  max-width: 1400px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.sidebar {
-  width: 250px;
-  background-color: white;
-  border-right: 1px solid #e0e0e0;
-  padding: 1.5rem 0;
-}
-
-.app[data-theme='dark'] .sidebar {
-  background-color: #2a2a2a;
-  border-right-color: #3a3a3a;
-}
-
-.sidebar nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar nav li {
-  margin: 0;
-}
-
-.sidebar nav a {
-  display: block;
-  padding: 0.75rem 1.5rem;
-  color: inherit;
-  text-decoration: none;
-  transition: background-color 0.2s;
-  font-weight: 500;
-}
-
-.sidebar nav a:hover {
-  background-color: #f0f0f0;
-}
-
-.app[data-theme='dark'] .sidebar nav a:hover {
-  background-color: #3a3a3a;
-}
-
+/* Main Content */
 .main-content {
   flex: 1;
-  padding: 2rem;
+  background-color: var(--bg-main);
   overflow-y: auto;
-  background-color: #fafafa;
-}
-
-.app[data-theme='dark'] .main-content {
-  background-color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
 }

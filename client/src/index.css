@@ -38,6 +38,55 @@ html {
 
   /* Default to light theme */
   color-scheme: light;
+
+  /* ===== Color Palette ===== */
+  
+  /* Backgrounds */
+  --bg-main: #f8fafc;
+  --bg-sidebar: #ffffff;
+  --bg-card: #ffffff;
+  
+  /* Borders */
+  --border-primary: #e2e8f0;
+  --border-secondary: #f1f5f9;
+  
+  /* Text */
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-tertiary: #64748b;
+  
+  /* Blue Accent */
+  --blue-primary: #3b82f6;
+  --blue-dark: #2563eb;
+  --blue-light-bg: #eff6ff;
+  --blue-lighter: #dbeafe;
+  
+  /* Status Colors */
+  /* Red (urgent/bug) */
+  --red-primary: #dc2626;
+  --red-light: #fee2e2;
+  
+  /* Orange (high) */
+  --orange-primary: #f97316;
+  --orange-alt: #f59e0b;
+  
+  /* Yellow (medium) */
+  --yellow-primary: #eab308;
+  
+  /* Green (low/enhancement) */
+  --green-primary: #22c55e;
+  --green-alt: #65a30d;
+  --green-light: #ecfccb;
+  
+  /* Status - Blue (feature) */
+  --status-blue: #2563eb;
+  --status-blue-light: #dbeafe;
+  
+  /* ===== Spacing ===== */
+  --sidebar-width: 280px;
+  
+  /* ===== Transitions ===== */
+  --transition-default: 0.15s ease;
 }
 
 body {

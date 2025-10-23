@@ -2,6 +2,10 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import App from '../App';
 import { ProtectedRoute } from '../components/auth';
 import { AuthPage } from '../pages/AuthPage';
+import { InboxPage } from '../pages/InboxPage';
+import { TodayPage } from '../pages/TodayPage';
+import { UpcomingPage } from '../pages/UpcomingPage';
+import { LogbookPage } from '../pages/LogbookPage';
 import {
   LoginForm,
   RegisterForm,
@@ -29,59 +33,19 @@ export const router = createBrowserRouter([
       },
       {
         path: 'inbox',
-        lazy: async () => {
-          // Placeholder for future inbox view
-          return {
-            Component: () => (
-              <div>
-                <h1>Inbox</h1>
-                <p>Default destination for newly captured issues</p>
-              </div>
-            ),
-          };
-        },
+        element: <InboxPage />,
       },
       {
         path: 'today',
-        lazy: async () => {
-          // Placeholder for future today view
-          return {
-            Component: () => (
-              <div>
-                <h1>Today</h1>
-                <p>Curated list for current day</p>
-              </div>
-            ),
-          };
-        },
+        element: <TodayPage />,
       },
       {
         path: 'upcoming',
-        lazy: async () => {
-          // Placeholder for future upcoming view
-          return {
-            Component: () => (
-              <div>
-                <h1>Upcoming</h1>
-                <p>Chronological view with scheduled dates</p>
-              </div>
-            ),
-          };
-        },
+        element: <UpcomingPage />,
       },
       {
         path: 'logbook',
-        lazy: async () => {
-          // Placeholder for future logbook view
-          return {
-            Component: () => (
-              <div>
-                <h1>Logbook</h1>
-                <p>Archive of completed issues</p>
-              </div>
-            ),
-          };
-        },
+        element: <LogbookPage />,
       },
       {
         path: 'projects',

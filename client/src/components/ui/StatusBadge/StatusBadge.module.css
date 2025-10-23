@@ -1,0 +1,60 @@
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 12px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.label {
+  white-space: nowrap;
+}
+
+/* Todo - Gray */
+.todo {
+  color: var(--text-secondary);
+  background-color: var(--border-secondary);
+}
+
+.todo .dot {
+  background-color: var(--text-tertiary);
+}
+
+/* In Progress - Blue */
+.in-progress {
+  color: var(--blue-dark);
+  background-color: var(--blue-lighter);
+}
+
+.in-progress .dot {
+  background-color: var(--blue-primary);
+}
+
+/* Review - Orange */
+.review {
+  color: var(--orange-primary);
+  background-color: #fff7ed;
+}
+
+.review .dot {
+  background-color: var(--orange-primary);
+}
+
+/* Done - Green */
+.done {
+  color: var(--green-alt);
+  background-color: var(--green-light);
+}
+
+.done .dot {
+  background-color: var(--green-primary);
+}
