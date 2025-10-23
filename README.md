@@ -8,6 +8,7 @@
 [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)](https://github.com/MickTheLinuxGeek/dits)
 [![Coverage](https://img.shields.io/badge/Coverage-85%25-green)](https://github.com/MickTheLinuxGeek/dits)
 ![Static Badge](https://img.shields.io/badge/Project_Status-Phase_1_Development-blue)
+[![🧐 Gemini Pull Request Review](https://github.com/MickTheLinuxGeek/dits/actions/workflows/gemini-pr-review.yml/badge.svg)](https://github.com/MickTheLinuxGeek/dits/actions/workflows/gemini-pr-review.yml)
 
 ## Table of Contents
 - [Overview](https://github.com/MickTheLinuxGeek/dits#-overview)
