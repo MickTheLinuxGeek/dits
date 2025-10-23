@@ -1,11 +1,169 @@
-# React + TypeScript + Vite
+# DITS Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend application for DITS (Developer Issue Tracking System) - a purpose-built issue tracker designed for individual software developers.
 
-Currently, two official plugins are available:
+Built with React, TypeScript, and Vite.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
+
+- 🎯 **Main Dashboard**: Sidebar navigation with Smart Views, Projects, and Areas
+- 📋 **Issue Management**: Create, view, and manage issues with labels, priorities, and statuses
+- 🔍 **Search**: Fast search across all issues
+- ⌨️ **Keyboard Shortcuts**: Power user features (C for new issue, Cmd/Ctrl+K for search)
+- 🎨 **Modern UI**: Clean, minimal design with smooth animations
+- 📱 **Responsive**: Works on desktop screens (1280px+)
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development
+
+```bash
+npm run dev
+```
+
+The app will start at `http://localhost:5173`
+
+### Building for Production
+
+```bash
+npm run build
+```
+
+### Running Tests
+
+```bash
+# Run unit tests
+npm test
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run tests in watch mode
+npm run test:watch
+```
+
+### Linting
+
+```bash
+# Run linter
+npm run lint
+
+# Auto-fix issues
+npm run lint:fix
+
+# Type checking
+npm run type-check
+```
+
+### Storybook
+
+```bash
+# Start Storybook
+npm run storybook
+
+# Build Storybook
+npm run build-storybook
+```
+
+## Mock Data
+
+The application uses mock data for development. This allows frontend development to proceed independently of backend implementation.
+
+### Environment Variables
+
+Control mock data usage with the `VITE_USE_MOCK_DATA` environment variable:
+
+```env
+# .env.development
+VITE_USE_MOCK_DATA=true
+
+# .env.production  
+VITE_USE_MOCK_DATA=false
+```
+
+- **Development**: Mock data is enabled by default
+- **Production**: Mock data is disabled by default
+
+### Mock Data Structure
+
+Mock data is located in `src/mocks/`:
+
+- `types.ts` - TypeScript interfaces (Issue, Project, Area, Label)
+- `issues.ts` - Sample issues for all views
+- `projects.ts` - Sample projects
+- `areas.ts` - Sample areas
+- `navigation.ts` - Navigation counts (dynamically calculated)
+- `index.ts` - Central export point
+
+### Using Mock Data
+
+Components import mock data directly:
+
+```typescript
+import { mockIssues, mockProjects, mockAreas } from '../mocks';
+```
+
+When backend API is ready, replace with API calls:
+
+```typescript
+import { useQuery } from '@tanstack/react-query';
+import { fetchIssues } from '../services/api';
+
+const { data: issues } = useQuery(['issues'], fetchIssues);
+```
+
+## Keyboard Shortcuts
+
+- `C` - Create new issue
+- `Cmd/Ctrl+K` - Focus search bar
+
+## Project Structure
+
+```
+src/
+├── components/          # React components
+│   ├── atoms/          # Atomic components (Button, Input, etc.)
+│   ├── molecules/      # Molecule components
+│   ├── organisms/      # Organism components
+│   ├── templates/      # Template components
+│   ├── layout/         # Layout components (Sidebar, Header, etc.)
+│   ├── ui/             # UI components (Label, Badge, etc.)
+│   ├── issues/         # Issue-related components
+│   └── auth/           # Authentication components
+├── pages/              # Page components
+├── hooks/              # Custom React hooks
+├── mocks/              # Mock data
+├── services/           # API services
+├── store/              # State management (Zustand)
+├── router/             # Routing configuration
+└── lib/                # Utilities and helpers
+```
+
+## Component Documentation
+
+All components include:
+
+- **TypeScript interfaces** for props
+- **JSDoc comments** describing component purpose
+- **Storybook stories** demonstrating usage
+- **Unit tests** for core functionality
+
+View component documentation in Storybook:
+
+```bash
+npm run storybook
+```
 
 ## React Compiler
 

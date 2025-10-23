@@ -1,0 +1,53 @@
+.label {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+/* Bug - Red */
+.bug {
+  color: var(--red-primary);
+  background-color: var(--red-light);
+}
+
+/* Feature - Blue */
+.feature {
+  color: var(--status-blue);
+  background-color: var(--status-blue-light);
+}
+
+/* Enhancement - Green */
+.enhancement {
+  color: var(--green-alt);
+  background-color: var(--green-light);
+}
+
+/* Security - Orange */
+.security {
+  color: var(--orange-primary);
+  background-color: #fff7ed;
+}
+
+/* Database - Purple */
+.database {
+  color: #7c3aed;
+  background-color: #f3e8ff;
+}
+
+/* DevOps - Teal */
+.devops {
+  color: #0d9488;
+  background-color: #ccfbf1;
+}
+
+/* Design - Pink */
+.design {
+  color: #db2777;
+  background-color: #fce7f3;
+}

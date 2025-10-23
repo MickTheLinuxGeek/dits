@@ -1,0 +1,39 @@
+.issueList {
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid var(--border-primary);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 400px;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid var(--border-primary);
+  padding: 3rem;
+  text-align: center;
+}
+
+.emptyIcon {
+  color: var(--text-tertiary);
+  opacity: 0.5;
+}
+
+.emptyHeading {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.emptyDescription {
+  color: var(--text-tertiary);
+  font-size: 14px;
+  margin: 0;
+}

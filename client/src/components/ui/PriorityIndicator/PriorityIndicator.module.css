@@ -1,0 +1,38 @@
+.priority {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 12px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.label {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Urgent - Red */
+.urgent .dot {
+  background-color: var(--red-primary);
+}
+
+/* High - Orange */
+.high .dot {
+  background-color: var(--orange-primary);
+}
+
+/* Medium - Yellow */
+.medium .dot {
+  background-color: var(--yellow-primary);
+}
+
+/* Low - Green */
+.low .dot {
+  background-color: var(--green-primary);
+}
