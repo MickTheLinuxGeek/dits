@@ -256,7 +256,7 @@ For coverage reports:
 ```bash
 npm run test:coverage
 ```
-**SEE WIKI FOR MORE TESTING INFORMATION**
+**SEE [WIKI](https://github.com/MickTheLinuxGeek/dits/wiki#welcome-to-the-dits-wiki) FOR MORE TESTING INFORMATION**
 
 ## 🗺️ Roadmap
 
