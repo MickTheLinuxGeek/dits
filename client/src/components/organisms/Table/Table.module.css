@@ -61,10 +61,52 @@
   background-color: #F3F4F6;
 }
 
+/* Resizable column header */
+.th.resizable {
+  position: relative;
+}
+
 .thContent {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
+}
+
+/* Resize handle */
+.resizeHandle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 100%;
+  cursor: col-resize;
+  user-select: none;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.resizeHandle::after {
+  content: '';
+  width: 2px;
+  height: 60%;
+  background-color: transparent;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.resizeHandle:hover::after {
+  background-color: #3B82F6;
+}
+
+.resizeHandle.resizing::after {
+  background-color: #2563EB;
+}
+
+/* Prevent text selection during resize */
+.resizeHandle:active {
+  user-select: none;
 }
 
 /* Sort icons */

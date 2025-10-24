@@ -1,0 +1,161 @@
+/* Issue table container */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+/* Table cell styles */
+.issueId {
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.8125rem;
+  color: #6B7280;
+}
+
+.titleCell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-width: 500px;
+}
+
+.title {
+  font-weight: 500;
+  color: #111827;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.description {
+  font-size: 0.8125rem;
+  color: #6B7280;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  align-items: center;
+}
+
+.noLabels,
+.noDate {
+  color: #9CA3AF;
+  font-size: 0.875rem;
+}
+
+.dueDate {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.dueDate.overdue {
+  color: #DC2626;
+  font-weight: 500;
+}
+
+.date {
+  font-size: 0.875rem;
+  color: #6B7280;
+}
+
+/* Pagination container */
+.paginationContainer {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+  border-top: 1px solid #E5E7EB;
+}
+
+/* Select all banner */
+.selectAllBanner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background-color: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: #1E40AF;
+}
+
+.selectAllButton {
+  padding: 0;
+  background: none;
+  border: none;
+  color: #2563EB;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.selectAllButton:hover {
+  color: #1D4ED8;
+}
+
+.selectAllButton:focus {
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .issueId {
+    color: #9CA3AF;
+  }
+
+  .title {
+    color: #F3F4F6;
+  }
+
+  .description {
+    color: #9CA3AF;
+  }
+
+  .noLabels,
+  .noDate {
+    color: #6B7280;
+  }
+
+  .dueDate {
+    color: #D1D5DB;
+  }
+
+  .dueDate.overdue {
+    color: #F87171;
+  }
+
+  .date {
+    color: #9CA3AF;
+  }
+
+  .paginationContainer {
+    border-top-color: #4B5563;
+  }
+
+  .selectAllBanner {
+    background-color: #1E3A8A;
+    border-color: #1E40AF;
+    color: #DBEAFE;
+  }
+
+  .selectAllButton {
+    color: #93C5FD;
+  }
+
+  .selectAllButton:hover {
+    color: #BFDBFE;
+  }
+}

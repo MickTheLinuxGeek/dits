@@ -1,0 +1,216 @@
+/* Bulk actions bar container */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background-color: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Left section with selection info */
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.selectionInfo {
+  display: flex;
+  align-items: baseline;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.count {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1E40AF;
+}
+
+.label {
+  color: #1E40AF;
+  font-weight: 500;
+}
+
+.clearButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.375rem;
+  background: none;
+  border: none;
+  color: #2563EB;
+  cursor: pointer;
+  border-radius: 0.375rem;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.clearButton:hover {
+  background-color: rgba(37, 99, 235, 0.1);
+  color: #1D4ED8;
+}
+
+.clearButton:focus {
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+}
+
+/* Actions section */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Dropdown container */
+.dropdownContainer {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 12rem;
+  background-color: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  z-index: 50;
+  overflow: hidden;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.625rem 1rem;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 0.875rem;
+  color: #374151;
+  cursor: pointer;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdownItem:hover {
+  background-color: #F9FAFB;
+}
+
+.dropdownItem:focus {
+  outline: none;
+  background-color: #EFF6FF;
+}
+
+.priorityDot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 9999px;
+}
+
+.priorityDot[data-priority="urgent"] {
+  background-color: #DC2626;
+}
+
+.priorityDot[data-priority="high"] {
+  background-color: #F59E0B;
+}
+
+.priorityDot[data-priority="medium"] {
+  background-color: #3B82F6;
+}
+
+.priorityDot[data-priority="low"] {
+  background-color: #6B7280;
+}
+
+/* Delete confirmation */
+.deleteConfirm {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.deleteWarning {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #DC2626;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .container {
+    background-color: #1E3A8A;
+    border-color: #1E40AF;
+  }
+
+  .count {
+    color: #DBEAFE;
+  }
+
+  .label {
+    color: #DBEAFE;
+  }
+
+  .clearButton {
+    color: #93C5FD;
+  }
+
+  .clearButton:hover {
+    background-color: rgba(147, 197, 253, 0.1);
+    color: #BFDBFE;
+  }
+
+  .dropdown {
+    background-color: #1F2937;
+    border-color: #4B5563;
+  }
+
+  .dropdownItem {
+    color: #D1D5DB;
+  }
+
+  .dropdownItem:hover {
+    background-color: #374151;
+  }
+
+  .dropdownItem:focus {
+    background-color: #1E3A8A;
+  }
+
+  .deleteWarning {
+    color: #F87171;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .leftSection {
+    justify-content: space-between;
+  }
+
+  .actions {
+    justify-content: stretch;
+  }
+
+  .actions > * {
+    flex: 1;
+  }
+
+  .dropdown {
+    left: 0;
+    right: auto;
+  }
+}

@@ -1,0 +1,69 @@
+/* Badge.module.css */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+/* Default variant */
+.default {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+/* Success variant */
+.success {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+/* Warning variant */
+.warning {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+/* Info variant */
+.info {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+/* Error variant */
+.error {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .default {
+    background-color: #374151;
+    color: #d1d5db;
+  }
+
+  .success {
+    background-color: #065f46;
+    color: #a7f3d0;
+  }
+
+  .warning {
+    background-color: #92400e;
+    color: #fde68a;
+  }
+
+  .info {
+    background-color: #1e40af;
+    color: #bfdbfe;
+  }
+
+  .error {
+    background-color: #991b1b;
+    color: #fecaca;
+  }
+}

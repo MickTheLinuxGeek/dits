@@ -3,9 +3,13 @@ import App from '../App';
 import { ProtectedRoute } from '../components/auth';
 import { AuthPage } from '../pages/AuthPage';
 import { InboxPage } from '../pages/InboxPage';
+import { InboxPageWithAPI } from '../pages/InboxPageWithAPI';
 import { TodayPage } from '../pages/TodayPage';
+import { TodayPageWithAPI } from '../pages/TodayPageWithAPI';
 import { UpcomingPage } from '../pages/UpcomingPage';
+import { UpcomingPageWithAPI } from '../pages/UpcomingPageWithAPI';
 import { LogbookPage } from '../pages/LogbookPage';
+import { LogbookPageWithAPI } from '../pages/LogbookPageWithAPI';
 import {
   LoginForm,
   RegisterForm,
@@ -33,19 +37,39 @@ export const router = createBrowserRouter([
       },
       {
         path: 'inbox',
-        element: <InboxPage />,
+        element:
+          import.meta.env.VITE_USE_MOCK_DATA === 'true' ? (
+            <InboxPage />
+          ) : (
+            <InboxPageWithAPI />
+          ),
       },
       {
         path: 'today',
-        element: <TodayPage />,
+        element:
+          import.meta.env.VITE_USE_MOCK_DATA === 'true' ? (
+            <TodayPage />
+          ) : (
+            <TodayPageWithAPI />
+          ),
       },
       {
         path: 'upcoming',
-        element: <UpcomingPage />,
+        element:
+          import.meta.env.VITE_USE_MOCK_DATA === 'true' ? (
+            <UpcomingPage />
+          ) : (
+            <UpcomingPageWithAPI />
+          ),
       },
       {
         path: 'logbook',
-        element: <LogbookPage />,
+        element:
+          import.meta.env.VITE_USE_MOCK_DATA === 'true' ? (
+            <LogbookPage />
+          ) : (
+            <LogbookPageWithAPI />
+          ),
       },
       {
         path: 'projects',

@@ -117,14 +117,14 @@ This document provides a detailed, enumerated task list based on the implementat
 86. [x] Implement Tooltip and Popover components
 
 #### List View Implementation
-87. [ ] Create issue list container component
-88. [ ] Implement table view with sortable columns
-89. [ ] Add filtering and search functionality
-90. [ ] Create pagination or infinite scroll
-91. [ ] Implement bulk selection and actions
-92. [ ] Add column customization options
-93. [ ] Create list view preferences
-94. [ ] Implement keyboard navigation for lists
+87. [x] Create issue list container component
+88. [x] Implement table view with sortable columns
+89. [x] Add filtering and search functionality
+90. [x] Create pagination or infinite scroll
+91. [x] Implement bulk selection and actions
+92. [x] Add column customization options
+93. [x] Create list view preferences
+94. [x] Implement keyboard navigation for lists
 
 #### Issue Management
 95. [ ] Create issue creation form

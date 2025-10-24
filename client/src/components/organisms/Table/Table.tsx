@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Icon } from '@/components/atoms/Icon';
+import { useColumnResize, type ColumnWidths } from '@/hooks/useColumnResize';
 import styles from './Table.module.css';
 
 export type SortDirection = 'asc' | 'desc' | null;
@@ -57,6 +58,12 @@ export interface TableProps<T = unknown> {
   hoverable?: boolean;
   /** Custom className */
   className?: string;
+  /** Enable column resizing */
+  resizable?: boolean;
+  /** Column widths (controlled) */
+  columnWidths?: ColumnWidths;
+  /** Callback when column widths change */
+  onColumnWidthsChange?: (widths: ColumnWidths) => void;
 }
 
 /**
@@ -80,10 +87,21 @@ export function Table<T = unknown>({
   striped = false,
   hoverable = true,
   className,
+  resizable = false,
+  columnWidths: externalColumnWidths,
+  onColumnWidthsChange,
 }: TableProps<T>) {
   const [sortKey, setSortKey] = useState<string | null>(defaultSortKey || null);
   const [sortDirection, setSortDirection] =
     useState<Exclude<SortDirection, null>>(defaultSortDirection);
+
+  // Use column resize hook
+  const { columnWidths, startResize, resizingColumn } = useColumnResize({
+    minWidth: 80,
+    maxWidth: 800,
+    initialWidths: externalColumnWidths || {},
+    onWidthsChange: onColumnWidthsChange,
+  });
 
   // Sort data
   const sortedData = useMemo(() => {
@@ -194,42 +212,67 @@ export function Table<T = unknown>({
                 />
               </th>
             )}
-            {columns.map((column) => (
-              <th
-                key={column.key}
-                className={[
-                  styles.th,
-                  column.sortable && styles.sortable,
-                  column.align && styles[`align-${column.align}`],
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
-                style={{ width: column.width }}
-                onClick={() => column.sortable && handleSort(column.key)}
-              >
-                <div className={styles.thContent}>
-                  <span>{column.header}</span>
-                  {column.sortable && (
-                    <span className={styles.sortIcon}>
-                      {sortKey === column.key ? (
-                        <Icon
-                          name={
-                            sortDirection === 'asc' ? 'ArrowUp' : 'ArrowDown'
-                          }
-                          aria-label={`Sorted ${sortDirection === 'asc' ? 'ascending' : 'descending'}`}
-                        />
-                      ) : (
-                        <Icon
-                          name="ArrowUpDown"
-                          className={styles.sortIconInactive}
-                          aria-label="Sortable"
-                        />
-                      )}
-                    </span>
+            {columns.map((column, columnIndex) => {
+              const isLastColumn = columnIndex === columns.length - 1;
+              const effectiveWidth = columnWidths[column.key]
+                ? `${columnWidths[column.key]}px`
+                : column.width;
+
+              return (
+                <th
+                  key={column.key}
+                  className={[
+                    styles.th,
+                    column.sortable && styles.sortable,
+                    column.align && styles[`align-${column.align}`],
+                    resizable && styles.resizable,
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
+                  style={{ width: effectiveWidth }}
+                  onClick={() => column.sortable && handleSort(column.key)}
+                >
+                  <div className={styles.thContent}>
+                    <span>{column.header}</span>
+                    {column.sortable && (
+                      <span className={styles.sortIcon}>
+                        {sortKey === column.key ? (
+                          <Icon
+                            name={
+                              sortDirection === 'asc' ? 'ArrowUp' : 'ArrowDown'
+                            }
+                            aria-label={`Sorted ${sortDirection === 'asc' ? 'ascending' : 'descending'}`}
+                          />
+                        ) : (
+                          <Icon
+                            name="ArrowUpDown"
+                            className={styles.sortIconInactive}
+                            aria-label="Sortable"
+                          />
+                        )}
+                      </span>
+                    )}
+                  </div>
+                  {/* Resize handle */}
+                  {resizable && !isLastColumn && (
+                    <div
+                      className={[
+                        styles.resizeHandle,
+                        resizingColumn === column.key && styles.resizing,
+                      ]
+                        .filter(Boolean)
+                        .join(' ')}
+                      onMouseDown={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        startResize(column.key, e.clientX);
+                      }}
+                      aria-label={`Resize ${column.header} column`}
+                    />
                   )}
-                </div>
-              </th>
-            ))}
+                </th>
+              );
+            })}
           </tr>
         </thead>
         <tbody className={styles.tbody}>

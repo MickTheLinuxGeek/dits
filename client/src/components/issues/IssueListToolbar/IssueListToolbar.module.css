@@ -1,0 +1,316 @@
+/* Toolbar container */
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Top row with search and actions */
+.topRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.searchContainer {
+  position: relative;
+  flex: 1;
+  min-width: 250px;
+}
+
+.searchInput {
+  width: 100%;
+}
+
+.clearSearchButton {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.25rem;
+  background: none;
+  border: none;
+  color: #6B7280;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.clearSearchButton:hover {
+  color: #374151;
+  background-color: #F3F4F6;
+}
+
+.clearSearchButton:focus {
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* View mode toggle */
+.viewModeToggle {
+  display: flex;
+  border: 1px solid #E5E7EB;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  background-color: #FFFFFF;
+}
+
+.viewModeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.75rem;
+  background: none;
+  border: none;
+  color: #6B7280;
+  cursor: pointer;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.viewModeButton:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 1px;
+  background-color: #E5E7EB;
+}
+
+.viewModeButton:hover {
+  background-color: #F3F4F6;
+  color: #374151;
+}
+
+.viewModeButton:focus {
+  outline: 2px solid #3B82F6;
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+.viewModeButton.active {
+  background-color: #EFF6FF;
+  color: #2563EB;
+}
+
+.viewModeButton.active:hover {
+  background-color: #DBEAFE;
+  color: #1D4ED8;
+}
+
+.filterBadge {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-left: 0.25rem;
+  color: #FFFFFF;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.presetCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.375rem;
+  margin-left: 0.25rem;
+  background-color: #3B82F6;
+  color: #FFFFFF;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  line-height: 1;
+}
+
+/* Filter panel */
+.filterPanel {
+  padding: 0.75rem;
+  background-color: #F9FAFB;
+  border-radius: 0.375rem;
+  border: 1px solid #E5E7EB;
+}
+
+.filterRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Results row */
+.resultsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 0.5rem;
+  border-top: 1px solid #E5E7EB;
+}
+
+.resultsCount {
+  font-size: 0.875rem;
+  color: #6B7280;
+}
+
+.resultsCount strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* Filter chips */
+.filterChips {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filterChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  background-color: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  color: #1E40AF;
+  font-weight: 500;
+}
+
+.filterChip button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: none;
+  color: #2563EB;
+  cursor: pointer;
+  border-radius: 9999px;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.filterChip button:hover {
+  color: #1D4ED8;
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+.filterChip button:focus {
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .toolbar {
+    background-color: #1F2937;
+    border-color: #4B5563;
+  }
+
+  .clearSearchButton {
+    color: #9CA3AF;
+  }
+
+  .clearSearchButton:hover {
+    color: #D1D5DB;
+    background-color: #374151;
+  }
+
+  .viewModeToggle {
+    border-color: #4B5563;
+    background-color: #374151;
+  }
+
+  .viewModeButton {
+    color: #9CA3AF;
+  }
+
+  .viewModeButton:not(:last-child)::after {
+    background-color: #4B5563;
+  }
+
+  .viewModeButton:hover {
+    background-color: #4B5563;
+    color: #D1D5DB;
+  }
+
+  .viewModeButton.active {
+    background-color: #1E3A8A;
+    color: #60A5FA;
+  }
+
+  .viewModeButton.active:hover {
+    background-color: #1E40AF;
+    color: #93C5FD;
+  }
+
+  .filterPanel {
+    background-color: #111827;
+    border-color: #374151;
+  }
+
+  .resultsRow {
+    border-top-color: #4B5563;
+  }
+
+  .resultsCount {
+    color: #9CA3AF;
+  }
+
+  .resultsCount strong {
+    color: #F3F4F6;
+  }
+
+  .filterChip {
+    background-color: #1E3A8A;
+    border-color: #1E40AF;
+    color: #DBEAFE;
+  }
+
+  .filterChip button {
+    color: #93C5FD;
+  }
+
+  .filterChip button:hover {
+    color: #BFDBFE;
+    background-color: rgba(147, 197, 253, 0.1);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .topRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .searchContainer {
+    min-width: 100%;
+  }
+
+  .actions {
+    justify-content: space-between;
+  }
+
+  .filterRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
