@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { X, Table2, List, Star } from 'lucide-react';
+import { X, Table2, List } from 'lucide-react';
 import type { IssueStatus, IssuePriority } from '../../../mocks/types';
 import type {
   IssueFilters,
@@ -214,7 +214,7 @@ export function IssueListToolbar({
             <Button
               variant="outline"
               size="md"
-              leftIcon={<Star size={16} />}
+              leftIcon="Star"
               onClick={onManagePresets}
               aria-label="Manage filter presets"
               title={
