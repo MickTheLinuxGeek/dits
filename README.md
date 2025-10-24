@@ -38,6 +38,7 @@
 - [Philosophy](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-philosophy)
 - [Security & Privacy](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-security--privacy)
 - [License](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-license)
+- [WIKI](https://github.com/MickTheLinuxGeek/dits/wiki#welcome-to-the-dits-wiki)
 
 ## 🎯 Overview
 
@@ -256,7 +257,7 @@ For coverage reports:
 ```bash
 npm run test:coverage
 ```
-**SEE WIKI FOR MORE TESTING INFORMATION**
+**SEE [WIKI](https://github.com/MickTheLinuxGeek/dits/wiki#welcome-to-the-dits-wiki) FOR MORE TESTING INFORMATION**
 
 ## 🗺️ Roadmap
 
