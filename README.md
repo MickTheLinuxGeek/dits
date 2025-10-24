@@ -38,6 +38,7 @@
 - [Philosophy](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-philosophy)
 - [Security & Privacy](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-security--privacy)
 - [License](https://github.com/MickTheLinuxGeek/dits?tab=readme-ov-file#-license)
+- [WIKI](https://github.com/MickTheLinuxGeek/dits/wiki#welcome-to-the-dits-wiki)
 
 ## 🎯 Overview
 
