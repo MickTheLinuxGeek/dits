@@ -10,6 +10,7 @@ import { UpcomingPage } from '../pages/UpcomingPage';
 import { UpcomingPageWithAPI } from '../pages/UpcomingPageWithAPI';
 import { LogbookPage } from '../pages/LogbookPage';
 import { LogbookPageWithAPI } from '../pages/LogbookPageWithAPI';
+import { BoardPage } from '../pages/BoardPage';
 import {
   LoginForm,
   RegisterForm,
@@ -69,6 +70,18 @@ export const router = createBrowserRouter([
             <LogbookPage />
           ) : (
             <LogbookPageWithAPI />
+          ),
+      },
+      {
+        path: 'board',
+        element:
+          import.meta.env.VITE_USE_MOCK_DATA === 'true' ? (
+            <BoardPage />
+          ) : (
+            <div>
+              <h1>Board View (API)</h1>
+              <p>API-based board view not yet implemented</p>
+            </div>
           ),
       },
       {

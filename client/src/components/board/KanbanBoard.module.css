@@ -1,0 +1,261 @@
+.kanbanBoard {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-x: auto;
+}
+
+.boardContainer {
+  display: flex;
+  gap: 1rem;
+  min-width: max-content;
+  height: 100%;
+}
+
+.boardColumn {
+  width: 320px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 200px);
+}
+
+.columnHeader {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.columnTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.statusBacklog .statusDot {
+  background-color: #9ca3af;
+}
+
+.statusTodo .statusDot {
+  background-color: #64748b;
+}
+
+.statusInProgress .statusDot {
+  background-color: #3b82f6;
+}
+
+.statusReview .statusDot {
+  background-color: #f59e0b;
+}
+
+.statusDone .statusDot {
+  background-color: #10b981;
+}
+
+.columnCount {
+  background-color: #f1f5f9;
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.75rem;
+  min-width: 20px;
+  text-align: center;
+}
+
+.columnBody {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.issueCard {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: grab;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.issueCard:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.issueId {
+  font-family: ui-monospace, monospace;
+  font-size: 0.6875rem;
+  color: #64748b;
+  background-color: #f1f5f9;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+}
+
+.priorityIndicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-left: 0.5rem;
+}
+
+.priorityUrgent {
+  background-color: #ef4444;
+}
+
+.priorityHigh {
+  background-color: #f97316;
+}
+
+.priorityMedium {
+  background-color: #eab308;
+}
+
+.priorityLow {
+  background-color: #22c55e;
+}
+
+.priorityNone {
+  background-color: #d1d5db;
+}
+
+.cardTitle {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1e293b;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.cardLabels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.label {
+  padding: 0.0625rem 0.375rem;
+  border-radius: 0.75rem;
+  font-size: 0.625rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.labelBug {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.labelFeature {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+.labelEnhancement {
+  background-color: #ecfccb;
+  color: #65a30d;
+}
+
+.labelSecurity {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.labelDevops {
+  background-color: #f3e8ff;
+  color: #9333ea;
+}
+
+.labelDatabase {
+  background-color: #e0e7ff;
+  color: #4338ca;
+}
+
+.labelDesign {
+  background-color: #fce7f3;
+  color: #be185d;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.6875rem;
+  color: #64748b;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dueDate {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.dueDateOverdue {
+  color: #dc2626;
+}
+
+.dueDateToday {
+  color: #f59e0b;
+}
+
+.assigneeAvatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #3b82f6;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.625rem;
+  font-weight: 600;
+}
+
+.addCardBtn {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px dashed #cbd5e1;
+  background: none;
+  border-radius: 8px;
+  color: #64748b;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.addCardBtn:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+  background-color: #f8fafc;
+}
