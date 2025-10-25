@@ -4,21 +4,36 @@ Complete documentation for the DITS Issue List View implementation.
 
 ## Table of Contents
 
-1. [List View Implementation Summary](#1-list-view-implementation-summary)
-2. [CSS Modules Summary](#2-css-modules-summary)
-3. [Tests Summary](#3-tests-summary)
-4. [Storybook Stories](#4-storybook-stories)
-5. [API Integration](#5-api-integration)
-6. [Error and Loading States](#6-error-and-loading-states)
-7. [Infinite Scroll](#7-infinite-scroll)
-8. [Column Resize](#8-column-resize)
-9. [Filter Presets](#9-filter-presets)
+- [List View Implementation - Master Index](#list-view-implementation---master-index)
+  - [Table of Contents](#table-of-contents)
+  - [1. List View Implementation Summary](#1-list-view-implementation-summary)
+  - [2. CSS Modules Summary](#2-css-modules-summary)
+  - [3. Tests Summary](#3-tests-summary)
+  - [4. Storybook Stories](#4-storybook-stories)
+  - [5. API Integration](#5-api-integration)
+  - [6. Error and Loading States](#6-error-and-loading-states)
+  - [7. Infinite Scroll](#7-infinite-scroll)
+  - [8. Column Resize](#8-column-resize)
+  - [9. Filter Presets](#9-filter-presets)
+  - [Project Status](#project-status)
+    - [Completed ✅](#completed-)
+    - [Architecture Overview](#architecture-overview)
+    - [Hooks](#hooks)
+    - [Technologies](#technologies)
+    - [Performance Optimizations](#performance-optimizations)
+    - [Accessibility Features](#accessibility-features)
+  - [Quick Links](#quick-links)
+  - [Getting Started](#getting-started)
+    - [Running the Application](#running-the-application)
+    - [Using the List View](#using-the-list-view)
+  - [Contributing](#contributing)
+  - [Support](#support)
 
 ---
 
 ## 1. List View Implementation Summary
 
-**File:** [LISTVIEW_IMPLEMENTATION.md](./LISTVIEW_IMPLEMENTATION.md)
+**File:** [LISTVIEW_IMPLEMENTATION.md](./List_View/LISTVIEW_IMPLEMENTATION.md)
 
 Core implementation of the List View (Tasks 87-94).
 
@@ -50,7 +65,7 @@ Core implementation of the List View (Tasks 87-94).
 
 ## 2. CSS Modules Summary
 
-**File:** [CSS_MODULES_SUMMARY.md](./CSS_MODULES_SUMMARY.md)
+**File:** [CSS_MODULES_SUMMARY.md](./List_View/CSS_MODULES_SUMMARY.md)
 
 Comprehensive styling implementation for all List View components.
 
@@ -78,7 +93,7 @@ Comprehensive styling implementation for all List View components.
 
 ## 3. Tests Summary
 
-**File:** [TESTS_SUMMARY.md](./TESTS_SUMMARY.md)
+**File:** [TESTS_SUMMARY.md](./List_View/TESTS_SUMMARY.md)
 
 Complete test coverage with 101 passing tests.
 
@@ -103,7 +118,7 @@ Complete test coverage with 101 passing tests.
 
 ## 4. Storybook Stories
 
-**File:** [STORYBOOK_STORIES.md](./STORYBOOK_STORIES.md)
+**File:** [STORYBOOK_STORIES.md](./List_View/STORYBOOK_STORIES.md)
 
 Interactive component documentation with 34 stories.
 
@@ -129,7 +144,7 @@ Interactive component documentation with 34 stories.
 
 ## 5. API Integration
 
-**File:** [API_INTEGRATION.md](./API_INTEGRATION.md)
+**File:** [API_INTEGRATION.md](./List_View/API_INTEGRATION.md)
 
 Backend API integration with service layer and React hook.
 
@@ -162,7 +177,7 @@ Backend API integration with service layer and React hook.
 
 ## 6. Error and Loading States
 
-**File:** [ERROR_AND_LOADING_STATES.md](./ERROR_AND_LOADING_STATES.md)
+**File:** [ERROR_AND_LOADING_STATES.md](./List_View/ERROR_AND_LOADING_STATES.md)
 
 Production-ready error handling and loading states.
 
@@ -195,7 +210,7 @@ Production-ready error handling and loading states.
 
 ## 7. Infinite Scroll
 
-**File:** [INFINITE_SCROLL.md](./INFINITE_SCROLL.md)
+**File:** [INFINITE_SCROLL.md](./List_View/INFINITE_SCROLL.md)
 
 Alternative viewing mode with infinite scroll.
 
@@ -235,7 +250,7 @@ Alternative viewing mode with infinite scroll.
 
 ## 8. Column Resize
 
-**File:** [COLUMN_RESIZE.md](./COLUMN_RESIZE.md)
+**File:** [COLUMN_RESIZE.md](./List_View/COLUMN_RESIZE.md)
 
 Column width persistence with drag-to-resize.
 
@@ -277,7 +292,7 @@ const { columnWidths, startResize, resizingColumn } = useColumnResize({
 
 ## 9. Filter Presets
 
-**File:** [FILTER_PRESETS.md](./FILTER_PRESETS.md)
+**File:** [FILTER_PRESETS.md](./List_View/FILTER_PRESETS.md)
 
 Save and load filter combinations for quick access.
 
@@ -402,15 +417,15 @@ IssueListContainer (main orchestrator)
 
 ## Quick Links
 
-- [Main Implementation](./LISTVIEW_IMPLEMENTATION.md)
-- [Styling Guide](./CSS_MODULES_SUMMARY.md)
-- [Testing Documentation](./TESTS_SUMMARY.md)
-- [Storybook Stories](./STORYBOOK_STORIES.md)
-- [API Integration](./API_INTEGRATION.md)
-- [Error/Loading States](./ERROR_AND_LOADING_STATES.md)
-- [Infinite Scroll](./INFINITE_SCROLL.md)
-- [Column Resize](./COLUMN_RESIZE.md)
-- [Filter Presets](./FILTER_PRESETS.md)
+- [Main Implementation](./List_View/LISTVIEW_IMPLEMENTATION.md)
+- [Styling Guide](./List_View/CSS_MODULES_SUMMARY.md)
+- [Testing Documentation](./List_View/TESTS_SUMMARY.md)
+- [Storybook Stories](./List_View/STORYBOOK_STORIES.md)
+- [API Integration](./List_View/API_INTEGRATION.md)
+- [Error/Loading States](./List_View/ERROR_AND_LOADING_STATES.md)
+- [Infinite Scroll](./List_View/INFINITE_SCROLL.md)
+- [Column Resize](./List_View/COLUMN_RESIZE.md)
+- [Filter Presets](./List_View/FILTER_PRESETS.md)
 
 ---
 
